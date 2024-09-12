@@ -23,8 +23,8 @@ const Register = () => {
         password,
       });
       const { data } = response;
-      if (data.message) {
-        return toast.error(data.message);
+      if (data.error) {
+        return toast.error(data.error);
       } else {
         setData({
           first_name: "",
