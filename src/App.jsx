@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
-import Login from "./pages/Login";
+import LoginPage from "./pages/login/LoginPage";
 import axios from "axios";
 import { Toaster } from "react-hot-toast";
 import { UserContextProvider } from "./context/userContext";
@@ -18,7 +18,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </UserContextProvider>
   );
