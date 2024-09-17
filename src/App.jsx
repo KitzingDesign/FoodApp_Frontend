@@ -1,21 +1,27 @@
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import Home from "./pages/Home";
-import Register from "./pages/Register";
-import LoginPage from "./pages/login/LoginPage";
-import axios from "axios";
 
-axios.defaults.baseURL = "http://localhost:3500";
-axios.defaults.withCredentials = true;
+import Layout from "./components/Layout";
+import Public from "./components/Public";
+import Login from "./features/auth/Login";
+import Welcome from "./features/auth/Welcome"; // change to real dashboard
+import RequireAuth from "./features/auth/RequireAuth";
 
 function App() {
   return (
-    <>
-      <Route path="/" element={<Home />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/login" element={<LoginPage />} />
-    </>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        {/* public routes */}
+        <Route index element={<Public />} />
+        <Route path="login" element={<Login />} />
+
+        {/* protected routes */}
+        <Route element={<RequireAuth />}>
+          <Route path="welcome" element={<Welcome />} />
+        </Route>
+      </Route>
+    </Routes>
   );
 }
 
