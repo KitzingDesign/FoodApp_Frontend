@@ -1,10 +1,11 @@
 import { useRef, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
-import { setCredentials } from "./authSlice";
-import { useLoginMutation } from "./authApiSlice";
+import { setCredentials } from "../authSlice";
+import { useLoginMutation } from "../authApiSlice";
 import classes from "./Login.module.css";
+import Button from "../../../UI/Button";
 
 const Login = () => {
   const emailRef = useRef();
@@ -63,15 +64,16 @@ const Login = () => {
   const content = isLoading ? (
     <h1>Loading... </h1>
   ) : (
-    <div className={classes.login}>
-      <section>
+    <div className={classes.outerContainer}>
+      <section className={classes.container}>
         <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"}>
           {errMsg}
         </p>{" "}
-        // add css later
-        <h1>Login</h1>
-        <form onSubmit={handleSubmit}>
+        <h1 className={classes.title}>Login</h1>
+        <div className={classes.divider}></div>
+        <form className={classes.form} onSubmit={handleSubmit}>
           <label htmlFor="email">Email</label>
+
           <input
             type="email"
             id="email"
@@ -79,17 +81,29 @@ const Login = () => {
             value={email}
             onChange={handleEmailInput}
             autoComplete="off"
+            className={classes.input}
             required
           />
-          <label htmlFor="password">Password</label>
+          <span className={classes.inputContainer}>
+            <label htmlFor="password">Password</label>
+            <a href="/#" className={classes.forgotPassword}>
+              Forgot Password?
+            </a>
+          </span>
           <input
             type="password"
             id="password"
             value={password}
             onChange={handlePasswordInput}
+            className={classes.input}
             required
           />
-          <button type="submit">Login</button>
+          <span className={classes.buttonContainer}>
+            <Link to={"/register"}>Signup</Link>
+            <Button size="large" variant="fill" type="submit">
+              Login
+            </Button>
+          </span>
         </form>
       </section>
     </div>

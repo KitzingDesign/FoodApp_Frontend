@@ -4,9 +4,10 @@ import Navbar from "./components/Navbar";
 
 import Layout from "./components/Layout";
 import Public from "./components/Public";
-import Login from "./features/auth/Login";
-import Welcome from "./features/auth/Welcome"; // change to real dashboard
+import Login from "./features/auth/login/Login.jsx";
+import Welcome from "./features/auth/welcome/Welcome.jsx"; // change to real dashboard
 import RequireAuth from "./features/auth/RequireAuth";
+import Register from "./features/auth/register/Register";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         {/* public routes */}
         <Route index element={<Public />} />
         <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
 
         {/* protected routes */}
         <Route element={<RequireAuth />}>
