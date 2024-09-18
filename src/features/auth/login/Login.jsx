@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode"; // Import jwt-decode
 
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../authSlice";
@@ -33,7 +34,17 @@ const Login = () => {
       const userData = await login({ email, password }).unwrap();
       console.log("User data received:", userData); // Debugging log
       const { accessToken } = userData;
-      dispatch(setCredentials({ ...userData, token: accessToken, email }));
+      const { UserInfo } = jwtDecode(accessToken);
+      const user_id = UserInfo.user_id;
+
+      dispatch(
+        setCredentials({
+          ...userData,
+          token: accessToken,
+          email,
+          user_id,
+        })
+      );
       console.log("Credentials set in Redux:", { ...userData, email }); // Debugging log
       setEmail("");
       setPassword("");
