@@ -6,7 +6,6 @@ const RequireAuth = () => {
   const token = useSelector(selectCurrentToken);
   const location = useLocation();
 
-  console.log("Token in RequireAuth:", token); // Debugging log
   return token ? (
     <Outlet />
   ) : (

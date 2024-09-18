@@ -21,6 +21,8 @@ function App() {
         {/* protected routes */}
         <Route element={<RequireAuth />}>
           <Route path="welcome" element={<Welcome />} />
+          {/* add list of recipes here */}
+          <Route path="recipes" element={<div>Recipes</div>} />
         </Route>
       </Route>
     </Routes>

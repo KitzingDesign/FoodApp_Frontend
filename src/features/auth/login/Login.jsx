@@ -99,7 +99,7 @@ const Login = () => {
             required
           />
           <span className={classes.buttonContainer}>
-            <Link to={"/register"}>Signup</Link>
+            <Link to={"/signup"}>Signup</Link>
             <Button size="large" variant="fill" type="submit">
               Login
             </Button>
