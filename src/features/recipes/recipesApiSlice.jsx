@@ -43,7 +43,20 @@ export const recipesApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: (result, error, arg) => [{ type: "Recipe", id: arg.id }],
     }),
+    getRecipeFromUrl: builder.query({
+      query: (urlTest) => ({
+        url: "/recipe/url",
+        params: { url: urlTest },
+        validateStatus: (response, result) => {
+          return response.status === 200 && !result.isError;
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetRecipesQuery, useAddNewRecipeMutation } = recipesApiSlice;
+export const {
+  useGetRecipesQuery,
+  useAddNewRecipeMutation,
+  useGetRecipeFromUrlQuery,
+} = recipesApiSlice;

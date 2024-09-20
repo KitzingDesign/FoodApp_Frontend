@@ -1,20 +1,48 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAddNewRecipeMutation } from "../recipesApiSlice";
+import { useSelector } from "react-redux";
+import { selectCurrentUserId } from "../../auth/authSlice";
 
-function AddRecipe({ userId }) {
-  // State to store form inputs
+import {
+  useAddNewRecipeMutation,
+  useGetRecipeFromUrlQuery,
+} from "../recipesApiSlice";
+
+function AddRecipe() {
+  const userId = Number(useSelector(selectCurrentUserId));
   console.log(userId);
+  // State to store form inputs
   const [recipeUrl, setRecipeUrl] = useState("");
+  const [urlToFetch, setUrlToFetch] = useState("");
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    instructions: "",
+    instructions: [],
     image_url: "",
     user_id: Number(userId),
   });
 
   const [addRecipe, { isLoading }] = useAddNewRecipeMutation();
+
+  //Fetch recipe data based on the URL
+  const {
+    data: recipe,
+    error,
+    isLoading: isUrlLoading,
+  } = useGetRecipeFromUrlQuery(urlToFetch, {
+    skip: !urlToFetch, // Skip the query if recipeUrl is empty
+  });
+  console.log(recipe);
+
+  useEffect(() => {
+    if (recipe) {
+      setFormData({
+        ...formData,
+        title: recipe.name,
+        description: recipe.description,
+      });
+    }
+  }, [recipe]);
 
   const [errMsg, setErrMsg] = useState("");
   const navigate = useNavigate();
@@ -26,12 +54,16 @@ function AddRecipe({ userId }) {
       [e.target.name]: e.target.value,
     });
   };
+
   const handleUrlChange = (e) => {
     setRecipeUrl(e.target.value);
   };
 
   // Handle URL input
-  const handleSubmitUrl = async (e) => {};
+  const handleSubmitUrl = async (e) => {
+    e.preventDefault();
+    setUrlToFetch(recipeUrl); // Set the recipe URL to trigger the query
+  };
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -52,7 +84,7 @@ function AddRecipe({ userId }) {
       setFormData({
         title: "",
         description: "",
-        instructions: "",
+        instructions: [],
         image_url: "",
         user_id: "",
       }); // Clear form
