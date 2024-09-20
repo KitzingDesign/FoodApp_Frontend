@@ -3,10 +3,12 @@ import {
   selectCurrentUser,
   selectCurrentToken,
   selectCurrentUserId,
-} from "../authSlice";
+} from "../auth/authSlice";
 import { Link } from "react-router-dom";
-import SideBar from "../../../components/SideBar";
+import SideBar from "../../components/SideBar";
 import styles from "./Welcome.module.css";
+import AddRecipe from "../recipes/addRecipe.jsx/AddRecipe";
+import AllRecipes from "../recipes/allRecipes.jsx/allRecipes";
 
 const Welcome = () => {
   const user = useSelector(selectCurrentUser);
@@ -15,21 +17,7 @@ const Welcome = () => {
 
   //This should mabye be stored in authSlice
 
-  const welcome = user ? `Welcome ${user}!` : "Welcome!";
-  const tokenAbbr = `${token.slice(0, 9)}...`;
-
-  const content = (
-    <main className={styles.container}>
-      <SideBar />
-      <div className={styles.content}>
-        <h1>{welcome}</h1>
-        <p>Token: {tokenAbbr}</p>
-        <p>
-          <Link to="/recipes">Go to recipes</Link>
-        </p>
-      </div>
-    </main>
-  );
+  const content = <AllRecipes />;
   return content;
 };
 

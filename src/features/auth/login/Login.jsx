@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode"; // Import jwt-decode
+import { jwtDecode } from "jwt-decode";
 
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../authSlice";
@@ -48,7 +48,7 @@ const Login = () => {
       console.log("Credentials set in Redux:", { ...userData, email }); // Debugging log
       setEmail("");
       setPassword("");
-      navigate("/welcome"); // in tutorial /welcome (change name to dashboard later)
+      navigate(`/welcome/${user_id}`); // in tutorial /welcome (change name to dashboard later)
       console.log("Navigated to /welcome"); // Debugging log
     } catch (e) {
       if (!e?.originalStatus) {

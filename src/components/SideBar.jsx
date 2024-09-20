@@ -1,57 +1,61 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
+
 import styles from "./SideBar.module.css";
 import ProfileIcon from "../../public/profile";
+import ChevronIcon from "../../public/chevron";
+import PlusIcon from "../../public/plus";
+import RecipeBookIcon from "../../public/recipeBook";
+import RecipeBookIconOpen from "../../public/recipeBookOpen";
+import CollectionList from "../features/collections/CollectionList";
+import { useGetUserQuery } from "../features/users/usersApiSlice";
 
-function SideBar() {
-  const [open, setOpen] = useState(true);
+function SideBar({ userId }) {
+  const [isExpanded, setIsExpanded] = useState(false);
 
-  const Menus = [
-    { title: "Overview", src: "Overview" },
-    { title: "Transactions", src: "Transactions" },
-    { title: "Loyalty Cards", src: "Card", gap: true },
-    { title: "Subscriptions ", src: "Calendar" },
-    { title: "Debts", src: "Debt" },
-    { title: "Legal information", src: "Legal" },
-    { title: "Notifications ", src: "Notifications", gap: true },
-    { title: "Setting", src: "Settings" },
-  ];
+  const { data: user, error, isLoading } = useGetUserQuery(userId);
 
-  const projects = [
-    { id: 1, title: "Project Alpha" },
-    { id: 2, title: "Project Beta" },
-    { id: 3, title: "Project Gamma" },
-    { id: 4, title: "Project Delta" },
-  ];
+  console.log(user);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  if (!user) return <div>No user found</div>;
+
+  console.log(user);
 
   return (
-    <aside className={styles.sidebar}>
+    <div className={styles.sidebar}>
       <div className={styles.titleContainer}>
         <div className={styles.profileContainer}>
           <ProfileIcon />
         </div>
         {/* // change to real name */}
-        <h2 className={styles.sidebarTitle}>Your Projects</h2>
+        <h2 className={styles.sidebarTitle}>
+          {user.first_name} {user.last_name}
+        </h2>
       </div>
-      <div className={styles.addButton}>
-        <button>+ Add Project</button>
-      </div>
-      <ul className={styles.projectList}>
-        {projects.map((project) => {
-          let cssClasses = styles.projectItem;
 
-          //   if (project.id === selectedProjectId) {
-          //     cssClasses += ` ${styles.selectedProject}`;
-          //   }
-
-          return (
-            <li key={project.id}>
-              <button className={cssClasses}>{project.title}</button>
-            </li>
-          );
-        })}
+      <ul className={styles.allRecipes}>
+        <RecipeBookIcon />
+        <li className={styles.allRecipesButton}>All your Recipes</li>
       </ul>
-      <div className={styles.test}></div>
-    </aside>
+      <ul className={styles.collectionListContainer}>
+        <div className={styles.flexIcons}>
+          <RecipeBookIconOpen />
+          <li className={styles.allRecipesButton}>Collections</li>
+        </div>
+        <div className={styles.flexIcons}>
+          <PlusIcon />
+          <motion.div
+            animate={{ rotate: isExpanded ? 180 : 90 }}
+            onClick={() => setIsExpanded(() => !isExpanded)}
+          >
+            <ChevronIcon className={styles.chevron} />
+          </motion.div>
+        </div>
+      </ul>
+      {isExpanded && <CollectionList />}
+    </div>
   );
 }
 

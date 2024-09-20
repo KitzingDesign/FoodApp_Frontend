@@ -7,6 +7,7 @@
   flex-grow: 1; /* Takes the remaining space */
   background-color: #fff;
   overflow: auto; /* Allow scrolling */
+  justify-content: center;
   padding: 20px;
   box-sizing: border-box;
 }

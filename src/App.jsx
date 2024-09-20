@@ -5,9 +5,11 @@ import Navbar from "./components/Navbar";
 import Layout from "./components/Layout";
 import Public from "./components/Public";
 import Login from "./features/auth/login/Login.jsx";
-import Welcome from "./features/auth/welcome/Welcome.jsx"; // change to real dashboard
+import Welcome from "./features/welcome/Welcome.jsx"; // change to real dashboard
 import RequireAuth from "./features/auth/RequireAuth";
+import AddRecipe from "./features/recipes/addRecipe.jsx/AddRecipe.jsx";
 import Register from "./features/auth/register/Register";
+import DashboardLayout from "./components/DashboardLayout.jsx";
 
 function App() {
   return (
@@ -20,9 +22,13 @@ function App() {
 
         {/* protected routes */}
         <Route element={<RequireAuth />}>
-          <Route path="welcome" element={<Welcome />} />
-          {/* add list of recipes here */}
-          <Route path="recipes" element={<div>Recipes</div>} />
+          {/* dashboard */}
+          <Route path="/welcome" element={<DashboardLayout />}>
+            <Route path=":userId" element={<Welcome />} />
+            <Route path=":userId/create" element={<AddRecipe />} />
+            {/* add list of recipes here */}
+            <Route path="recipes" element={<div>Recipes</div>} />
+          </Route>
         </Route>
       </Route>
     </Routes>
