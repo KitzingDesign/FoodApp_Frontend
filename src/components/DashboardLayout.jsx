@@ -14,7 +14,7 @@ const DashboardLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   return (
-    <main className={styles.container}>
+    <div className={styles.container}>
       <motion.div
         initial={{ x: 0 }}
         animate={{ x: isSidebarOpen ? 0 : -220 }}
@@ -38,8 +38,12 @@ const DashboardLayout = () => {
           </motion.aside>
         )}
       </AnimatePresence>
-      <Outlet />
-    </main>
+      <main className={styles.containerMain}>
+        <h2 className={styles.title}>Add New Recipe</h2>
+        <span className={styles.spanLink}>/ Add Recipe</span>
+        <Outlet />
+      </main>
+    </div>
   );
 };
 
