@@ -1,24 +1,37 @@
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+
 import { selectCurrentUserId } from "../../auth/authSlice";
 import { useGetRecipesQuery } from "../recipesApiSlice";
 import RecipeCard from "../../../components/RecipeCard";
+import { useParams } from "react-router-dom";
+import { useGetCollectionRecipesQuery } from "../../collections/collectionsApiSlice";
 
 import styles from "./AllRecipes.module.css";
 
 const AllRecipes = () => {
+  const { collectionId } = useParams(); // Extract collection ID from URL
   const userId = Number(useSelector(selectCurrentUserId));
-  console.log(userId);
-  const { data: recipes = [], error, isLoading } = useGetRecipesQuery(userId);
+
+  const {
+    data: recipes = [],
+    error,
+    isLoading,
+  } = collectionId
+    ? useGetCollectionRecipesQuery(collectionId)
+    : useGetRecipesQuery(userId);
 
   console.log(recipes);
+
+  useEffect(() => {
+    console.log("Recipes in component after fetch:", recipes); // To debug re-renders
+  }, [recipes]);
 
   const content = isLoading ? (
     <div>Loading...</div>
   ) : (
-    <main className={styles.container}>
-      <h1 className={styles.title}>Recipes</h1>
-      <span className={styles.spanLink}>/ All Recipes</span>
+    <>
       <Link to="create" className={styles.addRecipeLink}>
         Add Recipe{" "}
       </Link>
@@ -27,8 +40,9 @@ const AllRecipes = () => {
           <RecipeCard key={recipe.recipe_id} recipe={recipe} />
         ))}
       </div>
-    </main>
+    </>
   );
   return content;
 };
+
 export default AllRecipes;

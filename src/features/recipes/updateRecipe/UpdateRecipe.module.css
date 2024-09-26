@@ -289,12 +289,3 @@
   font-weight: 600;
   line-height: 100%; /* 16px */
 }
-
-/* Button for add recipe css */
-
-.addRecipe {
-  width: 100%;
-  border: none;
-  padding: 8px 16px;
-  cursor: pointer;
-}

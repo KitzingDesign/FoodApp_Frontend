@@ -27,7 +27,7 @@
 
 .spanLink {
   position: absolute;
-  left: 80px;
+  left: 24px;
 
   top: 40px;
 
@@ -45,8 +45,7 @@
 }
 
 .visibleIcon {
-  position: absolute;
-  top: 32px;
+  top: 38px;
   left: 260px;
   z-index: 1000; /* Ensure it is on top of other elements */
   cursor: pointer;

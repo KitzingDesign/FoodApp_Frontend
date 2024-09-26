@@ -3,13 +3,16 @@ import { apiSlice } from "../../app/api/apiSlice";
 export const ingredientsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getIngredients: builder.query({
-      query: (recipeId) => ({
-        url: "/ingredients",
-        params: { recipe_id: recipeId },
+      query: ({ id }) => ({
+        url: `/ingredient/${id}`,
         validateStatus: (response, result) => {
           return response.status === 200 && !result.isError;
         },
       }),
+      providesTags: (result, error, { id }) =>
+        result
+          ? [{ type: "Ingredient", id }] // Provide tag for specific ingredient
+          : [{ type: "Ingredient", id: "LIST" }], // List tag in case of error
     }),
     addNewIngredient: builder.mutation({
       query: (addIngredient) => ({
@@ -19,17 +22,19 @@ export const ingredientsApiSlice = apiSlice.injectEndpoints({
           ...addIngredient,
         },
       }),
+      invalidatesTags: [{ type: "Ingredient", id: "LIST" }], // Invalidate the list
     }),
     updateIngredient: builder.mutation({
-      query: (initialIngredient) => ({
-        url: "/ingredient",
+      query: ({ ingredient_id, name }) => ({
+        url: `/ingredient?ingredient_id=${ingredient_id}`,
         method: "PATCH",
         body: {
-          ...initialIngredient,
+          name,
         },
       }),
-      invalidatesTags: (result, error, arg) => [
-        { type: "Ingredient", id: arg.id },
+      invalidatesTags: (result, error, { ingredient_id }) => [
+        { type: "Ingredient", id: ingredient_id }, // Invalidate the specific ingredient
+        { type: "Ingredient", id: "LIST" }, // Invalidate the list as well
       ],
     }),
     deleteIngredient: builder.mutation({
@@ -38,8 +43,9 @@ export const ingredientsApiSlice = apiSlice.injectEndpoints({
         method: "DELETE",
         body: { ingredient_id: id },
       }),
-      invalidatesTags: (result, error, arg) => [
-        { type: "ingredient", id: arg.id },
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Ingredient", id },
+        { type: "Ingredient", id: "LIST" }, // Invalidate the list after deletion
       ],
     }),
   }),

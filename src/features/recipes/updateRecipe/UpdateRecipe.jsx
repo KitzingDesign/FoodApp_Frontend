@@ -1,28 +1,49 @@
 import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-
-import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
-
+import { useNavigate, useParams } from "react-router-dom";
 import { selectCurrentUserId } from "../../auth/authSlice";
+import { useGetCollectionsQuery } from "../../collections/collectionsApiSlice";
 import {
-  useAddNewRecipeMutation,
-  useGetRecipeFromUrlQuery,
+  useUpdateRecipeMutation,
+  useGetOneRecipeQuery,
+  useDeleteRecipeMutation,
 } from "../recipesApiSlice";
-import { useAddNewInstructionMutation } from "../../instructions/instructionsApiSlice";
-import { useAddNewIngredientMutation } from "../../ingredients/ingredientsApiSlice";
-import { useGetCollectionsQuery } from "../../collections/collectionsApiSlice"; // Import the collections query hook
+import {
+  useGetInstructionsQuery,
+  useUpdateInstructionMutation,
+} from "../../instructions/instructionsApiSlice";
+import {
+  useGetIngredientsQuery,
+  useUpdateIngredientMutation,
+} from "../../ingredients/ingredientsApiSlice";
+import styles from "./UpdateRecipe.module.css";
 
-import styles from "./AddRecipe.module.css";
-
-function AddRecipe() {
+const UpdateRecipe = () => {
   const dispatch = useDispatch();
-
-  const { collectionId, recipeId } = useParams(); // Extract recipe ID from URL
-
+  const navigate = useNavigate();
+  const { recipeId } = useParams(); // Extract recipe ID from URL
   const userId = Number(useSelector(selectCurrentUserId));
-  const [recipeUrl, setRecipeUrl] = useState("");
-  const [urlToFetch, setUrlToFetch] = useState("");
+
+  // API Get data
+  const {
+    data: recipe,
+    error,
+    isLoading,
+    refetch: refetchRecipes,
+  } = useGetOneRecipeQuery({ id: recipeId });
+  const { data: instructions = [], isLoading: instructionLoading } =
+    useGetInstructionsQuery({ id: recipeId });
+  const { data: ingredients = [], isLoading: ingredientLoading } =
+    useGetIngredientsQuery({ id: recipeId });
+
+  // API Hooks
+  const [updateRecipe, { isLoading: isUpdating }] = useUpdateRecipeMutation();
+  const [deleteRecipe, { isLoading: isDeleting }] = useDeleteRecipeMutation();
+  const [updateInstruction, { isLoading: isInstructionUpdating }] =
+    useUpdateInstructionMutation();
+  const [updateIngredient, { isLoading: isIngredientUpdating }] =
+    useUpdateIngredientMutation();
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -30,19 +51,14 @@ function AddRecipe() {
     instructions: ["", "", "", ""],
     image_url: "",
     user_id: userId,
-    collection_id: collectionId ? Number(collectionId) : "",
+    collection_id: "",
   });
   const [errMsg, setErrMsg] = useState("");
+
   // Fetch collections
   const { data: collections = [], isLoading: collectionsLoading } =
     useGetCollectionsQuery(userId);
 
-  //Api hooks
-  const [addRecipe, { isLoading }] = useAddNewRecipeMutation();
-  const [addInstruction] = useAddNewInstructionMutation();
-  const [addIngredient] = useAddNewIngredientMutation();
-
-  const navigate = useNavigate();
   const fileInputRef = useRef(null); // Create a ref for the file input
 
   const handleImageChange = (e) => {
@@ -59,29 +75,20 @@ function AddRecipe() {
     }
   };
 
-  const {
-    data: recipe,
-    error,
-    isLoading: isUrlLoading,
-  } = useGetRecipeFromUrlQuery(urlToFetch, {
-    skip: !urlToFetch,
-  });
-
   useEffect(() => {
     if (recipe) {
-      console.log(recipe);
       setFormData((prevData) => ({
         ...prevData,
-        title: recipe.name,
+        title: recipe.title,
         description: recipe.description || "",
-        ingredients: recipe.recipeIngredient || Array(5).fill({ text: "" }),
-        instructions: Array.isArray(recipe.recipeInstructions)
-          ? recipe.recipeInstructions.map((instruction) => instruction.text) // Extracting text
-          : Array(4).fill(""), // Default to empty instructions
-        image_url: recipe.image || "",
+        ingredients: ingredients.map((ing) => ing.name) || Array(5).fill(""),
+        instructions:
+          instructions.map((ins) => ins.instruction_text) || Array(4).fill(""),
+        image_url: recipe.image_url || "",
+        collection_id: recipe.collection_id || "",
       }));
     }
-  }, [recipe]);
+  }, [recipe, ingredients, instructions]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -102,7 +109,6 @@ function AddRecipe() {
         ingredients: newIngredients,
       });
     } else if (name === "collection_id") {
-      // Explicitly convert collection_id to a number
       setFormData({
         ...formData,
         collection_id: Number(value), // Convert string to number
@@ -115,15 +121,6 @@ function AddRecipe() {
     }
   };
 
-  const handleUrlChange = (e) => {
-    setRecipeUrl(e.target.value);
-  };
-
-  const handleSubmitUrl = (e) => {
-    e.preventDefault();
-    setUrlToFetch(recipeUrl);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrMsg("");
@@ -134,48 +131,46 @@ function AddRecipe() {
     }
 
     try {
-      console.log(formData);
-      const newRecipe = await addRecipe({ ...formData }).unwrap();
-      console.log(newRecipe);
-      console.log(newRecipe.recipe);
-      // Now, add the instructions
-      let index = 0;
-      for (let instruction of formData.instructions) {
+      // Update recipe
+      const updatedRecipe = await updateRecipe({
+        id: recipeId,
+        ...formData,
+      }).unwrap();
+
+      // Update instructions
+      for (let i = 0; i < formData.instructions.length; i++) {
+        const instruction = formData.instructions[i];
+        const instructionId = instructions[i]?.instruction_id || null; // Use the correct instruction_id
+        console.log(instructionId, instruction);
         if (instruction) {
-          // Ensure the instruction is not empty
-          await addInstruction({
-            recipe_id: Number(newRecipe.recipe_id),
+          console.log("Updating instruction");
+          console.log(instructionId, instruction, i);
+          await updateInstruction({
+            instruction_id: instructionId, // Send the actual instruction_id
             instruction_text: instruction,
-            step_number: index,
+            step_number: i, // Ensure step number is correct
           }).unwrap();
-          index++;
+          console.log("Instruction updated");
         }
       }
-      for (let ingredient of formData.ingredients) {
+
+      // Update ingredients
+      for (let i = 0; i < formData.ingredients.length; i++) {
+        const ingredient = formData.ingredients[i];
+        const ingredientId = ingredients[i]?.ingredient_id || null; // Use the correct ingredient_id
+
         if (ingredient) {
-          // Ensure the instruction is not empty
-          await addIngredient({
-            recipe_id: Number(newRecipe.recipe_id),
+          console.log(ingredientId, ingredient);
+          await updateIngredient({
+            ingredient_id: ingredientId, // Send the actual ingredient_id
             name: ingredient,
           }).unwrap();
         }
       }
-      setFormData({
-        title: "",
-        description: "",
-        instructions: Array(5).fill(""),
-        ingredients: Array(5).fill(""),
-        image_url: "",
-        user_id: userId,
-        collection_id: "",
-      });
-      setRecipeUrl("");
 
-      // Invalidate the recipe cache so the updated list can be refetched
-      // dispatch(apiSlice.util.invalidateTags(["Recipe"]));
-      navigate(`/welcome/${userId}`);
+      navigate(`/welcome/${userId}/${recipeId}`);
     } catch (err) {
-      setErrMsg("Failed to add recipe");
+      setErrMsg("Failed to update recipe");
       console.error(err);
     }
   };
@@ -194,29 +189,33 @@ function AddRecipe() {
     }));
   };
 
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    try {
+      await deleteRecipe({ id: recipeId });
+      refetchRecipes();
+      navigate(`/welcome/${userId}`);
+    } catch (err) {
+      setErrMsg("Failed to delete recipe");
+      console.error(err);
+    }
+  };
+
   return (
     <>
       {errMsg && <p style={{ color: "red" }}>{errMsg}</p>}
-      <form onSubmit={handleSubmitUrl} className={styles.urlContainer}>
-        <label htmlFor="url">Add Recipe from url:</label>
-        <div>
-          <input
-            type="text"
-            name="url"
-            id="url"
-            value={recipeUrl}
-            onChange={handleUrlChange}
-            required
-          />
-          <button type="submit">knapp</button>
-        </div>
-      </form>
-
+      <button
+        type="submit"
+        className={styles.deleteButton}
+        onClick={handleDelete}
+      >
+        <p>Delete Recipe</p>
+      </button>
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.upperContainer}>
           <div className={styles.upperLeftContainer}>
             <div className={styles.selectCollection}>
-              <label htmlFor="collection_id">Select Collection:</label>
+              <label htmlFor="collection_id"> Collection</label>
               <select
                 name="collection_id"
                 value={formData.collection_id}
@@ -235,7 +234,7 @@ function AddRecipe() {
               </select>
             </div>
             <div className={styles.inputTitle}>
-              <label htmlFor="title">Title:</label>
+              <label htmlFor="title">Title</label>
               <input
                 type="text"
                 name="title"
@@ -246,7 +245,7 @@ function AddRecipe() {
               />
             </div>
             <div className={styles.inputDescription}>
-              <label htmlFor="description">Description:</label>
+              <label htmlFor="description">Description</label>
               <textarea
                 name="description"
                 id="description"
@@ -255,6 +254,7 @@ function AddRecipe() {
               ></textarea>
             </div>
           </div>
+
           <div
             className={styles.imgContainer}
             onClick={() => fileInputRef.current.click()}
@@ -282,28 +282,26 @@ function AddRecipe() {
         <div className={styles.lowerContainerIngredients}>
           <label>Ingredient and amount</label>
           <div className={styles.ingredientsContainer}>
-            {formData.ingredients &&
-              formData.ingredients.map((ingredient, index) => (
-                <div key={index} className={styles.ingredientContainer}>
-                  <label>{index + 1}</label>
-                  <input
-                    className={styles.ingredientInput}
-                    type="text"
-                    name="ingredients"
-                    data-index={index}
-                    value={ingredient}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              ))}
+            {formData.ingredients.map((ingredient, index) => (
+              <div key={index} className={styles.ingredientContainer}>
+                <label>{index + 1}</label>
+                <input
+                  type="text"
+                  name="ingredients"
+                  data-index={index}
+                  value={ingredient}
+                  onChange={handleInputChange}
+                />
+              </div>
+            ))}
           </div>
           <button type="button" onClick={addIngredientField}>
             <p>Add Ingredient</p>
           </button>
         </div>
 
-        <div className={styles.upperContainerInstructions}>
-          <label>Instructions:</label>
+        <div className={styles.lowerContainerInstructions}>
+          <label>Instructions</label>
           <div className={styles.instructionContainer}>
             {formData.instructions.map((instruction, index) => (
               <div key={index}>
@@ -328,11 +326,11 @@ function AddRecipe() {
         </div>
 
         <button type="submit" className={styles.submitButton}>
-          <p>Add Recipe</p>
+          <p>Submit Changes</p>
         </button>
       </form>
     </>
   );
-}
+};
 
-export default AddRecipe;
+export default UpdateRecipe;

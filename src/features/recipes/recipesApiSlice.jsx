@@ -11,6 +11,24 @@ export const recipesApiSlice = apiSlice.injectEndpoints({
           return response.status === 200 && !result.isError;
         },
       }),
+      // Provide tags so this query can be invalidated
+      providesTags: (result, error, userId) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: "Recipe", id })),
+              { type: "Recipe", id: "LIST" }, // Add a 'LIST' tag to invalidate the entire recipe list
+            ]
+          : [{ type: "Recipe", id: "LIST" }],
+    }),
+    getOneRecipe: builder.query({
+      query: ({ id }) => ({
+        url: `/recipe/${id}`,
+        validateStatus: (response, result) => {
+          return response.status === 200 && !result.isError;
+        },
+      }),
+      // Invalidate single recipe when needed
+      providesTags: (result, error, arg) => [{ type: "Recipe", id: arg.id }],
     }),
     addNewRecipe: builder.mutation({
       query: (addRecipe) => ({
@@ -20,6 +38,12 @@ export const recipesApiSlice = apiSlice.injectEndpoints({
           ...addRecipe,
         },
       }),
+      // Invalidate the recipe list so it refetches after adding a new recipe
+      invalidatesTags: (result, error, { collection_id }) => [
+        { type: "Recipe", id: "LIST" },
+        { type: "Collection", id: collection_id },
+        { type: "Collection", id: "LIST" },
+      ],
     }),
     updateRecipe: builder.mutation({
       query: (initialRecipe) => ({
@@ -29,15 +53,19 @@ export const recipesApiSlice = apiSlice.injectEndpoints({
           ...initialRecipe,
         },
       }),
+      // Invalidate the specific recipe that was updated
       invalidatesTags: (result, error, arg) => [{ type: "Recipe", id: arg.id }],
     }),
     deleteRecipe: builder.mutation({
       query: ({ id }) => ({
-        url: `/recipes`,
+        url: `/recipe?recipe_id=${id}`,
         method: "DELETE",
-        body: { id },
       }),
-      invalidatesTags: (result, error, arg) => [{ type: "Recipe", id: arg.id }],
+      // Invalidate the specific recipe that was deleted
+      invalidatesTags: (result, error, arg) => [
+        { type: "Recipe", id: arg.id },
+        { type: "Recipe", id: "LIST" }, // This invalidates the entire recipe list
+      ],
     }),
     getRecipeFromUrl: builder.query({
       query: (urlTest) => ({
@@ -54,5 +82,8 @@ export const recipesApiSlice = apiSlice.injectEndpoints({
 export const {
   useGetRecipesQuery,
   useAddNewRecipeMutation,
+  useUpdateRecipeMutation,
   useGetRecipeFromUrlQuery,
+  useDeleteRecipeMutation,
+  useGetOneRecipeQuery,
 } = recipesApiSlice;

@@ -1,12 +1,23 @@
 import styles from "./RecipeCard.module.css";
 import { Link } from "react-router-dom";
+import { setActiveTitle } from "./dashboard/dashboardSlice";
+import { useSelector, useDispatch } from "react-redux";
+
 const RecipeCard = ({ recipe }) => {
+  const dispatch = useDispatch();
   return (
-    <Link to={`/18/${recipe.recipe_id}`} className={styles.cardContainer}>
-      <div className={styles.imgContainer}></div>
+    <Link
+      to={`/welcome/${recipe.user_id}/${recipe.recipe_id}`}
+      className={styles.cardContainer}
+      onClick={() => {
+        dispatch(setActiveTitle({ activeTitle: "" }));
+      }}
+    >
+      <div className={styles.imgContainer}>
+        <img src={recipe.image_url} />
+      </div>
       <div className={styles.textContainer}>
-        <h3 className={styles.title}>{recipe.title}</h3>
-        <p className={styles.description}>{recipe.description}</p>
+        <h3>{recipe.title}</h3>
       </div>
     </Link>
   );

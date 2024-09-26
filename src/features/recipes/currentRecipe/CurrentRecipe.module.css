@@ -1,0 +1,171 @@
+.editRecipeLink {
+  position: absolute;
+  right: 80px;
+
+  top: 40px;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  gap: 48px;
+  width: 100%;
+  margin-top: 24px;
+  position: relative;
+}
+
+.container h3 {
+  color: var(--Primary-Color, #bf310c);
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.leftContainer {
+  flex-basis: 40%;
+}
+.rightContainer {
+  flex-basis: 60%;
+}
+
+.leftUpperContainer {
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.titleContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.titleContainer h2 {
+  color: var(--Primary-Color, #bf310c);
+  font-family: Inter;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.titleContainer div {
+  display: flex;
+  gap: 8px;
+}
+
+.descriptionContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.descriptionContainer h3 {
+  color: var(--Primary-Color, #bf310c);
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.divider {
+  width: 100%; /* Full width of the container */
+  height: 1px;
+  background: #dcdcdc;
+}
+
+.descriptionContainer p {
+  color: var(--text-color, #333);
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.ingredientsContainer {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ingredientsContainer h3 {
+  color: var(--Primary-Color, #bf310c);
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.ingredientsContainer li {
+  display: flex; /* Enable flexbox layout */
+  align-items: center; /* Center items vertically */
+  height: 40px; /* Keep the fixed height */
+  /* You may also want to add padding or margin if needed */
+  border-bottom: 1px solid #dcdcdc; /* Add a border to the bottom */
+}
+.ingredientsContainer label {
+  margin-left: 16px;
+  color: var(--text-color, #333);
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+/* Right container */
+
+.imgContainer {
+  width: 100%;
+  /* height: 384px; */
+  height: 50vh;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+}
+.imgContainer img {
+  justify-content: center;
+  align-items: center;
+  width: 100%; /* Make the image take the full width */
+  height: auto;
+  object-fit: cover;
+}
+
+.instructionsContainer {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.instructionsContainer ul {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.instructionsContainer li {
+  border-left: #bf310c 2px solid;
+  padding-left: 8px;
+}
+.instructionsContainer label {
+  color: var(--Primary-Color, #bf310c);
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+.instructionsContainer p {
+  color: var(--text-color, #333);
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}

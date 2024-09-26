@@ -3,13 +3,16 @@ import { apiSlice } from "../../app/api/apiSlice";
 export const instructionsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getInstructions: builder.query({
-      query: (recipeId) => ({
-        url: "/instructions",
-        params: { recipe_id: recipeId },
+      query: ({ id }) => ({
+        url: `/instruction/${id}`,
         validateStatus: (response, result) => {
           return response.status === 200 && !result.isError;
         },
       }),
+      providesTags: (result, error, { id }) =>
+        result
+          ? [{ type: "Instruction", id }] // If result exists, provide tag for that instruction
+          : [{ type: "Instruction", id: "LIST" }],
     }),
     addNewInstruction: builder.mutation({
       query: (addInstruction) => ({
@@ -21,11 +24,12 @@ export const instructionsApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     updateInstruction: builder.mutation({
-      query: (initialInstruction) => ({
-        url: "/instruction",
+      query: ({ instruction_id, instruction_text, step_number }) => ({
+        url: `/instruction?instruction_id=${instruction_id}`,
         method: "PATCH",
         body: {
-          ...initialInstruction,
+          step_number,
+          instruction_text,
         },
       }),
       invalidatesTags: (result, error, arg) => [

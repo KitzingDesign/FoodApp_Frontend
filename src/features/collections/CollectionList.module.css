@@ -1,0 +1,32 @@
+.menuTab {
+  display: flex;
+  padding: 8px 8px;
+  align-items: center;
+  border-radius: 8px;
+  gap: 4px;
+  align-self: stretch;
+
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.menuTab:hover {
+  background-color: #bf310c0d;
+  cursor: pointer;
+}
+
+.menuTab p {
+  color: var(--Primary-Color, #333);
+}
+
+.active {
+  background-color: #bf310c0d;
+  cursor: pointer;
+  color: var(--Primary-Color, #bf310c);
+}
+
+.active p {
+  color: var(--Primary-Color, #bf310c);
+}

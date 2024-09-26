@@ -14,6 +14,14 @@ export const collectionsApiSlice = apiSlice.injectEndpoints({
           return response.status === 200 && !result.isError;
         },
       }),
+      // Provide tags for the collections
+      providesTags: (result, error, userId) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: "Collection", id })),
+              { type: "Collection", id: "LIST" }, // Tag for the entire collection list
+            ]
+          : [{ type: "Collection", id: "LIST" }],
     }),
     // addFetch a single collection by ID
     //insert code here
@@ -26,6 +34,8 @@ export const collectionsApiSlice = apiSlice.injectEndpoints({
           ...newCollection,
         },
       }),
+      // Invalidate the entire collection list to refetch it after a new collection is added
+      invalidatesTags: [{ type: "Collection", id: "LIST" }],
     }),
     // Update an existing collection
     updateCollection: builder.mutation({
@@ -49,7 +59,7 @@ export const collectionsApiSlice = apiSlice.injectEndpoints({
     }),
     // Fetch all recipes in a specific collection
     getCollectionRecipes: builder.query({
-      query: (collectionId) => `/${collectionId}/recipes`,
+      query: (collectionId) => `/collection/${collectionId}/recipes`,
       providesTags: (result, error, collectionId) => [
         { type: "Collection", id: collectionId },
       ],
