@@ -1,11 +1,11 @@
 import { selectCurrentUserId } from "../auth/authSlice";
-import { selectCurrentCollection } from "./collectionSlice";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setActiveTitle } from "../../components/dashboard/dashboardSlice";
 import styles from "./CollectionList.module.css";
-import { useGetCollectionsQuery } from "./collectionsApiSlice";
+import EditIcon from "../../../public/edit.jsx";
 
+import { useGetCollectionsQuery } from "./collectionsApiSlice";
 import {
   selectCurrentActiveTab,
   setActiveTab,
@@ -14,16 +14,14 @@ import {
 const CollectionList = () => {
   const dispatch = useDispatch();
   const activeTab = useSelector(selectCurrentActiveTab);
-
   const userId = Number(useSelector(selectCurrentUserId));
 
   const {
     data: collections = [],
     error,
     isLoading,
+    refetch: refetchCollections,
   } = useGetCollectionsQuery(userId);
-
-  console.log(collections);
 
   const handleClickedLink = ({ activeTab, activeTitle }) => {
     dispatch(setActiveTab({ activeTab }));
@@ -35,13 +33,13 @@ const CollectionList = () => {
   ) : (
     <ul>
       {collections.map((collection) => (
-        <li key={collection.collection_id}>
+        <li
+          key={collection.collection_id}
+          className={`${styles.menuTab} ${
+            Number(activeTab) === collection.collection_id ? styles.active : ""
+          }`}
+        >
           <Link
-            className={`${styles.menuTab} ${
-              Number(activeTab) === collection.collection_id
-                ? styles.active
-                : ""
-            }`}
             to={`collections/${collection.collection_id}`}
             onClick={() =>
               handleClickedLink({
@@ -49,9 +47,21 @@ const CollectionList = () => {
                 activeTitle: collection.name,
               })
             }
-            key={collection.collection_id}
+            className={styles.Link}
           >
             <p>{collection.name}</p>
+          </Link>
+          <Link
+            to={`collections/${collection.collection_id}/edit`}
+            onClick={() =>
+              handleClickedLink({
+                activeTab: collection.collection_id,
+                activeTitle: "Edit Collection",
+              })
+            }
+            className={styles.editLink}
+          >
+            <EditIcon />
           </Link>
         </li>
       ))}

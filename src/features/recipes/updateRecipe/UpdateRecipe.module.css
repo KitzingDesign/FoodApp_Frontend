@@ -4,6 +4,7 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  padding: 4px;
 }
 .form input {
   color: var(--text-color, #333);
@@ -11,6 +12,18 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  padding: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form select {
+  color: var(--text-color, #333);
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding: 4px;
 }
 
 .form label {
@@ -102,7 +115,7 @@
 }
 
 .imgContainer {
-  flex: 0 0 40%; /* Take 40% of the available width */
+  width: 100%; /* Take 40% of the available width */
   display: flex;
   flex-direction: column; /* Align children vertically */
   align-items: flex-start; /* Align items to the start */
@@ -114,6 +127,7 @@
   height: 100%;
   width: 100%;
   object-fit: cover; /* Maintain aspect ratio */
+  border-radius: 4px;
 }
 
 .deleteButton {

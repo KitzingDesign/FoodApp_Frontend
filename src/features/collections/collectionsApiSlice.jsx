@@ -23,6 +23,18 @@ export const collectionsApiSlice = apiSlice.injectEndpoints({
             ]
           : [{ type: "Collection", id: "LIST" }],
     }),
+    getOneCollection: builder.query({
+      query: ({ id }) => ({
+        url: `/collection/${id}`,
+        validateStatus: (response, result) => {
+          return response.status === 200 && !result.isError;
+        },
+      }),
+      // Invalidate single recipe when needed
+      providesTags: (result, error, arg) => [
+        { type: "Collection", id: arg.id },
+      ],
+    }),
     // addFetch a single collection by ID
     //insert code here
     // addCreate a new collection
@@ -39,20 +51,17 @@ export const collectionsApiSlice = apiSlice.injectEndpoints({
     }),
     // Update an existing collection
     updateCollection: builder.mutation({
-      query: ({ id, updatedCollection }) => ({
+      query: (updatedCollection) => ({
         url: "/collection",
         method: "PATCH",
-        body: { ...updatedCollection, id },
+        body: { ...updatedCollection },
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: "Collection", id }],
+      invalidatesTags: [{ type: "Collection", id: "LIST" }],
     }),
     // Delete a collection
     deleteCollection: builder.mutation({
       query: (id) => ({
-        url: `/collection`,
-        body: {
-          id,
-        },
+        url: `/collection?collection_id=${id}`,
         method: "DELETE",
       }),
       invalidatesTags: (result, error, id) => [{ type: "Collection", id }],
@@ -69,6 +78,7 @@ export const collectionsApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetCollectionsQuery,
+  useGetOneCollectionQuery,
   useAddNewCollectionMutation,
   useUpdateCollectionMutation,
   useDeleteCollectionMutation,

@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import ImportImageIcon from "../../../../public/image.jsx";
 
 import { selectCurrentUserId } from "../../auth/authSlice";
 import {
@@ -198,7 +199,7 @@ function AddRecipe() {
     <>
       {errMsg && <p style={{ color: "red" }}>{errMsg}</p>}
       <form onSubmit={handleSubmitUrl} className={styles.urlContainer}>
-        <label htmlFor="url">Add Recipe from url:</label>
+        <label htmlFor="url">Add Recipe from url</label>
         <div>
           <input
             type="text"
@@ -216,7 +217,7 @@ function AddRecipe() {
         <div className={styles.upperContainer}>
           <div className={styles.upperLeftContainer}>
             <div className={styles.selectCollection}>
-              <label htmlFor="collection_id">Select Collection:</label>
+              <label htmlFor="collection_id">Select Collection</label>
               <select
                 name="collection_id"
                 value={formData.collection_id}
@@ -235,7 +236,7 @@ function AddRecipe() {
               </select>
             </div>
             <div className={styles.inputTitle}>
-              <label htmlFor="title">Title:</label>
+              <label htmlFor="title">Title</label>
               <input
                 type="text"
                 name="title"
@@ -246,7 +247,7 @@ function AddRecipe() {
               />
             </div>
             <div className={styles.inputDescription}>
-              <label htmlFor="description">Description:</label>
+              <label htmlFor="description">Description</label>
               <textarea
                 name="description"
                 id="description"
@@ -267,7 +268,9 @@ function AddRecipe() {
                 style={{ cursor: "pointer" }}
               />
             ) : (
-              <div className={styles.placeholder}>Click to upload an image</div>
+              <div className={styles.placeholder}>
+                <ImportImageIcon />
+              </div>
             )}
             <input
               type="file"
@@ -302,8 +305,8 @@ function AddRecipe() {
           </button>
         </div>
 
-        <div className={styles.upperContainerInstructions}>
-          <label>Instructions:</label>
+        <div className={styles.lowerContainerInstructions}>
+          <label>Instructions</label>
           <div className={styles.instructionContainer}>
             {formData.instructions.map((instruction, index) => (
               <div key={index}>
@@ -318,11 +321,7 @@ function AddRecipe() {
               </div>
             ))}
           </div>
-          <button
-            type="button"
-            className={styles.addInstructionButton}
-            onClick={addInstructionField}
-          >
+          <button type="button" onClick={addInstructionField}>
             <p>Add Instruction</p>
           </button>
         </div>

@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 
@@ -25,6 +25,19 @@ const DashboardLayout = () => {
   const handleTitleText = (title) => {
     setIsTitleText(title);
   };
+
+  // Future implementation of title
+  // let activeTitle;
+  // activeTitle =
+  //   title !== "" ? (
+  //     <div>
+  //       <h2 className={styles.title}>{title}</h2>
+  //       <Link to="/welcome" className={styles.link}>
+  //         Add Recipe
+  //       </Link>
+  //     </div>
+  //   ) : null;
+  // activeTitle = title !== "Collections";
 
   return (
     <div className={styles.container}>
@@ -63,7 +76,11 @@ const DashboardLayout = () => {
         >
           <SidebarOpenCloseIcon />
         </motion.div>
-        {!(title === "") ? <h2 className={styles.title}>{title}</h2> : null}
+        {!(title === "") ? (
+          <div>
+            <h2 className={styles.title}>{title}</h2>
+          </div>
+        ) : null}
         <motion.span
           initial={{ x: 0 }}
           animate={{ x: isExpanded ? 0 : 56 }}

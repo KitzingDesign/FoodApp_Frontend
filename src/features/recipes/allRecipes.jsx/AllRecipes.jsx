@@ -7,7 +7,6 @@ import { useGetRecipesQuery } from "../recipesApiSlice";
 import RecipeCard from "../../../components/RecipeCard";
 import { useParams } from "react-router-dom";
 import { useGetCollectionRecipesQuery } from "../../collections/collectionsApiSlice";
-
 import styles from "./AllRecipes.module.css";
 
 const AllRecipes = () => {

@@ -10,11 +10,12 @@ import RequireAuth from "./features/auth/RequireAuth";
 import AddRecipe from "./features/recipes/addRecipe.jsx/AddRecipe.jsx";
 import Register from "./features/auth/register/Register";
 import DashboardLayout from "./components/dashboard/DashboardLayout.jsx";
-import Collections from "./features/collections/Collections.jsx";
+import Collections from "./features/collections/collectionPage/Collections.jsx";
 import CurrentRecipe from "./features/recipes/currentRecipe/CurrentRecipe.jsx";
 import AddCollection from "./features/collections/addCollection/AddCollection.jsx";
 import AllRecipes from "./features/recipes/allRecipes.jsx/allRecipes.jsx";
 import UpdateRecipe from "./features/recipes/updateRecipe/UpdateRecipe.jsx";
+import EditCollection from "./features/collections/editCollection/EditCollection.jsx";
 
 function App() {
   return (
@@ -37,6 +38,10 @@ function App() {
             <Route path="collections" element={<Collections />} />
             <Route path="collections/add" element={<AddCollection />} />
             <Route path="collections/:collectionId" element={<AllRecipes />} />
+            <Route
+              path="collections/:collectionId/edit"
+              element={<EditCollection />}
+            />
             <Route
               path="collections/:collectionId/create"
               element={<AddRecipe />}

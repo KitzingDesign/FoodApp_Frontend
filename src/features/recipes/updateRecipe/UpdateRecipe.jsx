@@ -19,7 +19,6 @@ import {
 import styles from "./UpdateRecipe.module.css";
 
 const UpdateRecipe = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { recipeId } = useParams(); // Extract recipe ID from URL
   const userId = Number(useSelector(selectCurrentUserId));
@@ -316,11 +315,7 @@ const UpdateRecipe = () => {
               </div>
             ))}
           </div>
-          <button
-            type="button"
-            className={styles.addInstructionButton}
-            onClick={addInstructionField}
-          >
+          <button type="button" onClick={addInstructionField}>
             <p>Add Instruction</p>
           </button>
         </div>

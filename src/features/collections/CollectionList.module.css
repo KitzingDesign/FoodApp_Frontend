@@ -1,17 +1,48 @@
+/* No need for .liCollection in this context if it's not doing anything specific */
+.liCollection {
+}
+
+.liCollection a {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
+  width: 100%;
+}
+
 .menuTab {
+  height: 24px;
   display: flex;
   padding: 8px 8px;
-  align-items: center;
   border-radius: 8px;
-  gap: 4px;
-  align-self: stretch;
-
+  align-items: center;
+  justify-content: space-between; /* Ensure the space between elements */
   font-family: Inter;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  position: relative; /* Optional if you need relative positioning */
 }
+
+.editLink {
+  width: 24px;
+  height: 24px;
+  opacity: 0; /* Initially hidden */
+  transition: opacity 0.1s ease-in-out; /* Smooth transition */
+  border-radius: 4px;
+  padding: 4px;
+}
+
+.editLink:hover {
+  background-color: #bf300c27; /* Show the edit link when hovering over it */
+}
+
+.menuTab:hover .editLink {
+  opacity: 1; /* Show the edit link when hovering over .menuTab */
+}
+
 .menuTab:hover {
   background-color: #bf310c0d;
   cursor: pointer;
@@ -29,4 +60,8 @@
 
 .active p {
   color: var(--Primary-Color, #bf310c);
+}
+
+.Link {
+  width: 100%;
 }
