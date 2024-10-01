@@ -5,8 +5,9 @@ import { jwtDecode } from "jwt-decode";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../authSlice";
 import { useLoginMutation } from "../authApiSlice";
-import classes from "./Login.module.css";
+import styles from "./Login.module.css";
 import Button from "../../../UI/Button";
+import LogoIcon from "../../../../public/logo";
 
 const Login = () => {
   const emailRef = useRef();
@@ -75,14 +76,17 @@ const Login = () => {
   const content = isLoading ? (
     <h1>Loading... </h1>
   ) : (
-    <div className={classes.outerContainer}>
-      <section className={classes.container}>
+    <div className={styles.outerContainer}>
+      <Link to="/" className={styles.logo}>
+        <LogoIcon />
+      </Link>
+      <section className={styles.container}>
         <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"}>
           {errMsg}
         </p>{" "}
-        <h1 className={classes.title}>Login</h1>
-        <div className={classes.divider}></div>
-        <form className={classes.form} onSubmit={handleSubmit}>
+        <h1 className={styles.title}>Login</h1>
+        <div className={styles.divider}></div>
+        <form className={styles.form} onSubmit={handleSubmit}>
           <label htmlFor="email">Email</label>
 
           <input
@@ -92,12 +96,12 @@ const Login = () => {
             value={email}
             onChange={handleEmailInput}
             autoComplete="off"
-            className={classes.input}
+            className={styles.input}
             required
           />
-          <span className={classes.inputContainer}>
+          <span className={styles.inputContainer}>
             <label htmlFor="password">Password</label>
-            <a href="/#" className={classes.forgotPassword}>
+            <a href="/#" className={styles.forgotPassword}>
               Forgot Password?
             </a>
           </span>
@@ -106,14 +110,16 @@ const Login = () => {
             id="password"
             value={password}
             onChange={handlePasswordInput}
-            className={classes.input}
+            className={styles.input}
             required
           />
-          <span className={classes.buttonContainer}>
-            <Link to={"/signup"}>Signup</Link>
-            <Button size="large" variant="fill" type="submit">
+          <span className={styles.buttonContainer}>
+            <button type="submit" className={styles.loginButton}>
               Login
-            </Button>
+            </button>
+            <Link to={"/register"}>
+              <button className={styles.signupButton}>Register</button>
+            </Link>
           </span>
         </form>
       </section>

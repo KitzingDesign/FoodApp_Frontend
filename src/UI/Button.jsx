@@ -5,7 +5,7 @@ import { COLORS } from "./constants";
 
 const SIZES = {
   small: {
-    "--borderRadius": 100 + "px",
+    "--borderRadius": 4 + "px",
     "--fontSize": 16 / 16 + "rem",
     "--padding": "4px 14px",
   },
@@ -15,7 +15,7 @@ const SIZES = {
     "--padding": "12px 22px",
   },
   large: {
-    "--borderRadius": 100 + "px",
+    "--borderRadius": 4 + "px",
     "--fontSize": 24 / 16 + "rem",
     "--padding": "20px 64px",
   },

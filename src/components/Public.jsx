@@ -1,43 +1,43 @@
-import classes from "./Public.module.css";
+import styles from "./Public.module.css";
 import Button from "../UI/Button";
+import LogoIcon from "../../public/logo";
+
 import { Link, Navigate } from "react-router-dom";
 
 export const Public = () => {
   return (
-    <div className={classes["home-view"]}>
-      <div className={classes.container}>
-        <div className={classes.logoContainer}>
-          <span></span>
-          <p className={classes.logo}>MatMatMat</p>
+    <div className={styles["home-view"]}>
+      <div className={styles.container}>
+        <div className={styles.logoContainer}>
+          <div>
+            <LogoIcon />
+          </div>
+          <p className={styles.logo}>MatMatMat</p>
         </div>
-        <div className={classes.textContainer}>
-          <p className={classes.header}>
+        <div className={styles.textContainer}>
+          <p className={styles.header}>
             Collect all your recipes
             <br />
             at one place
           </p>
-          <p className={classes.description}>
-            <span className={classes.span}>
+          <p className={styles.description}>
+            <span className={styles.span}>
               Tired of losing track of your favorite recipes? With{" "}
             </span>
-            <span className={classes["text-wrapper-2"]}>MatMatMat</span>
-            <span className={classes.span}>
+            <span className={styles["text-wrapper-2"]}>MatMatMat</span>
+            <span className={styles.span}>
               , you can easily collect, organize, and access all your go-to
               dishes in one convenient place.{" "}
             </span>
           </p>
         </div>
-        <div className={classes.ellipse} />
-        <div className={classes.buttonContainer}>
+        <div className={styles.ellipse} />
+        <div className={styles.buttonContainer}>
           <Link to="/login">
-            <Button size="large" variant="fill">
-              Login
-            </Button>
+            <div className={styles.loginButton}>Login</div>
           </Link>
           <Link to="/register">
-            <Button size="large" variant="outline">
-              Signup
-            </Button>
+            <button className={styles.signupButton}>Register</button>
           </Link>
         </div>
       </div>

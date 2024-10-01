@@ -72,7 +72,7 @@ const EditCollection = () => {
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
-      await deleteCollection({ id: collectionId });
+      await deleteCollection({ id: Number(collectionId) });
       navigate(`/welcome/collections`);
     } catch (err) {
       setErrMsg("Failed to delete recipe");

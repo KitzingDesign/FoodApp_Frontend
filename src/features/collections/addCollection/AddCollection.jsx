@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectCurrentUserId } from "../../auth/authSlice";
 import { useAddNewCollectionMutation } from "../collectionsApiSlice";
-import { addCollection } from "../collectionSlice";
 import styles from "./AddCollection.module.css";
 
 const AddCollection = () => {
@@ -41,7 +40,6 @@ const AddCollection = () => {
     try {
       const newCollection = await addNewCollection(formData).unwrap(); // Call the mutation function
       console.log(newCollection.collection);
-      dispatch(addCollection({ collection: newCollection.collection }));
       console.log("New collection created: ", newCollection);
 
       // Reset form after submission

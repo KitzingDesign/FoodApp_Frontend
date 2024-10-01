@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useRegisterMutation } from "../authApiSlice";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../authSlice";
+import LogoIcon from "../../../../public/logo";
+import styles from "./Register.module.css";
 
 const Register = () => {
   const firstNameRef = useRef();
@@ -46,9 +48,7 @@ const Register = () => {
       setLastName("");
       setEmail("");
       setPassword("");
-      console.log("Attempting to navigate to /welcome"); // Debugging log
       navigate("/welcome"); // in tutorial /welcome (change name to dashboard later)
-      console.log("Navigated to /welcome"); // Debugging log
       // Assume signup API call is successful
       console.log("User signed up:", { firstName, lastName, email, password });
     } catch (e) {
@@ -87,57 +87,69 @@ const Register = () => {
   const content = isLoading ? (
     <div>Loading...</div>
   ) : (
-    <div className="signup-container">
-      <h2>Sign Up</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="firstName">First Name:</label>
-          <input
-            type="text"
-            id="firstName"
-            ref={firstNameRef}
-            value={firstName}
-            onChange={handleFirstNameInput}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="lastName">Last Name:</label>
-          <input
-            type="text"
-            id="lastName"
-            value={lastName}
-            onChange={handleLastNameInput}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={handleEmailInput}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={handlePasswordInput}
-            required
-          />
-        </div>
-        <button type="submit">Sign Up</button>
-      </form>
-      {errMsg && (
-        <p ref={errRef} className="errmsg">
-          {errMsg}
-        </p>
-      )}
+    <div className={styles.outerContainer}>
+      <Link to="/" className={styles.logo}>
+        <LogoIcon />
+      </Link>
+      <section className={styles.container}>
+        <h1>Register</h1>
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="firstName">First Name</label>
+            <input
+              type="text"
+              id="firstName"
+              ref={firstNameRef}
+              value={firstName}
+              onChange={handleFirstNameInput}
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="lastName">Last Name</label>
+            <input
+              type="text"
+              id="lastName"
+              value={lastName}
+              onChange={handleLastNameInput}
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={handleEmailInput}
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={handlePasswordInput}
+              required
+            />
+          </div>
+          <div className={styles.buttonContainer}>
+            <button className={styles.registerButton} type="submit">
+              Register
+            </button>
+            <Link to={"/login"}>
+              <button className={styles.loginButton}>Login</button>
+            </Link>
+          </div>
+        </form>
+        {errMsg && (
+          <p ref={errRef} className="errmsg">
+            {errMsg}
+          </p>
+        )}
+      </section>
     </div>
   );
 

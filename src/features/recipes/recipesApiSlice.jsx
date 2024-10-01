@@ -34,9 +34,7 @@ export const recipesApiSlice = apiSlice.injectEndpoints({
       query: (addRecipe) => ({
         url: "/recipe/create",
         method: "POST",
-        body: {
-          ...addRecipe,
-        },
+        body: addRecipe, // Directly use the FormData
       }),
       // Invalidate the recipe list so it refetches after adding a new recipe
       invalidatesTags: (result, error, { collection_id }) => [
@@ -76,6 +74,13 @@ export const recipesApiSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
+    uploadImage: builder.mutation({
+      query: (imageFile) => ({
+        url: "/recipe/upload", // Your endpoint to handle image uploads
+        method: "POST",
+        body: imageFile, // Assuming the backend expects the file directly
+      }),
+    }),
   }),
 });
 
@@ -86,4 +91,5 @@ export const {
   useGetRecipeFromUrlQuery,
   useDeleteRecipeMutation,
   useGetOneRecipeQuery,
+  useUploadImageMutation,
 } = recipesApiSlice;

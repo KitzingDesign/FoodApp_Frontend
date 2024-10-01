@@ -7,10 +7,6 @@
   justify-content: center;
 }
 
-.outerContainer h1 {
-  font-family: inter;
-}
-
 .logo {
   position: fixed;
   left: 40px;
@@ -32,63 +28,20 @@
   box-shadow: 40px 40px 60px 0px rgba(228, 230, 234, 0.74);
 }
 
-.pre {
-  width: 70%;
-  color: #fff;
-  font-size: larger;
+.container h1 {
+  font-family: inter;
 }
 
-.text {
-  margin: 2px;
-  padding: 5px;
-}
-
-.span {
-  color: rgb(0, 95, 236);
-  cursor: pointer;
-}
-
-.form {
-  /* Your existing styles */
-}
-
-.form label {
+.container label {
   font-family: Inter;
 }
 
-.pre {
-  width: 70%;
-  color: #fff;
-  font-size: larger;
-}
-
-.text {
-  margin: 2px;
-  padding: 5px;
-}
-
-.span {
-  color: rgb(0, 95, 236);
-  cursor: pointer;
-}
-
-/* input css */
-.inputContainer {
-  width: 100%;
+.form div {
   display: flex;
-  justify-content: space-between;
-}
-.inputContainer a {
-  color: #4156a1;
-  font-family: "Inter", Helvetica;
-  font-size: 16px;
-  font-weight: 400;
-  letter-spacing: 0;
-  line-height: normal;
-  text-decoration: none;
+  flex-direction: column;
 }
 
-.input {
+.form input {
   display: flex;
   width: 396px;
   height: 48px;
@@ -101,26 +54,17 @@
   border: 1px solid var(--outline-default, #d0d5dd);
 }
 
-::placeholder {
-  color: var(--foreground-default, #344054);
-  /* body/medium/regular */
-  font-family: "Inter-Bold", Helvetica;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 100%; /* 14px */
-}
-
 .buttonContainer {
   margin-top: 16px;
   display: flex;
+  flex-direction: row !important;
   width: 100%;
   align-items: center;
   justify-content: left;
   gap: 16px;
 }
 
-.loginButton {
+.registerButton {
   background-color: #4156a1;
   color: white;
   font-family: "Inter", Helvetica;
@@ -134,7 +78,7 @@
   cursor: pointer;
 }
 
-.signupButton {
+.loginButton {
   border: #4156a1 solid 2px;
   background-color: transparent;
   color: #4156a1;

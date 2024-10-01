@@ -1,14 +1,15 @@
 import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+
 import ImportImageIcon from "../../../../public/image.jsx";
 
 import { selectCurrentUserId } from "../../auth/authSlice";
 import {
   useAddNewRecipeMutation,
   useGetRecipeFromUrlQuery,
+  useUploadImageMutation,
 } from "../recipesApiSlice";
 import { useAddNewInstructionMutation } from "../../instructions/instructionsApiSlice";
 import { useAddNewIngredientMutation } from "../../ingredients/ingredientsApiSlice";
@@ -17,11 +18,9 @@ import { useGetCollectionsQuery } from "../../collections/collectionsApiSlice"; 
 import styles from "./AddRecipe.module.css";
 
 function AddRecipe() {
-  const dispatch = useDispatch();
-
-  const { collectionId, recipeId } = useParams(); // Extract recipe ID from URL
-
+  const { collectionId } = useParams(); // Extract recipe ID from URL
   const userId = Number(useSelector(selectCurrentUserId));
+
   const [recipeUrl, setRecipeUrl] = useState("");
   const [urlToFetch, setUrlToFetch] = useState("");
   const [formData, setFormData] = useState({
@@ -29,36 +28,25 @@ function AddRecipe() {
     description: "",
     ingredients: ["", "", "", "", ""],
     instructions: ["", "", "", ""],
-    image_url: "",
     user_id: userId,
     collection_id: collectionId ? Number(collectionId) : "",
   });
+
+  const [imageFile, setImageFile] = useState(null); // State for the image file
   const [errMsg, setErrMsg] = useState("");
+
   // Fetch collections
   const { data: collections = [], isLoading: collectionsLoading } =
     useGetCollectionsQuery(userId);
 
   //Api hooks
-  const [addRecipe, { isLoading }] = useAddNewRecipeMutation();
+  const [addRecipe, { isLoading: isAdding }] = useAddNewRecipeMutation();
   const [addInstruction] = useAddNewInstructionMutation();
   const [addIngredient] = useAddNewIngredientMutation();
+  const [uploadImage] = useUploadImageMutation(); // Use the image upload mutation
 
   const navigate = useNavigate();
   const fileInputRef = useRef(null); // Create a ref for the file input
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFormData((prevData) => ({
-          ...prevData,
-          image_url: reader.result,
-        }));
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   const {
     data: recipe,
@@ -125,6 +113,43 @@ function AddRecipe() {
     setUrlToFetch(recipeUrl);
   };
 
+  //Image Change
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file); // Store the file in state for later upload
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData((prevData) => ({
+          ...prevData,
+          image_url: reader.result,
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleImageUpload = async (file) => {
+    const formData = new FormData();
+    formData.append("image", file); // Use the appropriate field name expected by your backend
+
+    try {
+      const response = await fetch("/api/upload", {
+        // Replace with your actual endpoint
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) throw new Error("Image upload failed");
+
+      const data = await response.json();
+      return data.imageUrl; // Adjust based on your server's response structure
+    } catch (error) {
+      console.error(error);
+      return null; // Return null on failure
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrMsg("");
@@ -134,11 +159,29 @@ function AddRecipe() {
       return;
     }
 
+    let imageUrl = null; // Initialize imageUrl
+    if (imageFile) {
+      try {
+        const uploadResponse = await uploadImage(imageFile).unwrap(); // Upload the image
+        imageUrl = uploadResponse.imageUrl; // Adjust based on your server response
+      } catch (error) {
+        setErrMsg("Image upload failed");
+        console.error(error);
+        return; // Early return if upload fails
+      }
+    }
+
+    // Include the image_url in the form data
+    const newRecipeData = {
+      ...formData,
+      image_url: imageUrl || formData.image_url, // Use the new image URL if uploaded
+    };
+
     try {
       console.log(formData);
-      const newRecipe = await addRecipe({ ...formData }).unwrap();
+      const newRecipe = await addRecipe({ ...newRecipeData }).unwrap();
       console.log(newRecipe);
-      console.log(newRecipe.recipe);
+      console.log("recipe id", newRecipe.recipe_id);
       // Now, add the instructions
       let index = 0;
       for (let instruction of formData.instructions) {

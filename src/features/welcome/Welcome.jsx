@@ -6,11 +6,6 @@ import {
 } from "../auth/authSlice";
 import AllRecipes from "../recipes/allRecipes.jsx/allRecipes";
 
-import { useEffect, useState } from "react";
-import { useGetCollectionsQuery } from "../collections/collectionsApiSlice";
-import { setCollection } from "../collections/collectionSlice";
-import { useGetRecipesQuery } from "../recipes/recipesApiSlice";
-
 const Welcome = () => {
   const userId = useSelector(selectCurrentUserId);
 
