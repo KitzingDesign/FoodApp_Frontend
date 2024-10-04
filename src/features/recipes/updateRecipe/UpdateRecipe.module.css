@@ -132,8 +132,8 @@
 
 .deleteButton {
   position: absolute;
-  right: 16px;
-  top: 48px;
+  right: 40px;
+  top: 40px;
   border-radius: 4px;
   background: var(--Primary-Color, #bf310c);
   display: flex;
@@ -146,6 +146,10 @@
   color: white;
   border: none;
   cursor: pointer;
+}
+
+.deleteButton:hover {
+  background: #c54524;
 }
 .deleteButton p {
   /* body/large/semibold */

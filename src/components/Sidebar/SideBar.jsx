@@ -36,7 +36,7 @@ function SideBar({ userId }) {
 
   return (
     <div className={styles.sidebar}>
-      <div className={styles.titleContainer}>
+      <Link to={"profile"} className={styles.titleContainer}>
         <div className={styles.profileContainer}>
           <ProfileIcon />
         </div>
@@ -44,7 +44,7 @@ function SideBar({ userId }) {
         <h2 className={styles.sidebarTitle}>
           {user.first_name} {user.last_name}
         </h2>
-      </div>
+      </Link>
       <ul className={styles.listContainer}>
         <li className={activeTab === "ALL_RECIPES" ? styles.active : ""}>
           <Link

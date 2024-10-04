@@ -28,6 +28,7 @@ function AddRecipe() {
     description: "",
     ingredients: ["", "", "", "", ""],
     instructions: ["", "", "", ""],
+    image_url: "",
     user_id: userId,
     collection_id: collectionId ? Number(collectionId) : "",
   });
@@ -43,7 +44,6 @@ function AddRecipe() {
   const [addRecipe, { isLoading: isAdding }] = useAddNewRecipeMutation();
   const [addInstruction] = useAddNewInstructionMutation();
   const [addIngredient] = useAddNewIngredientMutation();
-  const [uploadImage] = useUploadImageMutation(); // Use the image upload mutation
 
   const navigate = useNavigate();
   const fileInputRef = useRef(null); // Create a ref for the file input
@@ -113,7 +113,7 @@ function AddRecipe() {
     setUrlToFetch(recipeUrl);
   };
 
-  //Image Change
+  // Image Change
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -122,7 +122,7 @@ function AddRecipe() {
       reader.onloadend = () => {
         setFormData((prevData) => ({
           ...prevData,
-          image_url: reader.result,
+          image_url: reader.result, // For preview purposes only
         }));
       };
       reader.readAsDataURL(file);
@@ -158,28 +158,32 @@ function AddRecipe() {
       setErrMsg("Title is required");
       return;
     }
+    const recipeFormData = new FormData();
+    recipeFormData.append("title", formData.title);
+    recipeFormData.append("description", formData.description);
+    recipeFormData.append("user_id", userId);
+    recipeFormData.append("collection_id", formData.collection_id);
+    recipeFormData.append("image_url", formData.image_url);
 
-    let imageUrl = null; // Initialize imageUrl
+    // Append the image if available
     if (imageFile) {
-      try {
-        const uploadResponse = await uploadImage(imageFile).unwrap(); // Upload the image
-        imageUrl = uploadResponse.imageUrl; // Adjust based on your server response
-      } catch (error) {
-        setErrMsg("Image upload failed");
-        console.error(error);
-        return; // Early return if upload fails
-      }
+      recipeFormData.append("image", imageFile);
     }
+    console.log("recipeFormData", recipeFormData);
 
     // Include the image_url in the form data
-    const newRecipeData = {
-      ...formData,
-      image_url: imageUrl || formData.image_url, // Use the new image URL if uploaded
-    };
+    // const newRecipeData = {
+    //   ...formData,
+    //   image_url: imageUrl || formData.image_url, // Use the new image URL if uploaded
+    // };
 
     try {
-      console.log(formData);
-      const newRecipe = await addRecipe({ ...newRecipeData }).unwrap();
+      // Debugging: iterate over the FormData to check the entries
+      for (let [key, value] of recipeFormData.entries()) {
+        console.log(`${key}:`, value);
+      }
+
+      const newRecipe = await addRecipe(recipeFormData).unwrap();
       console.log(newRecipe);
       console.log("recipe id", newRecipe.recipe_id);
       // Now, add the instructions
@@ -333,7 +337,6 @@ function AddRecipe() {
                 <div key={index} className={styles.ingredientContainer}>
                   <label>{index + 1}</label>
                   <input
-                    className={styles.ingredientInput}
                     type="text"
                     name="ingredients"
                     data-index={index}

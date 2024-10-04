@@ -8,6 +8,7 @@ import RecipeCard from "../../../components/RecipeCard";
 import { useParams } from "react-router-dom";
 import { useGetCollectionRecipesQuery } from "../../collections/collectionsApiSlice";
 import styles from "./AllRecipes.module.css";
+import Button from "../../../UI/Button";
 
 const AllRecipes = () => {
   const { collectionId } = useParams(); // Extract collection ID from URL
@@ -31,9 +32,17 @@ const AllRecipes = () => {
     <div>Loading...</div>
   ) : (
     <>
-      <Link to="create" className={styles.addRecipeLink}>
-        Add Recipe{" "}
-      </Link>
+      {/* <Link  className={styles.addRecipeLink}> */}
+      <div className={styles.addRecipeLink}>
+        <Button
+          variant="outline"
+          size="medium"
+          destination="create"
+          aria-label="Add a new recipe"
+        >
+          Add Recipe
+        </Button>
+      </div>
       <div className={styles.gridContainer}>
         {recipes.map((recipe) => (
           <RecipeCard key={recipe.recipe_id} recipe={recipe} />

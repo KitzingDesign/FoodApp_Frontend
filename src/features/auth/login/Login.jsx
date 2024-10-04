@@ -99,20 +99,22 @@ const Login = () => {
             className={styles.input}
             required
           />
-          <span className={styles.inputContainer}>
-            <label htmlFor="password">Password</label>
-            <a href="/#" className={styles.forgotPassword}>
-              Forgot Password?
-            </a>
-          </span>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={handlePasswordInput}
-            className={styles.input}
-            required
-          />
+          <div className={styles.passwordContainer}>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={handlePasswordInput}
+              className={styles.input}
+              required
+            />
+            <span className={styles.inputContainer}>
+              <label htmlFor="password">Password</label>
+              <a href="/#" className={styles.forgotPassword}>
+                Forgot Password?
+              </a>
+            </span>
+          </div>
           <span className={styles.buttonContainer}>
             <button type="submit" className={styles.loginButton}>
               Login

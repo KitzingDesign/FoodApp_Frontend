@@ -31,7 +31,7 @@ const CollectionList = () => {
   const content = isLoading ? (
     <div>Loading...</div>
   ) : (
-    <ul>
+    <ul className={styles.container}>
       {collections.map((collection) => (
         <li
           key={collection.collection_id}

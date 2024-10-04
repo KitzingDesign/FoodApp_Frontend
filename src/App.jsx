@@ -16,6 +16,7 @@ import AddCollection from "./features/collections/addCollection/AddCollection.js
 import AllRecipes from "./features/recipes/allRecipes.jsx/allRecipes.jsx";
 import UpdateRecipe from "./features/recipes/updateRecipe/UpdateRecipe.jsx";
 import EditCollection from "./features/collections/editCollection/EditCollection.jsx";
+import Profile from "./features/profile/Profile.jsx";
 
 function App() {
   return (
@@ -38,6 +39,8 @@ function App() {
             <Route path="collections" element={<Collections />} />
             <Route path="collections/add" element={<AddCollection />} />
             <Route path="collections/:collectionId" element={<AllRecipes />} />
+            <Route path="profile" element={<Profile />} />
+
             <Route
               path="collections/:collectionId/edit"
               element={<EditCollection />}

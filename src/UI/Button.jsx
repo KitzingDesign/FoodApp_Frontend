@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import { COLORS } from "./constants";
+import { Link } from "react-router-dom";
 
 const SIZES = {
   small: {
@@ -10,9 +11,9 @@ const SIZES = {
     "--padding": "4px 14px",
   },
   medium: {
-    "--borderRadius": 100 + "px",
-    "--fontSize": 18 / 16 + "rem",
-    "--padding": "12px 22px",
+    "--borderRadius": 4 + "px",
+    "--fontSize": "16px",
+    "--padding": "8px 16px",
   },
   large: {
     "--borderRadius": 4 + "px",
@@ -21,30 +22,40 @@ const SIZES = {
   },
 };
 
-const Button = ({ variant, size, children, ...props }) => {
+const Button = ({ variant, size, children, destination, ...props }) => {
   const styles = SIZES[size];
 
   let Component;
   if (variant === "fill") {
     Component = FillButton;
+  } else if (variant === "fillRed") {
+    Component = FillButtonRed;
   } else if (variant === "outline") {
     Component = OutlineButton;
+  } else if (variant === "outlineRed") {
+    Component = OutlineButtonRed;
   } else {
     Component = GhostButton;
   }
 
-  return <Component style={styles}>{children}</Component>;
+  return (
+    <Component to={destination} style={styles} {...props}>
+      {children}
+    </Component>
+  );
 };
 
-const ButtonBase = styled.button`
+const ButtonBase = styled(Link)`
   font-size: var(--fontSize);
   display: inline-flex;
-  font-family: "Inter-SemiBold", Helvetica;
+  font-family: "Inter", Helvetica;
   padding: var(--padding);
   color: var(--textColor);
-  text-transform: uppercase;
   border-radius: var(--borderRadius);
   border: 2px solid transparent;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 100%;
 
   &:focus {
     outline-color: ${COLORS.primary};
@@ -65,13 +76,32 @@ const FillButton = styled(ButtonBase)`
   }
 `;
 
+const FillButtonRed = styled(ButtonBase)`
+  background-color: ${COLORS.secondary};
+  color: ${COLORS.white};
+
+  &:hover {
+    background-color: ${COLORS.primaryLight};
+  }
+`;
+
 const OutlineButton = styled(ButtonBase)`
-  background-color: ${COLORS.beige};
+  background-color: none;
   color: ${COLORS.primary};
-  border: 2px solid currentColor;
+  border: solid 2px #4156a1;
 
   &:hover {
     background-color: ${COLORS.offWhite};
+  }
+`;
+
+const OutlineButtonRed = styled(ButtonBase)`
+  background-color: none;
+  color: ${COLORS.secondary};
+  border: solid 2px ${COLORS.secondary};
+
+  &:hover {
+    background-color: ${COLORS.hoverRed};
   }
 `;
 

@@ -4,6 +4,7 @@ import { selectCurrentUserId } from "../../auth/authSlice";
 import { Link } from "react-router-dom";
 import CollectionCard from "../../../components/collectionCard/CollectionCard";
 import styles from "./Collections.module.css";
+import Button from "../../../UI/Button";
 
 const Collections = () => {
   const userId = Number(useSelector(selectCurrentUserId));
@@ -20,9 +21,16 @@ const Collections = () => {
     <div>Loading...</div>
   ) : (
     <>
-      <Link to="add" className={styles.addCollectionLink}>
-        Add Collection
-      </Link>
+      <div className={styles.addCollectionLink}>
+        <Button
+          variant="outline"
+          size="medium"
+          destination="add"
+          aria-label="Add a recipe to a collection"
+        >
+          Add Collection
+        </Button>
+      </div>
       <div className={styles.collectionContainer}>
         {collections.map((collection) => (
           <CollectionCard

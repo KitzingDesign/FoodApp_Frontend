@@ -1,7 +1,10 @@
 export const COLORS = {
   primary: "#4156a1",
+  secondary: "#bf310c",
   primaryLight: "#8DA0E0",
   white: "#FAFAFA",
+  hoverRed: "#FCF8F7",
+  offWhite: "hsl(235deg 85% 97%)",
   offWhite: "hsl(235deg 85% 97%)",
   gray: "hsl(240deg 10% 50%)",
   transparentGray15: "hsl(240deg 10% 50% / 0.15)",

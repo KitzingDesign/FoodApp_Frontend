@@ -1,5 +1,5 @@
 import { useState } from "react";
-import classes from "./Input.module.css";
+import styles from "./Input.module.css";
 
 const Input = ({
   type,
@@ -22,11 +22,11 @@ const Input = ({
   };
 
   return (
-    <div className={classes.inputContainer}>
+    <div className={styles.inputContainer}>
       {name === "password" ? (
         <span>
           <label>{label}</label>
-          <a href="/forgot-password" className={classes.forgotPassword}>
+          <a href="/forgot-password" className={styles.forgotPassword}>
             Forgot?
           </a>
         </span>
@@ -41,7 +41,7 @@ const Input = ({
         onBlur={handleBlur}
         name={name}
         placeholder={placeholder}
-        className={`${isActive ? classes.active : ""} ${classes.input}`}
+        className={`${isActive ? styles.active : ""} ${styles.input}`}
       />
       <p>{error}</p>
     </div>

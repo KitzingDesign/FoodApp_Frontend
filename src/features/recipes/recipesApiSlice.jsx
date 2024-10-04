@@ -34,7 +34,8 @@ export const recipesApiSlice = apiSlice.injectEndpoints({
       query: (addRecipe) => ({
         url: "/recipe/create",
         method: "POST",
-        body: addRecipe, // Directly use the FormData
+        formData: true, // Directly use the FormData
+        body: addRecipe,
       }),
       // Invalidate the recipe list so it refetches after adding a new recipe
       invalidatesTags: (result, error, { collection_id }) => [

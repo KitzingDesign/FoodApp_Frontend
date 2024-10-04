@@ -43,6 +43,11 @@
   padding: 5px;
 }
 
+.passwordContainer {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
 .span {
   color: rgb(0, 95, 236);
   cursor: pointer;

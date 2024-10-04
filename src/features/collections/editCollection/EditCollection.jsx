@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import styles from "./EditCollection.module.css";
 import {
   useGetOneCollectionQuery,
   useUpdateCollectionMutation,
   useDeleteCollectionMutation,
 } from "../collectionsApiSlice";
+import { setActiveTitle } from "../../../components/dashboard/dashboardSlice";
 
 const EditCollection = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { collectionId } = useParams();
   const [errMsg, setErrMsg] = useState("");
@@ -17,13 +20,14 @@ const EditCollection = () => {
     data: collection,
     error,
     isLoading,
+    refetch: refetchCollection,
   } = useGetOneCollectionQuery({ id: collectionId });
   const [updateCollection, { isLoading: isUpdating }] =
     useUpdateCollectionMutation();
   const [deleteCollection, { isLoading: isDeleting }] =
     useDeleteCollectionMutation();
 
-  console.log(collection);
+  console.log("refetching collections!!!", collection);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -62,6 +66,11 @@ const EditCollection = () => {
         ...formData,
       }).unwrap();
 
+      dispatch(setActiveTitle({ activeTitle: formData.name }));
+
+      // Optionally refetch to ensure latest data is in the cache
+      await refetchCollection();
+
       navigate(`/welcome/collections/${collectionId}`);
     } catch (err) {
       setErrMsg("Failed to update collection");
@@ -73,6 +82,7 @@ const EditCollection = () => {
     e.preventDefault();
     try {
       await deleteCollection({ id: Number(collectionId) });
+      dispatch(setActiveTitle({ activeTitle: "Collections" }));
       navigate(`/welcome/collections`);
     } catch (err) {
       setErrMsg("Failed to delete recipe");

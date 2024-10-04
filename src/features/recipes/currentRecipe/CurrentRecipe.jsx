@@ -3,9 +3,11 @@ import { useParams } from "react-router-dom";
 import { useGetOneRecipeQuery } from "../recipesApiSlice";
 import { useGetIngredientsQuery } from "../../ingredients/ingredientsApiSlice";
 import { useGetInstructionsQuery } from "../../instructions/instructionsApiSlice";
+import { useGetOneCollectionQuery } from "../../collections/collectionsApiSlice";
 
 import styles from "./CurrentRecipe.module.css";
 import { useEffect } from "react";
+import Button from "../../../UI/Button";
 
 const CurrentRecipe = () => {
   const { recipeId } = useParams(); // Extract recipe ID from URL
@@ -16,6 +18,17 @@ const CurrentRecipe = () => {
     error,
     isLoading: isLoadingRecipe,
   } = useGetOneRecipeQuery({ id: recipeId });
+
+  const {
+    data: collection,
+    error: collectionError,
+    isLoading: isLoadingCollection,
+    refetch: refetchCollection,
+  } = useGetOneCollectionQuery(
+    { id: recipe?.collection_id },
+    { skip: !recipe?.collection_id }
+  );
+  console.log(collection);
 
   // Fetch the ingredients for the specific recipex
   const {
@@ -52,17 +65,30 @@ const CurrentRecipe = () => {
       <div>Error loading recipe. Please try again.</div>
     ) : (
       <>
-        <Link to="update" className={styles.editRecipeLink}>
-          Edit Recipe
-        </Link>
+        <div className={styles.editRecipeLink}>
+          <Button
+            variant="outlineRed"
+            size="medium"
+            destination="update"
+            aria-label="Update current recipe"
+          >
+            Edit Recipe
+          </Button>
+        </div>
         <div className={styles.container}>
           <div className={styles.leftContainer}>
             <div className={styles.leftUpperContainer}>
               <div className={styles.titleContainer}>
                 <h2>{recipe.title}</h2>
                 <div>
-                  <p>Collection</p>
-                  <div>|</div>
+                  {!collection?.name ? (
+                    ""
+                  ) : (
+                    <>
+                      <p>{collection.name}</p>
+                      <div>|</div>
+                    </>
+                  )}
                   <p>{ingredient.length} Ingredients</p>
                 </div>
               </div>

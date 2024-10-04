@@ -1,3 +1,10 @@
+:root {
+  --Primary-Color: #bf310c;
+  --Secondary-Color: #4156a1;
+  --OffWhite-Color: #fafafa;
+  --Text-Color: #333333;
+}
+
 html,
 body {
   max-width: 100%;
@@ -28,4 +35,8 @@ ul {
 
 span {
   margin: 0;
+}
+
+input {
+  padding: 0px 8px;
 }

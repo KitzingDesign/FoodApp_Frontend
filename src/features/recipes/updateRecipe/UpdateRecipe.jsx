@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { selectCurrentUserId } from "../../auth/authSlice";
+import { setActiveTitle } from "../../../components/dashboard/dashboardSlice";
 import { useGetCollectionsQuery } from "../../collections/collectionsApiSlice";
 import {
   useUpdateRecipeMutation,
@@ -11,14 +12,17 @@ import {
 import {
   useGetInstructionsQuery,
   useUpdateInstructionMutation,
+  useAddNewInstructionMutation,
 } from "../../instructions/instructionsApiSlice";
 import {
   useGetIngredientsQuery,
   useUpdateIngredientMutation,
+  useAddNewIngredientMutation,
 } from "../../ingredients/ingredientsApiSlice";
 import styles from "./UpdateRecipe.module.css";
 
 const UpdateRecipe = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { recipeId } = useParams(); // Extract recipe ID from URL
   const userId = Number(useSelector(selectCurrentUserId));
@@ -42,6 +46,10 @@ const UpdateRecipe = () => {
     useUpdateInstructionMutation();
   const [updateIngredient, { isLoading: isIngredientUpdating }] =
     useUpdateIngredientMutation();
+  const [addNewInstruction, { isLoading: isAddingInstruction }] =
+    useAddNewInstructionMutation();
+  const [addNewIngredient, { isLoading: isAddingIngredient }] =
+    useAddNewIngredientMutation();
 
   const [formData, setFormData] = useState({
     title: "",
@@ -140,8 +148,7 @@ const UpdateRecipe = () => {
       for (let i = 0; i < formData.instructions.length; i++) {
         const instruction = formData.instructions[i];
         const instructionId = instructions[i]?.instruction_id || null; // Use the correct instruction_id
-        console.log(instructionId, instruction);
-        if (instruction) {
+        if (instruction && instructionId) {
           console.log("Updating instruction");
           console.log(instructionId, instruction, i);
           await updateInstruction({
@@ -150,6 +157,12 @@ const UpdateRecipe = () => {
             step_number: i, // Ensure step number is correct
           }).unwrap();
           console.log("Instruction updated");
+        } else if (!instructionId) {
+          await addNewInstruction({
+            recipe_id: Number(recipeId),
+            instruction_text: instruction,
+            step_number: i,
+          }).unwrap();
         }
       }
 
@@ -158,10 +171,15 @@ const UpdateRecipe = () => {
         const ingredient = formData.ingredients[i];
         const ingredientId = ingredients[i]?.ingredient_id || null; // Use the correct ingredient_id
 
-        if (ingredient) {
+        if (ingredient && ingredientId) {
           console.log(ingredientId, ingredient);
           await updateIngredient({
             ingredient_id: ingredientId, // Send the actual ingredient_id
+            name: ingredient,
+          }).unwrap();
+        } else if (!ingredientId) {
+          await addNewIngredient({
+            recipe_id: Number(recipeId),
             name: ingredient,
           }).unwrap();
         }
@@ -193,6 +211,7 @@ const UpdateRecipe = () => {
     try {
       await deleteRecipe({ id: recipeId });
       refetchRecipes();
+      dispatch(setActiveTitle({ activeTitle: "All Recipes" }));
       navigate(`/welcome/${userId}`);
     } catch (err) {
       setErrMsg("Failed to delete recipe");

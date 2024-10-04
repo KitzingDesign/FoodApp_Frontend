@@ -1,5 +1,5 @@
-/* No need for .liCollection in this context if it's not doing anything specific */
-.liCollection {
+.container {
+  overflow: scroll;
 }
 
 .liCollection a {
