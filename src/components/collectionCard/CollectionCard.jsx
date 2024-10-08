@@ -9,20 +9,21 @@ const CollectionCard = ({ collection }) => {
     isError,
   } = useGetCollectionRecipesQuery(collection.collection_id);
 
-  console.log(collection);
-
   return (
     <Link to={`${collection.collection_id}`} className={styles.container}>
-      <h3>{collection.name}</h3>
-      <div className={styles.divider} />
-      {collectionRecipes.length > 0 ? (
-        <p>
-          <b>{collectionRecipes.length}</b> recipes
-        </p>
-      ) : (
-        <p>No recipes yet</p>
-      )}
+      <div className={styles.content}>
+        <h3>{collection.name}</h3>
+        <div className={styles.divider} />
+        {collectionRecipes.length > 0 ? (
+          <p>
+            <b>{collectionRecipes.length}</b> recipes
+          </p>
+        ) : (
+          <p>No recipes yet</p>
+        )}
+      </div>
     </Link>
   );
 };
+
 export default CollectionCard;

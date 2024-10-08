@@ -2,37 +2,33 @@ import { useGetCollectionsQuery } from "../collectionsApiSlice";
 import { useSelector } from "react-redux";
 import { selectCurrentUserId } from "../../auth/authSlice";
 import { useState } from "react";
+
+// Import Modal and other components
+import AddCollectionContent from "../addCollection/AddCollectionContent";
+import Modal from "../../../components/Modal/Modal";
 import CollectionCard from "../../../components/collectionCard/CollectionCard";
-import styles from "./Collections.module.css";
 import Button from "../../../UI/Button";
-import ModalAddCollection from "../addCollection/ModalAddCollection";
+import styles from "./Collections.module.css";
 
 const Collections = () => {
   const userId = Number(useSelector(selectCurrentUserId));
-  console.log(userId);
-  const {
-    data: collections = [],
-    error,
-    isLoading,
-  } = useGetCollectionsQuery(userId);
-
-  // Modal state to handle open/close
+  const { data: collections = [], isLoading } = useGetCollectionsQuery(userId);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Function to handle modal open/close
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const toggleModal = () => setIsModalOpen((prev) => !prev);
 
-  const content = isLoading ? (
-    <div>Loading...</div>
-  ) : (
-    <>
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div className={styles.container}>
       <div className={styles.addCollectionLink}>
         <Button
           variant="outline"
           size="medium"
-          onClick={openModal}
-          aria-label="Add a recipe to a collection"
+          onClick={toggleModal}
+          aria-label="Add a collection"
         >
           Add Collection
         </Button>
@@ -46,12 +42,11 @@ const Collections = () => {
           />
         ))}
       </div>
-      {/* Modal for adding a new recipe */}
-      <ModalAddCollection isOpen={isModalOpen} onClose={closeModal} />
-    </>
+      <Modal isOpen={isModalOpen} title="Add Collection" onClose={toggleModal}>
+        <AddCollectionContent onClose={toggleModal} />
+      </Modal>
+    </div>
   );
-
-  return content;
 };
 
 export default Collections;

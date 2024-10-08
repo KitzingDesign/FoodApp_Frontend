@@ -1,14 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-import FocusTrap from "focus-trap-react";
 import { selectCurrentUserId } from "../../auth/authSlice";
 import { useAddNewCollectionMutation } from "../collectionsApiSlice";
-import CloseIcon from "/public/close.jsx";
 
 // Modal.jsx
-import styles from "./ModalAddCollection.module.css";
+import styles from "./AddCollectionContent.module.css";
 
-const ModalAddCollection = ({ isOpen, onClose }) => {
+const AddCollectionContent = ({ isOpen, onClose }) => {
   const userId = Number(useSelector(selectCurrentUserId));
   const [errMsg, setErrMsg] = useState(""); // State for error message
   const [formData, setFormData] = useState({
@@ -48,6 +46,7 @@ const ModalAddCollection = ({ isOpen, onClose }) => {
       // Reset form after submission
       setFormData({ name: "", description: "", user_id: userId });
       setErrMsg(""); // Clear any error message
+      onClose(); // Close the modal
     } catch (error) {
       setErrMsg(error.message || "Failed to create collection."); // Set error message if the mutation fails
       console.error("Failed to create collection: ", error);
@@ -78,57 +77,40 @@ const ModalAddCollection = ({ isOpen, onClose }) => {
     };
   }, [onClose]);
 
-  if (!isOpen) return null;
-
   return (
-    <div className={styles.overlay} onClick={handleOverlayClick}>
-      <div className={styles.modal}>
-        <FocusTrap>
-          <div>
-            <div className={styles.titleContainer}>
-              <h2>Add new Recipe</h2>
-              <button onClick={onClose}>
-                <CloseIcon />
-              </button>
+    <div>
+      {errMsg && <p style={{ color: "red" }}>{errMsg}</p>}
+      <form onSubmit={handleSubmit} className={styles.urlContainer}>
+        <div className={styles.upperContainer}>
+          <div className={styles.inputContainer}>
+            <div className={styles.inputTitle}>
+              <label htmlFor="name">Name</label>
+              <input
+                type="text"
+                name="name"
+                id="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                required
+              />
             </div>
-            <div className={styles.divider} />
-            <>
-              {errMsg && <p style={{ color: "red" }}>{errMsg}</p>}
-              <form onSubmit={handleSubmit} className={styles.urlContainer}>
-                <div className={styles.upperContainer}>
-                  <div className={styles.inputContainer}>
-                    <div className={styles.inputTitle}>
-                      <label htmlFor="name">Name</label>
-                      <input
-                        type="text"
-                        name="name"
-                        id="name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
-                    <div className={styles.inputDescription}>
-                      <label htmlFor="description">Description</label>
-                      <textarea
-                        name="description"
-                        id="description"
-                        value={formData.description}
-                        onChange={handleInputChange}
-                      ></textarea>
-                    </div>
-                  </div>
-                </div>
-                <button className={styles.button} type="submit">
-                  Add Collection
-                </button>
-              </form>
-            </>
+            <div className={styles.inputDescription}>
+              <label htmlFor="description">Description</label>
+              <textarea
+                name="description"
+                id="description"
+                value={formData.description}
+                onChange={handleInputChange}
+              ></textarea>
+            </div>
           </div>
-        </FocusTrap>
-      </div>
+        </div>
+        <button className={styles.submitButton} type="submit">
+          <p>Add Collection</p>
+        </button>
+      </form>
     </div>
   );
 };
 
-export default ModalAddCollection;
+export default AddCollectionContent;

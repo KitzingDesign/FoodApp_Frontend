@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 // Styles
 import styles from "./CurrentRecipe.module.css";
@@ -9,10 +9,13 @@ import { useGetOneRecipeQuery } from "../recipesApiSlice";
 import { useGetIngredientsQuery } from "../../ingredients/ingredientsApiSlice";
 import { useGetInstructionsQuery } from "../../instructions/instructionsApiSlice";
 import { useGetOneCollectionQuery } from "../../collections/collectionsApiSlice";
+import Modal from "../../../components/Modal/Modal";
+import EditRecipeContent from "../updateRecipe/EditRecipeContent";
 import Button from "../../../UI/Button";
 
 const CurrentRecipe = () => {
   const { recipeId } = useParams();
+  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal
 
   // Fetch recipe details, collection, ingredients, and instructions
   const {
@@ -56,6 +59,10 @@ const CurrentRecipe = () => {
     }
   }, [recipe]);
 
+  const toggleModal = () => {
+    setIsModalOpen((prev) => !prev); // Toggle modal state
+  };
+
   const renderContent = () => {
     if (isLoading) return <div>Loading...</div>;
     if (hasError) return <div>Error loading recipe. Please try again.</div>;
@@ -66,7 +73,7 @@ const CurrentRecipe = () => {
           <Button
             variant="outlineRed"
             size="medium"
-            destination="update"
+            onClick={toggleModal} // Open the modal on button click
             aria-label="Update current recipe"
           >
             Edit Recipe
@@ -123,6 +130,10 @@ const CurrentRecipe = () => {
             </div>
           </div>
         </div>
+        {/* Modal for editing the recipe */}
+        <Modal isOpen={isModalOpen} title="Edit Recipe" onClose={toggleModal}>
+          <EditRecipeContent onClose={toggleModal} />
+        </Modal>
       </div>
     );
   };

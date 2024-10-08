@@ -1,13 +1,72 @@
 .footer {
-  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.linksList a {
+  color: var(--Primary-Color, #bf310c);
+  text-decoration: none;
+  font-family: "Inter", sans-serif;
+}
+
+.footerContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px; /* Consistent spacing */
 }
 
 .divider {
   height: 1px;
   background: #dcdcdc;
   width: 100%;
+  margin-bottom: 16px; /* Add space below the divider */
+}
+
+.brandContainer {
+  display: flex;
+  align-items: center;
+  gap: 4px; /* Space between symbol and name */
+}
+
+.brandSymbol {
+  font-size: 16px; /* Slightly larger font size for emphasis */
+  color: var(--Primary-Color, #bf310c); /* Use primary color */
+  font-weight: bold; /* Make symbol bold */
+}
+
+.brandName {
+  font-size: 16px; /* Match the symbol size */
+  font-weight: 400; /* Make brand name bold */
+  font-family: "Inter", sans-serif;
+  color: var(--Text-Color, #333); /* Use text color */
+}
+
+.linksList {
+  list-style-type: none; /* Remove default list styling */
+  padding: 0; /* Remove padding */
+  display: flex; /* Align links horizontally */
+  gap: 16px; /* Space between links */
+}
+
+.linksList li {
+  transition: color 0.3s; /* Smooth color transition */
+}
+
+.linksList a:hover {
+  text-decoration: underline; /* Underline on hover */
+}
+
+.separator {
+  margin: 16px 0; /* Spacing around separator */
+  font-weight: bold; /* Bold separator text */
+}
+
+.copyRight {
+  font-size: 14px; /* Smaller font size for copyright notice */
+  color: #ccc; /* Grey color for copyright text */
 }

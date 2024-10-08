@@ -12,7 +12,7 @@ export const ingredientsApiSlice = apiSlice.injectEndpoints({
       providesTags: (result, error, { id }) =>
         result
           ? [{ type: "Ingredient", id }] // Provide tag for specific ingredient
-          : [{ type: "Ingredient", id: "LIST" }], // List tag in case of error
+          : [{ type: "Ingredient", id: "LIST" }], // Provide list tag in case of error
     }),
     addNewIngredient: builder.mutation({
       query: (addIngredient) => ({
@@ -22,7 +22,7 @@ export const ingredientsApiSlice = apiSlice.injectEndpoints({
           ...addIngredient,
         },
       }),
-      invalidatesTags: [{ type: "Ingredient", id: "LIST" }], // Invalidate the list
+      invalidatesTags: [{ type: "Ingredient", id: "LIST" }], // Invalidate the list after adding a new ingredient
     }),
     updateIngredient: builder.mutation({
       query: ({ ingredient_id, name }) => ({
@@ -34,7 +34,7 @@ export const ingredientsApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: (result, error, { ingredient_id }) => [
         { type: "Ingredient", id: ingredient_id }, // Invalidate the specific ingredient
-        { type: "Ingredient", id: "LIST" }, // Invalidate the list as well
+        { type: "Ingredient", id: "LIST" }, // Optionally invalidate the list as well
       ],
     }),
     deleteIngredient: builder.mutation({
@@ -44,13 +44,14 @@ export const ingredientsApiSlice = apiSlice.injectEndpoints({
         body: { ingredient_id: id },
       }),
       invalidatesTags: (result, error, { id }) => [
-        { type: "Ingredient", id },
+        { type: "Ingredient", id }, // Invalidate the specific ingredient
         { type: "Ingredient", id: "LIST" }, // Invalidate the list after deletion
       ],
     }),
   }),
 });
 
+// Export hooks for usage in functional components
 export const {
   useGetIngredientsQuery,
   useAddNewIngredientMutation,

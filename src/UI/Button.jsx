@@ -81,7 +81,7 @@ const FillButtonRed = styled(ButtonBase)`
   color: ${COLORS.white};
 
   &:hover {
-    background-color: ${COLORS.primaryLight};
+    background-color: ${COLORS.secondaryLight};
   }
 `;
 

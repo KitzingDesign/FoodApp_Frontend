@@ -8,9 +8,12 @@ import { selectCurrentUserId } from "../../auth/authSlice";
 import { useGetRecipesQuery } from "../recipesApiSlice";
 import RecipeCard from "../../../components/RecipeCard";
 import { useGetCollectionRecipesQuery } from "../../collections/collectionsApiSlice";
-import Modal from "../addRecipe.jsx/ModalAddRecipe";
+import Modal from "../../../components/Modal/Modal";
+import AddRecipeContent from "../addRecipe.jsx/AddRecipeContent";
+import EditRecipeModal from "../updateRecipe/EditRecipeContent";
 
 import Button from "../../../UI/Button";
+import EditCollectionContent from "../../collections/editCollection/EditCollectionContent";
 
 const AllRecipes = () => {
   const { collectionId } = useParams(); // Extract collection ID from URL
@@ -18,10 +21,15 @@ const AllRecipes = () => {
 
   // Modal state to handle open/close
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   // Function to handle modal open/close
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+
+  // Function to handle modal open/close
+  const openEditModal = () => setIsEditModalOpen(true);
+  const closeEditModal = () => setIsEditModalOpen(false);
 
   // Fetch recipes based on the collection ID or user ID
   const {
@@ -46,7 +54,17 @@ const AllRecipes = () => {
           aria-label="Add a new recipe"
         >
           Add Recipe
-        </Button>
+        </Button>{" "}
+        {collectionId && (
+          <Button
+            variant="outline"
+            size="medium"
+            onClick={openEditModal}
+            aria-label="Add a new recipe"
+          >
+            Edit Collection
+          </Button>
+        )}
       </div>
       <div className={styles.gridContainer}>
         {recipes.map((recipe) => (
@@ -54,7 +72,16 @@ const AllRecipes = () => {
         ))}
       </div>
       {/* Modal for adding a new recipe */}
-      <Modal isOpen={isModalOpen} onClose={closeModal} />
+      <Modal isOpen={isModalOpen} title="Add Recipe" onClose={closeModal}>
+        <AddRecipeContent onClose={closeModal} />
+      </Modal>
+      <Modal
+        isOpen={isEditModalOpen}
+        title="Edit Collection"
+        onClose={closeEditModal}
+      >
+        <EditCollectionContent onClose={closeEditModal} />{" "}
+      </Modal>
     </div>
   );
 

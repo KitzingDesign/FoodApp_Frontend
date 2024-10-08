@@ -2,6 +2,8 @@ export const COLORS = {
   primary: "#4156a1",
   secondary: "#bf310c",
   primaryLight: "#8DA0E0",
+  secondaryLight: "#C45336",
+
   white: "#FAFAFA",
   hoverRed: "#FCF8F7",
   offWhite: "hsl(235deg 85% 97%)",
