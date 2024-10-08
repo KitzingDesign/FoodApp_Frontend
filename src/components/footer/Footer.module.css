@@ -1,0 +1,13 @@
+.footer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.divider {
+  height: 1px;
+  background: #dcdcdc;
+  width: 100%;
+}

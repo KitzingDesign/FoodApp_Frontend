@@ -104,3 +104,15 @@
   gap: 4px;
   align-items: center;
 }
+
+.flexIcons button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+@media (max-width: 480px) {
+  .sidebar {
+    width: 100vw; /* Set width of the sidebar */
+  }
+}

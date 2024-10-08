@@ -16,12 +16,12 @@
 
 .container {
   display: flex;
-  width: 40;
-  padding: 48px 72px;
+  width: 35vw; /* Updated to match login container width */
+  padding: 40px 48px 32px 48px; /* Updated padding to match login */
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 32px;
+  gap: 24px; /* Updated gap to match login */
 
   border-radius: 20px;
   background: var(--background-mode, #fff);
@@ -36,22 +36,34 @@
   font-family: Inter;
 }
 
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 8px; /* Added form gap to match login form styles */
+}
+
 .form div {
   display: flex;
   flex-direction: column;
 }
 
 .form input {
-  display: flex;
-  width: 396px;
   height: 48px;
-  align-items: center;
-  gap: 8px;
   padding: 0px 12px;
   margin: 8px 0;
 
   border-radius: 8px;
   border: 1px solid var(--outline-default, #d0d5dd);
+}
+
+::placeholder {
+  color: var(--foreground-default, #344054);
+  font-family: "Inter-Bold", Helvetica;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%; /* 14px */
 }
 
 .buttonContainer {
@@ -72,22 +84,52 @@
   font-weight: 500;
   letter-spacing: 0;
   line-height: normal;
-  padding: 8px 32px;
+  padding: 8px 48px; /* Updated padding to match login button */
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 
-.loginButton {
-  border: #4156a1 solid 2px;
-  background-color: transparent;
+.loginContainer {
+  margin-top: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.loginContainer a {
   color: #4156a1;
   font-family: "Inter", Helvetica;
-  font-size: 24px;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 400;
   letter-spacing: 0;
   line-height: normal;
-  padding: 6px 30px;
-  border-radius: 4px;
-  cursor: pointer;
+  text-decoration: none;
+}
+
+.loginContainer p {
+  font-family: "Inter", Helvetica;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+/* Desktop (993px and above) */
+@media (max-width: 480px) {
+  .outerContainer {
+    background-color: #fff;
+  }
+  .container {
+    width: 100%;
+    margin: 16px 16px;
+    padding: 0px 0px;
+
+    border-radius: 8px;
+    background: var(--background-mode, #fff);
+    box-shadow: none;
+  }
 }

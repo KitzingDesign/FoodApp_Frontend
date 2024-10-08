@@ -1,3 +1,74 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto; /* Allow scrolling in the overlay if modal content is taller than viewport */
+
+  z-index: 1000;
+}
+.modal {
+  height: 90vh;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 60vw;
+  width: 100%;
+  position: relative;
+  overflow-y: auto; /* Allow scrolling in the overlay if modal content is taller than viewport */
+}
+
+.titleContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.titleContainer h2 {
+  color: var(--Primary-Color, #bf310c);
+  font-family: Inter;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.titleContainer button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background: #ccc;
+  margin-top: 1rem;
+  margin-bottom: 24px;
+}
+
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.modalContent {
+  margin-top: 1rem;
+}
+
 .form textarea {
   color: var(--text-color, #333);
   font-family: Inter;
@@ -26,7 +97,7 @@
 }
 
 .form label {
-  color: var(--Primary-Color, #bf310c);
+  color: var(--Primary-Color, #333);
   font-family: Inter;
   font-size: 16px;
   font-style: normal;
@@ -40,10 +111,11 @@
 .urlContainer {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
+  margin-bottom: 8px;
 }
 .urlContainer label {
-  color: var(--Primary-Color, #bf310c);
+  color: var(--Primary-Color, #333);
   font-family: Inter;
   font-size: 16px;
   font-style: normal;
@@ -58,10 +130,37 @@
 }
 
 .urlContainer input {
-  width: 100%;
+  flex-grow: 1;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
+}
+
+.urlButton {
+  background: none;
+  color: var(--Secondary-Color, #4156a1);
+  border: solid 2px #4156a1;
+  border-radius: 4px;
+  padding: 4px 14px;
+  font-size: 14px;
+  display: inline-flex;
+  font-family: "Inter", Helvetica;
+  line-height: 100%;
+  font-style: normal;
+  font-weight: 500;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.urlButton:focus {
+  outline-color: --Secondary-Color, #4156a1;
+  outline-offset: 4px;
+}
+
+.urlButton:hover {
+  background-color: hsl(235deg 85% 97%);
+  cursor: pointer;
 }
 
 .selectCollection {
@@ -143,10 +242,9 @@
   justify-content: center;
   align-items: center;
   margin-top: 16px;
-  margin-right: 16px;
   height: 100%;
   width: 100%;
-  border: #bf310c 4px solid;
+  border: #ccc 2px solid;
   border-radius: 4px;
   cursor: pointer;
 }
@@ -332,4 +430,57 @@
   border: none;
   padding: 8px 16px;
   cursor: pointer;
+}
+
+@media only screen and (min-device-width: 480px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 1) {
+  .modal {
+    max-width: 80vw;
+  }
+}
+
+/* for mobile phones */
+@media (max-width: 480px) {
+  .titleContainer {
+    padding-top: 24px;
+  }
+  .modal {
+    max-width: 100vw;
+    height: 100vh;
+    margin: 0px;
+    padding: 16px;
+    border-radius: 0px;
+  }
+  /* upper container css */
+  .upperContainer {
+    display: flex;
+    flex-direction: column-reverse;
+    height: inherit;
+    gap: 8px;
+  }
+
+  .imgContainer {
+    width: 100%;
+    height: 25vw;
+    align-self: center;
+  }
+
+  .imgContainer img {
+    align-self: center;
+    margin-top: 8px;
+    height: 25vh;
+    width: 100%;
+    object-fit: cover; /* Maintain aspect ratio */
+    border-radius: 4px;
+  }
+  .placeholder {
+    margin-top: 8px;
+    height: 20vh;
+    width: 100%;
+    border: #ccc 1px solid;
+  }
+  .submitButton {
+    margin-top: 32px;
+    margin-bottom: 16px;
+    width: 100%;
+  }
 }

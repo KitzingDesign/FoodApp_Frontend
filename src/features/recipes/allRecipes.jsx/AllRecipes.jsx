@@ -1,19 +1,29 @@
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
+import styles from "./AllRecipes.module.css";
 
 import { selectCurrentUserId } from "../../auth/authSlice";
 import { useGetRecipesQuery } from "../recipesApiSlice";
 import RecipeCard from "../../../components/RecipeCard";
-import { useParams } from "react-router-dom";
 import { useGetCollectionRecipesQuery } from "../../collections/collectionsApiSlice";
-import styles from "./AllRecipes.module.css";
+import Modal from "../addRecipe.jsx/ModalAddRecipe";
+
 import Button from "../../../UI/Button";
 
 const AllRecipes = () => {
   const { collectionId } = useParams(); // Extract collection ID from URL
   const userId = Number(useSelector(selectCurrentUserId));
 
+  // Modal state to handle open/close
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Function to handle modal open/close
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+  // Fetch recipes based on the collection ID or user ID
   const {
     data: recipes = [],
     error,
@@ -22,22 +32,17 @@ const AllRecipes = () => {
     ? useGetCollectionRecipesQuery(collectionId)
     : useGetRecipesQuery(userId);
 
-  console.log(recipes);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-  useEffect(() => {
-    console.log("Recipes in component after fetch:", recipes); // To debug re-renders
-  }, [recipes]);
-
-  const content = isLoading ? (
-    <div>Loading...</div>
-  ) : (
-    <>
-      {/* <Link  className={styles.addRecipeLink}> */}
+  const content = (
+    <div className={styles.container}>
       <div className={styles.addRecipeLink}>
         <Button
           variant="outline"
           size="medium"
-          destination="create"
+          onClick={openModal}
           aria-label="Add a new recipe"
         >
           Add Recipe
@@ -48,8 +53,11 @@ const AllRecipes = () => {
           <RecipeCard key={recipe.recipe_id} recipe={recipe} />
         ))}
       </div>
-    </>
+      {/* Modal for adding a new recipe */}
+      <Modal isOpen={isModalOpen} onClose={closeModal} />
+    </div>
   );
+
   return content;
 };
 

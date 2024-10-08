@@ -6,7 +6,6 @@ import { useDispatch } from "react-redux";
 import { setCredentials } from "../authSlice";
 import { useLoginMutation } from "../authApiSlice";
 import styles from "./Login.module.css";
-import Button from "../../../UI/Button";
 import LogoIcon from "../../../../public/logo";
 
 const Login = () => {
@@ -53,8 +52,7 @@ const Login = () => {
       console.log("Navigated to /welcome"); // Debugging log
     } catch (e) {
       if (!e?.originalStatus) {
-        console.log(!e?.originalStatus);
-        setErrMsg("No Server Response");
+        setErrMsg("Wrong email or password");
       } else if (e.originalStatus === 400) {
         setErrMsg("Missing email or password");
       } else if (e.originalStatus === 401) {
@@ -62,7 +60,9 @@ const Login = () => {
       } else {
         setErrMsg("Something went wrong");
       }
-      errRef.current.focus();
+      if (errRef.current) {
+        errRef.current.focus();
+      }
     }
   };
 
@@ -80,26 +80,26 @@ const Login = () => {
       <Link to="/" className={styles.logo}>
         <LogoIcon />
       </Link>
-      <section className={styles.container}>
+      <main className={styles.container}>
         <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"}>
           {errMsg}
         </p>{" "}
         <h1 className={styles.title}>Login</h1>
         <div className={styles.divider}></div>
         <form className={styles.form} onSubmit={handleSubmit}>
-          <label htmlFor="email">Email</label>
-
-          <input
-            type="email"
-            id="email"
-            ref={emailRef}
-            value={email}
-            onChange={handleEmailInput}
-            autoComplete="off"
-            className={styles.input}
-            required
-          />
-          <div className={styles.passwordContainer}>
+          <div className={styles.inputContainer}>
+            <input
+              type="email"
+              id="email"
+              ref={emailRef}
+              value={email}
+              onChange={handleEmailInput}
+              className={styles.input}
+              required
+            />
+            <label htmlFor="email">Email</label>
+          </div>
+          <div className={styles.inputContainer}>
             <input
               type="password"
               id="password"
@@ -108,23 +108,26 @@ const Login = () => {
               className={styles.input}
               required
             />
-            <span className={styles.inputContainer}>
+            <div className={styles.inputTitleContainer}>
               <label htmlFor="password">Password</label>
               <a href="/#" className={styles.forgotPassword}>
                 Forgot Password?
               </a>
-            </span>
+            </div>
           </div>
-          <span className={styles.buttonContainer}>
+          <div className={styles.buttonContainer}>
             <button type="submit" className={styles.loginButton}>
               Login
             </button>
-            <Link to={"/register"}>
-              <button className={styles.signupButton}>Register</button>
-            </Link>
-          </span>
+          </div>
         </form>
-      </section>
+        <div className={styles.registerContainer}>
+          <div className={styles.divider}></div>
+          <p>
+            Don´t you have an account?<Link to={"/register"}> Signup!</Link>
+          </p>
+        </div>
+      </main>
     </div>
   );
 

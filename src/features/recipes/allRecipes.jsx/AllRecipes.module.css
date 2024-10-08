@@ -1,22 +1,10 @@
 .container {
-  position: relative;
-  flex-grow: 1; /* Takes the remaining space */
-  background-color: #fff;
-  overflow: auto; /* Allow scrolling */
-  justify-content: center;
-  padding: 80px 24px;
-  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.title {
-  color: var(--Primary-Color, #bf310c);
-  font-family: Inter;
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-  text-decoration: none;
-}
 .gridContainer {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -24,32 +12,26 @@
   align-items: center;
   justify-items: center;
   width: 100%;
-  margin-top: 24px;
-}
-
-.spanLink {
-  position: absolute;
-  left: 80px;
-
-  top: 40px;
-
-  color: var(--Primary-Color, #bf310c);
-  /* Body text thick */
-  font-family: Inter;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
+  margin-top: 8px; /* Space between the add link and grid */
 }
 
 .addRecipeLink {
-  position: absolute;
-  right: 40px;
-  top: 80px;
+  margin-right: 16px;
+  margin-bottom: 16px;
+  width: 100%; /* Full width to fill the container */
+  display: flex; /* Use flex to align items */
+  justify-content: right;
 }
 
-.EditLink {
-  position: absolute;
-  right: 40px;
-  top: 10px;
+/* for mobile phones */
+@media (max-width: 480px) {
+  .addRecipeLink {
+    width: 100vw;
+    margin-bottom: 8px;
+  }
+  .gridContainer {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px;
+    width: 100%;
+  }
 }

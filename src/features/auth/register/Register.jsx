@@ -91,7 +91,7 @@ const Register = () => {
       <Link to="/" className={styles.logo}>
         <LogoIcon />
       </Link>
-      <section className={styles.container}>
+      <main className={styles.container}>
         <h1>Register</h1>
         <form className={styles.form} onSubmit={handleSubmit}>
           <div>
@@ -139,17 +139,20 @@ const Register = () => {
             <button className={styles.registerButton} type="submit">
               Register
             </button>
-            <Link to={"/login"}>
-              <button className={styles.loginButton}>Login</button>
-            </Link>
           </div>
         </form>
+        <div className={styles.loginContainer}>
+          <div className={styles.divider}></div>
+          <p>
+            Already have an account?<Link to={"/login"}> Login!</Link>
+          </p>
+        </div>
         {errMsg && (
           <p ref={errRef} className="errmsg">
             {errMsg}
           </p>
         )}
-      </section>
+      </main>
     </div>
   );
 

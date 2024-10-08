@@ -1,60 +1,37 @@
+/* Main container with overflow */
 .container {
-  overflow: scroll;
+  overflow-y: auto; /* Enables vertical scrolling only */
+  overflow-x: hidden; /* Prevents horizontal scrolling */
+  padding: 0; /* Ensures no padding affects scrolling */
+  margin: 0; /* Remove default margins for consistency */
 }
 
-.liCollection a {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 8px;
-  height: 100%;
-  width: 100%;
-}
-
+/* Collection Item container */
 .menuTab {
-  height: 24px;
   display: flex;
-  padding: 8px 8px;
+  padding: 8px;
   border-radius: 8px;
   align-items: center;
-  justify-content: space-between; /* Ensure the space between elements */
-  font-family: Inter;
+  justify-content: space-between;
+  font-family: Inter, sans-serif;
   font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  position: relative; /* Optional if you need relative positioning */
-}
-
-.editLink {
-  width: 24px;
-  height: 24px;
-  opacity: 0; /* Initially hidden */
-  transition: opacity 0.1s ease-in-out; /* Smooth transition */
-  border-radius: 4px;
-  padding: 4px;
-}
-
-.editLink:hover {
-  background-color: #bf300c27; /* Show the edit link when hovering over it */
-}
-
-.menuTab:hover .editLink {
-  opacity: 1; /* Show the edit link when hovering over .menuTab */
+  line-height: 1.5;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .menuTab:hover {
   background-color: #bf310c0d;
-  cursor: pointer;
 }
 
 .menuTab p {
-  color: var(--Primary-Color, #333);
+  color: var(--Text-Color, #333);
+  margin: 0; /* Remove any default margin for consistency */
 }
 
+/* Active collection tab */
 .active {
   background-color: #bf310c0d;
-  cursor: pointer;
   color: var(--Primary-Color, #bf310c);
 }
 
@@ -62,6 +39,31 @@
   color: var(--Primary-Color, #bf310c);
 }
 
+/* Edit link styles */
+.editLink {
+  width: 24px;
+  height: 24px;
+  opacity: 0; /* Initially hidden */
+  transition: opacity 0.1s ease-in-out;
+  border-radius: 4px;
+  padding: 4px;
+}
+
+.editLink:hover {
+  background-color: #bf300c27;
+}
+
+/* Show edit link when hovering over collection item */
+.menuTab:hover .editLink {
+  opacity: 1;
+}
+
+/* Link styling to occupy full width */
 .Link {
   width: 100%;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: inherit;
 }

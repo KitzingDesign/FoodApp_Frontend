@@ -1,15 +1,20 @@
-import { selectCurrentUserId } from "../auth/authSlice";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setActiveTitle } from "../../components/dashboard/dashboardSlice";
+
+// Styles
 import styles from "./CollectionList.module.css";
+
+// Icons
 import EditIcon from "../../../public/edit.jsx";
 
+// Other inputs
+import { selectCurrentUserId } from "../auth/authSlice";
 import { useGetCollectionsQuery } from "./collectionsApiSlice";
 import {
   selectCurrentActiveTab,
   setActiveTab,
 } from "../../components/Sidebar/sidebarSlice";
+import { setActiveTitle } from "../../components/dashboard/dashboardSlice";
 
 const CollectionList = () => {
   const dispatch = useDispatch();
@@ -20,55 +25,58 @@ const CollectionList = () => {
     data: collections = [],
     error,
     isLoading,
-    refetch: refetchCollections,
   } = useGetCollectionsQuery(userId);
 
-  const handleClickedLink = ({ activeTab, activeTitle }) => {
+  // Handler to update active tab and title
+  const handleClickedLink = (activeTab, activeTitle) => {
     dispatch(setActiveTab({ activeTab }));
     dispatch(setActiveTitle({ activeTitle }));
   };
 
-  const content = isLoading ? (
-    <div>Loading...</div>
-  ) : (
+  // Component for a single collection item
+  const CollectionItem = ({ collection }) => (
+    <li
+      key={collection.collection_id}
+      className={`${styles.menuTab} ${
+        Number(activeTab) === collection.collection_id ? styles.active : ""
+      }`}
+    >
+      <Link
+        to={`collections/${collection.collection_id}`}
+        onClick={() =>
+          handleClickedLink(collection.collection_id, collection.name)
+        }
+        className={styles.Link}
+      >
+        <p>{collection.name}</p>
+      </Link>
+      <Link
+        to={`collections/${collection.collection_id}/edit`}
+        onClick={() =>
+          handleClickedLink(collection.collection_id, "Edit Collection")
+        }
+        className={styles.editLink}
+      >
+        <EditIcon />
+      </Link>
+    </li>
+  );
+
+  // Main content rendering
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  if (!collections.length) return <div>No collections found</div>;
+
+  return (
     <ul className={styles.container}>
       {collections.map((collection) => (
-        <li
+        <CollectionItem
           key={collection.collection_id}
-          className={`${styles.menuTab} ${
-            Number(activeTab) === collection.collection_id ? styles.active : ""
-          }`}
-        >
-          <Link
-            to={`collections/${collection.collection_id}`}
-            onClick={() =>
-              handleClickedLink({
-                activeTab: collection.collection_id,
-                activeTitle: collection.name,
-              })
-            }
-            className={styles.Link}
-          >
-            <p>{collection.name}</p>
-          </Link>
-          <Link
-            to={`collections/${collection.collection_id}/edit`}
-            onClick={() =>
-              handleClickedLink({
-                activeTab: collection.collection_id,
-                activeTitle: "Edit Collection",
-              })
-            }
-            className={styles.editLink}
-          >
-            <EditIcon />
-          </Link>
-        </li>
+          collection={collection}
+        />
       ))}
     </ul>
   );
-
-  return content;
 };
 
 export default CollectionList;

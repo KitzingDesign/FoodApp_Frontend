@@ -1,10 +1,11 @@
 import { useGetCollectionsQuery } from "../collectionsApiSlice";
 import { useSelector } from "react-redux";
 import { selectCurrentUserId } from "../../auth/authSlice";
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import CollectionCard from "../../../components/collectionCard/CollectionCard";
 import styles from "./Collections.module.css";
 import Button from "../../../UI/Button";
+import ModalAddCollection from "../addCollection/ModalAddCollection";
 
 const Collections = () => {
   const userId = Number(useSelector(selectCurrentUserId));
@@ -15,7 +16,12 @@ const Collections = () => {
     isLoading,
   } = useGetCollectionsQuery(userId);
 
-  console.log(collections);
+  // Modal state to handle open/close
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Function to handle modal open/close
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   const content = isLoading ? (
     <div>Loading...</div>
@@ -25,7 +31,7 @@ const Collections = () => {
         <Button
           variant="outline"
           size="medium"
-          destination="add"
+          onClick={openModal}
           aria-label="Add a recipe to a collection"
         >
           Add Collection
@@ -40,6 +46,8 @@ const Collections = () => {
           />
         ))}
       </div>
+      {/* Modal for adding a new recipe */}
+      <ModalAddCollection isOpen={isModalOpen} onClose={closeModal} />
     </>
   );
 

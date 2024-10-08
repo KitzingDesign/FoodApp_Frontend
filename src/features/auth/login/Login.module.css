@@ -15,74 +15,33 @@
   position: fixed;
   left: 40px;
   top: 40px;
-  /* transform: rotate(-90deg); */
 }
 
 .container {
   display: flex;
-  width: 40;
-  padding: 48px 72px;
+  width: 35vw;
+  padding: 80px 48px 32px 48px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 32px;
+  gap: 16px;
 
   border-radius: 20px;
   background: var(--background-mode, #fff);
   box-shadow: 40px 40px 60px 0px rgba(228, 230, 234, 0.74);
 }
 
-.pre {
-  width: 70%;
-  color: #fff;
-  font-size: larger;
-}
-
-.text {
-  margin: 2px;
-  padding: 5px;
-}
-
-.passwordContainer {
+.inputContainer {
   display: flex;
   flex-direction: column-reverse;
+  gap: 4px;
 }
 
-.span {
-  color: rgb(0, 95, 236);
-  cursor: pointer;
-}
-
-.form {
-  /* Your existing styles */
-}
-
-.form label {
-  font-family: Inter;
-}
-
-.pre {
-  width: 70%;
-  color: #fff;
-  font-size: larger;
-}
-
-.text {
-  margin: 2px;
-  padding: 5px;
-}
-
-.span {
-  color: rgb(0, 95, 236);
-  cursor: pointer;
-}
-
-/* input css */
-.inputContainer {
-  width: 100%;
+.inputContainer div {
   display: flex;
   justify-content: space-between;
 }
+
 .inputContainer a {
   color: #4156a1;
   font-family: "Inter", Helvetica;
@@ -93,15 +52,20 @@
   text-decoration: none;
 }
 
-.input {
+.form {
   display: flex;
-  width: 396px;
-  height: 48px;
-  align-items: center;
-  gap: 8px;
-  padding: 0px 12px;
-  margin: 8px 0;
+  flex-direction: column;
+  width: 100%;
+  gap: 24px;
+}
 
+.form label {
+  font-family: Inter;
+}
+
+.input {
+  height: 48px;
+  padding: 0px 12px;
   border-radius: 8px;
   border: 1px solid var(--outline-default, #d0d5dd);
 }
@@ -117,7 +81,7 @@
 }
 
 .buttonContainer {
-  margin-top: 16px;
+  margin-top: 8px;
   display: flex;
   width: 100%;
   align-items: center;
@@ -133,22 +97,50 @@
   font-weight: 500;
   letter-spacing: 0;
   line-height: normal;
-  padding: 8px 32px;
+  padding: 8px 48px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 
-.signupButton {
-  border: #4156a1 solid 2px;
-  background-color: transparent;
+.registerContainer {
+  margin-top: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.registerContainer a {
   color: #4156a1;
   font-family: "Inter", Helvetica;
-  font-size: 24px;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 400;
   letter-spacing: 0;
   line-height: normal;
-  padding: 6px 30px;
-  border-radius: 4px;
-  cursor: pointer;
+  text-decoration: none;
+}
+.registerContainer p {
+  font-family: "Inter", Helvetica;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+@media (max-width: 480px) {
+  .outerContainer {
+    background-color: #fff;
+  }
+  .container {
+    width: 100%;
+    margin: 16px 16px;
+    padding: 0px 0px;
+
+    border-radius: 8px;
+    background: var(--background-mode, #fff);
+    box-shadow: none;
+  }
 }

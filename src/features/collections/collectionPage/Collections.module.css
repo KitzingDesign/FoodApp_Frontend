@@ -5,10 +5,29 @@
   margin-top: 24px;
   gap: 16px;
   width: 100%;
+  min-height: 100vh;
 }
 
 .addCollectionLink {
-  position: absolute;
-  right: 40px;
-  top: 80px;
+  margin-right: 16px;
+  margin-bottom: 16px;
+  width: 100%; /* Full width to fill the container */
+  display: flex; /* Use flex to align items */
+  justify-content: right;
+}
+.addCollectionLink a {
+  margin-right: 8px;
+}
+
+/* Media queries for mobile responsiveness */
+@media (max-width: 480px) {
+  .collectionContainer {
+    justify-content: center;
+  }
+  .addCollectionLink {
+    width: 100vw;
+  }
+  .addCollectionLink a {
+    margin-right: 32px;
+  }
 }

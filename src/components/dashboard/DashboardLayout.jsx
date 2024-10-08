@@ -1,52 +1,41 @@
-import { Link, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 
+// Styles
 import styles from "./DashboardLayout.module.css";
+
+// Components and Icons
 import SideBar from "../Sidebar/SideBar";
 import SidebarOpenCloseIcon from "../../../public/sidebarOpenClose";
 
-import { useSelector, useDispatch } from "react-redux";
+// Redux Selectors
 import { selectCurrentUserId } from "../../features/auth/authSlice";
-
-import { selectIsExpanded, setIsExpanded } from "../Sidebar/sidebarSlice";
 import { selectCurrentActiveTitle } from "./dashboardSlice";
+import Footer from "../footer/Footer";
 
 const DashboardLayout = () => {
-  const dispatch = useDispatch();
-  const isExpanded = useSelector(selectIsExpanded);
+  const userId = useSelector(selectCurrentUserId);
   const title = useSelector(selectCurrentActiveTitle);
 
-  const [showSidebar, setShowSidebar] = useState(true);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 767);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 480);
+  const [showSidebar, setShowSidebar] = useState(!isMobile);
 
-  // Local state to track when the animation completes
-  const [animationComplete, setAnimationComplete] = useState(false);
-
-  const userId = useSelector(selectCurrentUserId);
-
-  // Effect to handle screen resizing and determine if it’s mobile
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 767);
-      if (window.innerWidth > 767) {
-        setShowSidebar(true); // Show sidebar if resizing to larger screen
-      } else {
-        setShowSidebar(false); // Hide sidebar on small screens
-      }
+      const isNowMobile = window.innerWidth <= 480;
+      setIsMobile(isNowMobile);
+      setShowSidebar(!isNowMobile); // Show sidebar if desktop, hide if mobile
     };
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const toggleSidebar = () => {
-    setShowSidebar((prev) => !prev);
-  };
+  const toggleSidebar = () => setShowSidebar((prev) => !prev);
 
-  const handleTitleText = (title) => {
-    setIsTitleText(title);
-  };
+  const windowWidth = window.innerWidth;
 
   return (
     <div className={styles.container}>
@@ -55,58 +44,46 @@ const DashboardLayout = () => {
           <motion.aside
             className={styles.sidebar}
             initial={{ width: 0, opacity: 0 }}
-            animate={{ width: isMobile ? "100%" : 300, opacity: 1 }}
+            animate={{ width: isMobile ? windowWidth : 300, opacity: 1 }}
             exit={{ width: 0, opacity: 0 }}
             transition={{ type: "tween", ease: "easeInOut", duration: 0.2 }}
           >
-            <SideBar
-              userId={userId}
-              handleTitleChange={(title) => handleTitleText(title)}
-            />
+            <SideBar userId={userId} />
           </motion.aside>
         )}
       </AnimatePresence>
       <main className={styles.containerMain}>
         <motion.div
+          onClick={toggleSidebar}
+          initial={false}
           animate={{ x: showSidebar ? -60 : 8 }}
           transition={{ type: "tween", ease: "easeInOut", duration: 0.2 }}
-          // className={styles.visibleIcon}
-          onClick={() => {
-            if (isMobile) {
-              toggleSidebar();
-            } else setShowSidebar(() => !showSidebar);
-          }}
-          onAnimation={() => setAnimationComplete(false)}
-          onAnimationComplete={() => setAnimationComplete(true)}
           style={{
             position: showSidebar ? "fixed" : "absolute",
-            top: "16px", // Fixed top position
-            //left: "260px", // Fixed left position
-            zIndex: 1000, // Keep it on top of other elements
-            cursor: "pointer", // Ensure the cursor changes on hover
+            top: "16px",
+            zIndex: 1000,
+            cursor: "pointer",
           }}
           layout="position"
         >
           <SidebarOpenCloseIcon />
         </motion.div>
-        {isMobile && showSidebar ? null : (
-          <>
-            {!(title === "") ? (
-              <div>
-                <h2 className={styles.title}>{title}</h2>
-              </div>
-            ) : null}
-            <motion.span
-              initial={{ x: 0 }}
-              animate={{ x: showSidebar ? 0 : 48 }}
-              transition={{ type: "tween", ease: "easeInOut", duration: 0.2 }}
-              className={styles.spanLink}
-            >
-              {!(title === "") ? `/ ${title}` : "/ Current Recipe"}
-            </motion.span>
-            <Outlet />
-          </>
+
+        {title && (
+          <div>
+            <h2 className={styles.title}>{title}</h2>
+          </div>
         )}
+        <motion.span
+          initial={{ x: 0 }}
+          animate={{ x: showSidebar ? 0 : 48 }}
+          transition={{ type: "tween", ease: "easeInOut", duration: 0.2 }}
+          className={styles.spanLink}
+        >
+          {title ? `/ ${title}` : "/ Current Recipe"}
+        </motion.span>
+        <Outlet />
+        <Footer />
       </main>
     </div>
   );
