@@ -60,22 +60,22 @@ const AddCollectionContent = ({ isOpen, onClose }) => {
     }
   };
 
-  // Add event listener for 'Escape' key to close modal
+  // Add event listener for 'Escape' key to close modal and submit form
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === "Escape") {
         onClose();
       }
+      if (event.key === "Enter") {
+        handleSubmit(event); // Manually trigger form submit
+      }
     };
 
-    // Add the event listener when the modal opens
     document.addEventListener("keydown", handleKeyDown);
-
-    // Clean up the event listener when the modal closes or component unmounts
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [onClose]);
+  }, [onClose, formData]);
 
   return (
     <div>

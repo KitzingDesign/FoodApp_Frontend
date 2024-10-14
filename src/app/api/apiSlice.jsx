@@ -4,12 +4,13 @@ import { setCredentials, logOut } from "../../features/auth/authSlice";
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:3500",
   credentials: "include",
-  prepareHeaders: (header, { getState }) => {
+  prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.token;
+    console.log("token", token);
     if (token) {
-      header.set("authorization", `Bearer ${token}`);
+      headers.set("authorization", `Bearer ${token}`);
     }
-    return header;
+    return headers;
   },
 });
 
@@ -27,8 +28,11 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
     // send refresh token to get new access token
     const refreshResult = await baseQuery("/auth/refresh", api, extraOptions);
 
+    console.log("refreshResult", refreshResult);
+
     if (refreshResult?.data) {
       // store the new token
+      console.log("refreshResult", refreshResult.data);
       api.dispatch(setCredentials({ ...refreshResult.data }));
 
       // retry original query with new access token

@@ -1,5 +1,6 @@
 import { useGetUserQuery } from "../users/usersApiSlice";
 import { selectCurrentUserId, logOut } from "../../features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect, useRef } from "react";
 import styles from "./profile.module.css";
@@ -19,6 +20,7 @@ const calculateDaysSince = (dateString) => {
 
 const Profile = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate(); // Initialize navigate
   const userId = Number(useSelector(selectCurrentUserId));
   const { data: user, error, isLoading } = useGetUserQuery(Number(userId));
 
@@ -102,6 +104,7 @@ const Profile = () => {
     try {
       await deleteAccount(userId).unwrap();
       dispatch(logOut());
+      navigate("/");
     } catch (err) {
       console.error(err);
     }
@@ -164,11 +167,14 @@ const Profile = () => {
             </div>
           </div>
           <div className={styles.logout}>
-            <Link to="/" onClick={handleLogout}>
-              <Button size="small" variant="outlineRed">
-                Logout
-              </Button>
-            </Link>
+            <Button
+              size="small"
+              destination="/"
+              variant="outlineRed"
+              onClick={handleLogout}
+            >
+              Logout
+            </Button>
           </div>
         </div>
         <div className={styles.accountContainer}>

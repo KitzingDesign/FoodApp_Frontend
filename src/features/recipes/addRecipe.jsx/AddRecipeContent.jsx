@@ -153,30 +153,58 @@ const AddRecipeContent = ({ isOpen, onClose, children }) => {
     try {
       const newRecipe = await addRecipe(recipeFormData).unwrap();
 
-      // Now, add the instructions
-      let index = 0;
+      // Instruction
 
-      formData.instructions.map((instruction, index) => {
-        instruction
-          ? addInstruction({
+      // Check if all instructions are empty
+      const areAllInstructionsEmpty = formData.instructions.every(
+        (instruction) => instruction.trim() === ""
+      );
+
+      // If all instructions are empty, add a default instruction else add instructions
+      if (areAllInstructionsEmpty) {
+        // Initialize with a single default instruction
+        addInstruction({
+          recipe_id: newRecipe.recipe_id,
+          instruction_text: "No instruction provided",
+          step_number: 0, // Initialize with the first step
+        }).unwrap();
+      } else {
+        formData.instructions
+          .filter((instruction) => instruction.trim() !== "") // Filter out empty strings
+          .forEach((instruction, index) => {
+            addInstruction({
               recipe_id: newRecipe.recipe_id,
               instruction_text: instruction,
               step_number: index,
-            }).unwrap()
-          : null;
-      });
-      formData.ingredients.map((ingredient, index) => {
-        ingredient
-          ? addIngredient({
+            }).unwrap();
+          });
+      }
+
+      const areAllIngredientsEmpty = formData.ingredients.every(
+        (ingredient) => ingredient.trim() === ""
+      );
+
+      if (areAllIngredientsEmpty) {
+        // Initialize with a single default ingredient
+        addIngredient({
+          recipe_id: newRecipe.recipe_id,
+          name: "No ingredient provided",
+        }).unwrap();
+      } else {
+        formData.ingredients
+          .filter((ingredient) => ingredient.trim() !== "") // Filter out empty strings
+          .forEach((ingredient, index) => {
+            addIngredient({
               recipe_id: newRecipe.recipe_id,
               name: ingredient,
-            }).unwrap()
-          : null;
-      });
+            }).unwrap();
+          });
+      }
 
       resetForm();
 
       navigate(`/welcome/${userId}`);
+      onClose();
     } catch (err) {
       setErrMsg("Failed to add recipe");
       console.error(err);

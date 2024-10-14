@@ -6,6 +6,7 @@ const initialState = collectionAdapter.getInitialState();
 
 export const collectionsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    // Fetch all collections
     getCollections: builder.query({
       query: (userId) => ({
         url: "/collection",
@@ -14,7 +15,7 @@ export const collectionsApiSlice = apiSlice.injectEndpoints({
           return response.status === 200 && !result.isError;
         },
       }),
-      // Provide tags for the collections
+      // Provide tags to collections
       providesTags: (result, error, userId) =>
         result
           ? [
@@ -23,6 +24,8 @@ export const collectionsApiSlice = apiSlice.injectEndpoints({
             ]
           : [{ type: "Collection", id: "LIST" }],
     }),
+
+    // Fetch a single collection by ID
     getOneCollection: builder.query({
       query: ({ id }) => ({
         url: `/collection/one/${id}`,
@@ -30,14 +33,13 @@ export const collectionsApiSlice = apiSlice.injectEndpoints({
           return response.status === 200 && !result.isError;
         },
       }),
-      // Invalidate single recipe when needed
+      // Invalidate single collection by ID
       providesTags: (result, error, arg) => [
         { type: "Collection", id: arg.id },
       ],
     }),
-    // addFetch a single collection by ID
-    //insert code here
-    // addCreate a new collection
+
+    // Add a new collection
     addNewCollection: builder.mutation({
       query: (newCollection) => ({
         url: "/collection",
@@ -46,9 +48,10 @@ export const collectionsApiSlice = apiSlice.injectEndpoints({
           ...newCollection,
         },
       }),
-      // Invalidate the entire collection list to refetch it after a new collection is added
+      // Invalidate the entire collection list after adding a new collection
       invalidatesTags: [{ type: "Collection", id: "LIST" }],
     }),
+
     // Update an existing collection
     updateCollection: builder.mutation({
       query: (updatedCollection) => ({
@@ -56,22 +59,26 @@ export const collectionsApiSlice = apiSlice.injectEndpoints({
         method: "PATCH",
         body: { ...updatedCollection },
       }),
+      // Invalidate both the specific collection and the list
       invalidatesTags: (result, error, arg) => [
-        { type: "Collection", id: arg.id }, // Assuming `id` is passed when calling `updateCollection`
-        { type: "Collection", id: "LIST" },
+        { type: "Collection", id: arg.id }, // Invalidate the updated collection
+        { type: "Collection", id: "LIST" }, // Invalidate the entire list in case the update affects the collection list
       ],
     }),
+
     // Delete a collection
     deleteCollection: builder.mutation({
       query: ({ id }) => ({
         url: `/collection/${id}`,
         method: "DELETE",
       }),
+      // Invalidate both the specific collection and the list
       invalidatesTags: (result, error, id) => [
-        { type: "Collection", id }, // Invalidate the specific collection
-        { type: "Collection", id: "LIST" }, // Invalidate the list
+        { type: "Collection", id }, // Invalidate the deleted collection
+        { type: "Collection", id: "LIST" }, // Invalidate the entire list
       ],
     }),
+
     // Fetch all recipes in a specific collection
     getCollectionRecipes: builder.query({
       query: (collectionId) => `/collection/${collectionId}/recipes`,

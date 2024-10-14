@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -9,17 +10,26 @@ import EditIcon from "../../../public/edit.jsx";
 
 // Other inputs
 import { selectCurrentUserId } from "../auth/authSlice";
-import { useGetCollectionsQuery } from "./collectionsApiSlice";
+import {
+  useGetCollectionsQuery,
+  useGetCollectionRecipesQuery,
+} from "./collectionsApiSlice";
 import {
   selectCurrentActiveTab,
   setActiveTab,
 } from "../../components/Sidebar/sidebarSlice";
 import { setActiveTitle } from "../../components/dashboard/dashboardSlice";
+import Modal from "../../components/Modal/Modal";
+import AddCollectionContent from "../collections/addCollection/AddCollectionContent";
 
-const CollectionList = () => {
+const CollectionList = ({ isMobile, toggleSidebar }) => {
   const dispatch = useDispatch();
   const activeTab = useSelector(selectCurrentActiveTab);
   const userId = Number(useSelector(selectCurrentUserId));
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   const {
     data: collections = [],
@@ -31,6 +41,18 @@ const CollectionList = () => {
   const handleClickedLink = (activeTab, activeTitle) => {
     dispatch(setActiveTab({ activeTab }));
     dispatch(setActiveTitle({ activeTitle }));
+    isMobile && toggleSidebar();
+  };
+
+  // Handler to collection calculation
+  const handleCounter = (collection_id) => {
+    const {
+      data: collectionRecipes = [],
+      isLoading: isLoadingRecipes,
+      isError,
+      refetch: refetchRecipes,
+    } = useGetCollectionRecipesQuery(collection_id);
+    return <p className={styles.recipeCount}> {collectionRecipes.length} </p>;
   };
 
   // Component for a single collection item
@@ -50,31 +72,35 @@ const CollectionList = () => {
       >
         <p>{collection.name}</p>
       </Link>
-      <Link
-        to={`collections/${collection.collection_id}/edit`}
-        onClick={() =>
-          handleClickedLink(collection.collection_id, "Edit Collection")
-        }
+      {handleCounter(collection.collection_id)}
+      <button
+        onClick={() => openModal({ collection_id: collection.collection_id })}
         className={styles.editLink}
       >
         <EditIcon />
-      </Link>
+      </button>
     </li>
   );
 
   // Main content rendering
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
-  if (!collections.length) return <div>No collections found</div>;
 
   return (
     <ul className={styles.container}>
-      {collections.map((collection) => (
-        <CollectionItem
-          key={collection.collection_id}
-          collection={collection}
-        />
-      ))}
+      {collections && collections.length > 0 ? (
+        collections.map((collection) => (
+          <CollectionItem
+            key={collection.collection_id}
+            collection={collection}
+          />
+        ))
+      ) : (
+        <li className={styles.noTab}>You have no Collections</li>
+      )}
+      <Modal isOpen={isModalOpen} title="Add Collection" onClose={closeModal}>
+        <AddCollectionContent onClose={closeModal} />
+      </Modal>
     </ul>
   );
 };

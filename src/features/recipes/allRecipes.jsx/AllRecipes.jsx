@@ -66,11 +66,23 @@ const AllRecipes = () => {
           </Button>
         )}
       </div>
-      <div className={styles.gridContainer}>
-        {recipes.map((recipe) => (
-          <RecipeCard key={recipe.recipe_id} recipe={recipe} />
-        ))}
-      </div>
+      {recipes.length ? (
+        <div className={styles.gridContainer}>
+          {recipes.map((recipe) => (
+            <RecipeCard key={recipe.recipe_id} recipe={recipe} />
+          ))}
+        </div>
+      ) : (
+        <div className={styles.placeholderContainer}>
+          <img src="/grocery-bag.png" alt="Image of a grocery bag" />
+          <h3>No Recipes Yet...</h3>
+          <p>
+            Unleash your inner chef—create your first recipe and embark on a
+            delicious <br />
+            journey with your digital cookbook!
+          </p>
+        </div>
+      )}
       {/* Modal for adding a new recipe */}
       <Modal isOpen={isModalOpen} title="Add Recipe" onClose={closeModal}>
         <AddRecipeContent onClose={closeModal} />
@@ -80,7 +92,7 @@ const AllRecipes = () => {
         title="Edit Collection"
         onClose={closeEditModal}
       >
-        <EditCollectionContent onClose={closeEditModal} />{" "}
+        <EditCollectionContent onClose={closeEditModal} />
       </Modal>
     </div>
   );

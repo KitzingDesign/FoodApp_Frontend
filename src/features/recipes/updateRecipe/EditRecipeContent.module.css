@@ -32,11 +32,11 @@
 }
 
 .form label {
-  color: var(--Primary-Color, #333);
+  color: var(--Text-Color, #333);
   font-family: Inter;
   font-size: 16px;
   font-style: normal;
-  font-weight: 500;
+  font-weight: 400;
   line-height: normal;
   padding: 4px;
 }

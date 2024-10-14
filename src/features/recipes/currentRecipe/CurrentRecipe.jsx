@@ -50,7 +50,7 @@ const CurrentRecipe = () => {
   // Loading and error handling
   const isLoading =
     isLoadingRecipe || isLoadingIngredients || isLoadingInstructions;
-  const hasError = recipeError || ingredientsError || instructionsError;
+  const hasError = recipeError;
 
   useEffect(() => {
     if (recipe) {
@@ -59,9 +59,8 @@ const CurrentRecipe = () => {
     }
   }, [recipe]);
 
-  const toggleModal = () => {
-    setIsModalOpen((prev) => !prev); // Toggle modal state
-  };
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   const renderContent = () => {
     if (isLoading) return <div>Loading...</div>;
@@ -73,7 +72,7 @@ const CurrentRecipe = () => {
           <Button
             variant="outlineRed"
             size="medium"
-            onClick={toggleModal} // Open the modal on button click
+            onClick={openModal} // Open the modal on button click
             aria-label="Update current recipe"
           >
             Edit Recipe
@@ -91,7 +90,7 @@ const CurrentRecipe = () => {
                       <div>|</div>
                     </>
                   )}
-                  <p>{ingredients.length} Ingredients</p>
+                  {ingredients && <p>{ingredients.length} Ingredients</p>}
                 </div>
               </div>
               <div className={styles.descriptionContainer}>
@@ -101,24 +100,40 @@ const CurrentRecipe = () => {
               </div>
             </div>
             <div className={styles.imgContainer}>
-              <img src={recipe.image_url} alt={recipe.title} />
+              {recipe.image_url ? (
+                <img
+                  src={recipe.image_url}
+                  className={styles.image}
+                  alt={recipe.title}
+                />
+              ) : (
+                <img
+                  className={styles.placeholderImg}
+                  src="/grocery-bag.png"
+                  alt="Placeholder"
+                />
+              )}
             </div>
           </div>
           <div className={styles.lowerContainer}>
-            <div className={styles.ingredientsContainer}>
-              <h3>Ingredients</h3>
-              <div className={styles.divider} />
-              <ul>
-                {ingredients.map((item) => (
-                  <li key={item.id}>
-                    <label>{item.name}</label>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {ingredients && (
+              <div className={styles.ingredientsContainer}>
+                <h3>Ingredients</h3>
+                <div className={styles.divider} />
+
+                <ul>
+                  {ingredients.map((item) => (
+                    <li key={item.id}>
+                      <label>{item.name}</label>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
             <div className={styles.instructionsContainer}>
               <h3>Instructions</h3>
               <div className={styles.divider} />
+
               <ul>
                 {instructions.map((item) => (
                   <li key={item.id}>
@@ -131,8 +146,8 @@ const CurrentRecipe = () => {
           </div>
         </div>
         {/* Modal for editing the recipe */}
-        <Modal isOpen={isModalOpen} title="Edit Recipe" onClose={toggleModal}>
-          <EditRecipeContent onClose={toggleModal} />
+        <Modal isOpen={isModalOpen} title="Edit Recipe" onClose={closeModal}>
+          <EditRecipeContent onClose={closeModal} />
         </Modal>
       </div>
     );

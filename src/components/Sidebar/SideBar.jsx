@@ -12,16 +12,23 @@ import ChevronIcon from "../../../public/chevron";
 import PlusIcon from "../../../public/plus";
 import RecipeBookIcon from "../../../public/recipeBook";
 import RecipeBookIconOpen from "../../../public/recipeBookOpen";
+import Modal from "../Modal/Modal";
+import AddCollectionContent from "../../features/collections/addCollection/AddCollectionContent";
 
 import CollectionList from "../../features/collections/CollectionList";
 import { useGetUserQuery } from "../../features/users/usersApiSlice";
 import { selectCurrentActiveTab, setActiveTab } from "./sidebarSlice";
 import { setActiveTitle } from "../dashboard/dashboardSlice";
 
-function SideBar({ userId }) {
+function SideBar({ userId, toggleSidebar }) {
   const dispatch = useDispatch();
   const activeTab = useSelector(selectCurrentActiveTab);
+
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 480);
   useEffect(() => {
@@ -46,13 +53,22 @@ function SideBar({ userId }) {
   const handleActiveLink = ({ activeTab, activeTitle }) => {
     dispatch(setActiveTab({ activeTab }));
     dispatch(setActiveTitle({ activeTitle }));
+    isMobile && toggleSidebar();
   };
 
   // Functional Component for User Profile Section
   const UserProfile = () => (
-    <Link to={"profile"} className={styles.titleContainer}>
+    <Link
+      to={"profile"}
+      className={styles.titleContainer}
+      onClick={isMobile && toggleSidebar}
+    >
       <div className={styles.profileContainer}>
-        <ProfileIcon />
+        {user.profile_picture ? (
+          <img src={user.profile_picture} alt="Profile Picture" />
+        ) : (
+          <ProfileIcon />
+        )}
       </div>
       <h2 className={styles.sidebarTitle}>
         {user.first_name} {user.last_name}
@@ -99,9 +115,9 @@ function SideBar({ userId }) {
             <p>Collections</p>
           </Link>
           <div className={styles.flexIcons}>
-            <Link to="collections/add">
+            <button onClick={openModal} className={styles.addCollection}>
               <PlusIcon />
-            </Link>
+            </button>
             <motion.div
               animate={{ rotate: isExpanded ? 180 : 90 }}
               onClick={() => setIsExpanded(() => !isExpanded)}
@@ -113,7 +129,12 @@ function SideBar({ userId }) {
           </div>
         </li>
       </ul>
-      {isExpanded && <CollectionList />}
+      {isExpanded && (
+        <CollectionList isMobile={isMobile} toggleSidebar={toggleSidebar} />
+      )}
+      <Modal isOpen={isModalOpen} title="Add Collection" onClose={closeModal}>
+        <AddCollectionContent onClose={closeModal} />
+      </Modal>
     </div>
   );
 }

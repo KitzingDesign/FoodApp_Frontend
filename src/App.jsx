@@ -1,6 +1,5 @@
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
-import Navbar from "./components/Navbar";
 
 import Layout from "./components/Layout";
 import Public from "./components/Public";
@@ -17,6 +16,8 @@ import AllRecipes from "./features/recipes/allRecipes.jsx/allRecipes.jsx";
 import UpdateRecipe from "./features/recipes/updateRecipe/UpdateRecipe.jsx";
 import EditCollection from "./features/collections/editCollection/EditCollection.jsx";
 import Profile from "./features/profile/Profile.jsx";
+import PersistLogin from "./features/auth/PersistLogin.jsx";
+import PageNotFound from "./components/404/PageNotFound.jsx";
 
 function App() {
   return (
@@ -28,31 +29,40 @@ function App() {
         <Route path="register" element={<Register />} />
 
         {/* protected routes */}
-        <Route element={<RequireAuth />}>
-          {/* dashboard */}
-          <Route path="/welcome" element={<DashboardLayout />}>
-            <Route path=":userId" element={<Welcome />} />
-            <Route path=":userId/create" element={<AddRecipe />} />
+        <Route element={<PersistLogin />}>
+          <Route element={<RequireAuth />}>
+            {/* dashboard */}
+            <Route path="/welcome" element={<DashboardLayout />}>
+              <Route path=":userId" element={<Welcome />} />
+              <Route path=":userId/create" element={<AddRecipe />} />
 
-            <Route path=":userId/:recipeId" element={<CurrentRecipe />} />
-            <Route path=":userId/:recipeId/update" element={<UpdateRecipe />} />
-            <Route path="collections" element={<Collections />} />
-            <Route path="collections/add" element={<AddCollection />} />
-            <Route path="collections/:collectionId" element={<AllRecipes />} />
-            <Route path="profile" element={<Profile />} />
+              <Route path=":userId/:recipeId" element={<CurrentRecipe />} />
+              <Route
+                path=":userId/:recipeId/update"
+                element={<UpdateRecipe />}
+              />
+              <Route path="collections" element={<Collections />} />
+              <Route path="collections/add" element={<AddCollection />} />
+              <Route
+                path="collections/:collectionId"
+                element={<AllRecipes />}
+              />
+              <Route path="profile" element={<Profile />} />
 
-            <Route
-              path="collections/:collectionId/edit"
-              element={<EditCollection />}
-            />
-            <Route
-              path="collections/:collectionId/create"
-              element={<AddRecipe />}
-            />
-            {/* add list of recipes here */}
-            <Route path="recipes" element={<div>Recipes</div>} />
+              <Route
+                path="collections/:collectionId/edit"
+                element={<EditCollection />}
+              />
+              <Route
+                path="collections/:collectionId/create"
+                element={<AddRecipe />}
+              />
+              {/* add list of recipes here */}
+              <Route path="recipes" element={<div>Recipes</div>} />
+            </Route>
           </Route>
         </Route>
+        <Route path="*" element={<PageNotFound />} />
       </Route>
     </Routes>
   );

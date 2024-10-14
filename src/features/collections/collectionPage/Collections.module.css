@@ -15,6 +15,44 @@
   height: auto; /* Set height to auto to fit content */
 }
 
+.placeholderContainer {
+  width: 70%;
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  justify-self: center;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.placeholderContainer img {
+  width: 20%;
+
+  height: auto;
+}
+
+.placeholderContainer h3 {
+  color: var(--Secondary-color, #4156a1);
+  font-family: Inter;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.placeholderContainer p {
+  color: var(--text-color, #333);
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-align: center;
+}
+
 .addCollectionLink {
   margin-right: 16px;
   margin-bottom: 16px;
@@ -39,5 +77,11 @@
   }
   .addCollectionLink a {
     margin-right: 16px; /* Adjust spacing on mobile */
+  }
+  .placeholderContainer {
+    width: 100%;
+  }
+  .placeholderContainer img {
+    width: 40%;
   }
 }

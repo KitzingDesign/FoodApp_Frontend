@@ -7,10 +7,6 @@
   justify-content: center;
 }
 
-.outerContainer h1 {
-  font-family: inter;
-}
-
 .logo {
   position: fixed;
   left: 40px;
@@ -18,17 +14,46 @@
 }
 
 .container {
-  display: flex;
-  width: 35vw;
-  padding: 80px 48px 32px 48px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 16px;
-
   border-radius: 20px;
   background: var(--background-mode, #fff);
   box-shadow: 40px 40px 60px 0px rgba(228, 230, 234, 0.74);
+  width: 60vw;
+  padding: 40px;
+}
+
+.innerContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 56px;
+}
+
+.imgContainer {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.imgContainer img {
+  width: 100%;
+}
+
+.containerLogin {
+  width: 50%;
+  display: flex;
+
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 0px;
+}
+
+.containerLogin h1 {
+  font-family: "Inter", Helvetica;
+  color: var(--Text-Color, #333333);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: normal;
 }
 
 .inputContainer {
@@ -56,7 +81,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 24px;
+  gap: 16px;
 }
 
 .form label {
@@ -68,6 +93,20 @@
   padding: 0px 12px;
   border-radius: 8px;
   border: 1px solid var(--outline-default, #d0d5dd);
+}
+
+.persist {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--Secondary-Color, #4156a1);
+}
+
+/* Style the checkbox itself */
+.persistInput {
+  width: 16px; /* Width of the checkbox */
+  height: 16px; /* Height of the checkbox */
+  cursor: pointer; /* Change cursor to pointer on hover */
 }
 
 ::placeholder {
@@ -93,6 +132,7 @@
   background-color: #4156a1;
   color: white;
   font-family: "Inter", Helvetica;
+  width: 100%;
   font-size: 24px;
   font-weight: 500;
   letter-spacing: 0;
@@ -103,8 +143,50 @@
   cursor: pointer;
 }
 
+.orContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 16px;
+}
+.orContainer p {
+  font-family: "Inter", Helvetica;
+  color: #98a2b3;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.googleLoginButton {
+  height: 40px;
+  margin-top: 8px;
+  width: 175px;
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  align-self: center;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  font-family: "Inter", Helvetica;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: normal;
+  border: 1px solid #333333;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.divider {
+  width: 24px;
+  height: 1px;
+
+  background-color: #98a2b3;
+}
+
 .registerContainer {
-  margin-top: 36px;
+  margin-top: 80px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -120,7 +202,7 @@
   font-weight: 400;
   letter-spacing: 0;
   line-height: normal;
-  text-decoration: none;
+  text-decoration: underline;
 }
 .registerContainer p {
   font-family: "Inter", Helvetica;
@@ -130,7 +212,46 @@
   line-height: normal;
 }
 
+@media only screen and (min-device-width: 480px) and (max-device-width: 1350px) and (-webkit-min-device-pixel-ratio: 1) {
+  .imgContainer {
+    display: none;
+  }
+  .containerLogin {
+    width: 100%;
+    padding: 0px;
+  }
+  .container {
+    width: 40vw;
+    padding: 40px;
+  }
+  .registerContainer {
+    margin-top: 40px;
+  }
+}
+@media only screen and (min-device-width: 480px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 1) {
+  .imgContainer {
+    display: none;
+  }
+  .containerLogin {
+    width: 100%;
+    padding: 0px;
+  }
+  .container {
+    width: 70vw;
+    padding: 40px;
+  }
+  .registerContainer {
+    margin-top: 40px;
+  }
+}
 @media (max-width: 480px) {
+  .imgContainer {
+    display: none;
+  }
+  .containerLogin {
+    width: 100%;
+    padding: 0px;
+  }
   .outerContainer {
     background-color: #fff;
   }
@@ -142,5 +263,11 @@
     border-radius: 8px;
     background: var(--background-mode, #fff);
     box-shadow: none;
+  }
+  /* Style the checkbox itself */
+  .persistInput {
+    width: 20px; /* Width of the checkbox */
+    height: 20px; /* Height of the checkbox */
+    cursor: pointer; /* Change cursor to pointer on hover */
   }
 }

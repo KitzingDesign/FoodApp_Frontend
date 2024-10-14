@@ -9,6 +9,13 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         body: credentials,
       }),
     }),
+    loginWithGoogle: builder.mutation({
+      query: (credentials) => ({
+        url: "/auth/google",
+        method: "POST",
+        body: credentials,
+      }),
+    }),
     register: builder.mutation({
       query: (credentials) => ({
         url: "/user",
@@ -28,11 +35,29 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
+    refresh: builder.mutation({
+      query: () => ({
+        url: "/auth/refresh",
+        method: "GET",
+      }),
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          console.log(data);
+          const { accessToken } = data;
+          dispatch(setCredentials({ accessToken }));
+        } catch (err) {
+          console.log(err);
+        }
+      },
+    }),
   }),
 });
 
 export const {
   useLoginMutation,
+  useLoginWithGoogleMutation,
+  useRefreshMutation,
   useRegisterMutation,
   useLogoutMutation,
   useDeleteMutation,

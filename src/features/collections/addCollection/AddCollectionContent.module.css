@@ -94,11 +94,11 @@
 
 .inputTitle label,
 .inputDescription label {
-  color: var(--Primary-Color, #bf310c);
+  color: var(--Text-Color, #333);
   font-family: Inter;
   font-size: 16px;
   font-style: normal;
-  font-weight: 600;
+  font-weight: 400;
   line-height: normal;
 }
 

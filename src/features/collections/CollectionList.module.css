@@ -9,7 +9,7 @@
 /* Collection Item container */
 .menuTab {
   display: flex;
-  padding: 8px;
+  padding: 0px 8px;
   border-radius: 8px;
   align-items: center;
   justify-content: space-between;
@@ -20,8 +20,9 @@
   transition: background-color 0.3s ease;
 }
 
-.menuTab:hover {
-  background-color: #bf310c0d;
+/* Menu tab hover state (applies only when the tab is not active) */
+.menuTab:not(.active):hover {
+  background-color: #6969690d; /* Light gray background on hover */
 }
 
 .menuTab p {
@@ -39,31 +40,68 @@
   color: var(--Primary-Color, #bf310c);
 }
 
-/* Edit link styles */
-.editLink {
+/* Recipe count styles */
+.recipeCount {
   width: 24px;
   height: 24px;
-  opacity: 0; /* Initially hidden */
-  transition: opacity 0.1s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 4px;
   padding: 4px;
+  margin-left: 4px;
+  color: var(--Text-Color, #333);
 }
 
-.editLink:hover {
-  background-color: #bf300c27;
+/* Edit link styles */
+.editLink {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 4px;
+  display: none;
+  border-radius: 4px;
 }
 
-/* Show edit link when hovering over collection item */
+/* Apply background to .editLink when hovered or menuTab is active */
+.menuTab.active .editLink:hover {
+  background-color: #bf300c27; /* Light red background when menuTab is active or when .editLink is hovered */
+}
+
+/* Edit link hover state when not in active tab */
+.menuTab:not(.active) .editLink:hover {
+  background-color: none; /* Light red background only on hover if not active */
+}
+
+/* Show edit link and hide recipeCount when hovering or active */
 .menuTab:hover .editLink {
-  opacity: 1;
+  display: flex;
+}
+
+.menuTab:hover .recipeCount {
+  opacity: 0; /* Hide recipe count */
 }
 
 /* Link styling to occupy full width */
 .Link {
   width: 100%;
+  height: 48px;
   text-decoration: none;
   display: flex;
   align-items: center;
   gap: 8px;
   color: inherit;
+}
+
+/* Collection Item container */
+.noTab {
+  display: flex;
+  padding: 16px;
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  transition: background-color 0.3s ease;
 }

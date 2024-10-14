@@ -14,7 +14,11 @@ const RecipeCard = ({ recipe }) => {
       }}
     >
       <div className={styles.imgContainer}>
-        <img src={recipe.image_url} />
+        {recipe.image_url ? (
+          <img className={styles.foodImg} src={recipe.image_url} />
+        ) : (
+          <img className={styles.placeholderImg} src="/grocery-bag.png" />
+        )}
       </div>
       <div className={styles.textContainer}>
         <h3>{recipe.title}</h3>

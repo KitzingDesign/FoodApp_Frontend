@@ -48,7 +48,7 @@ const DashboardLayout = () => {
             exit={{ width: 0, opacity: 0 }}
             transition={{ type: "tween", ease: "easeInOut", duration: 0.2 }}
           >
-            <SideBar userId={userId} />
+            <SideBar userId={userId} toggleSidebar={toggleSidebar} />
           </motion.aside>
         )}
       </AnimatePresence>
