@@ -155,9 +155,9 @@ const Login = () => {
                 />
                 <div className={styles.inputTitleContainer}>
                   <label htmlFor="password">Password</label>
-                  <a href="/#" className={styles.forgotPassword}>
+                  <Link to="/forgot-password" className={styles.forgotPassword}>
                     Forgot Password?
-                  </a>
+                  </Link>
                 </div>
               </div>
               <label htmlFor="persist" className={styles.persist}>

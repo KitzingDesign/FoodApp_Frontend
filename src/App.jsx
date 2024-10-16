@@ -16,8 +16,10 @@ import AllRecipes from "./features/recipes/allRecipes.jsx/allRecipes.jsx";
 import UpdateRecipe from "./features/recipes/updateRecipe/UpdateRecipe.jsx";
 import EditCollection from "./features/collections/editCollection/EditCollection.jsx";
 import Profile from "./features/profile/Profile.jsx";
+import TermsAndConditions from "./components/legal/TermsAndConditions.jsx";
 import PersistLogin from "./features/auth/PersistLogin.jsx";
 import PageNotFound from "./components/404/PageNotFound.jsx";
+import ForgotPassword from "./features/auth/forgotPassword/ForgotPassword.jsx";
 
 function App() {
   return (
@@ -27,6 +29,8 @@ function App() {
         <Route index element={<Public />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
+        <Route path="terms" element={<TermsAndConditions />} />
+        <Route path="forgot-password" element={<ForgotPassword />} />
 
         {/* protected routes */}
         <Route element={<PersistLogin />}>

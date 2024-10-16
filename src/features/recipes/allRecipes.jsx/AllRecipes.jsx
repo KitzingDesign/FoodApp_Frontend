@@ -7,7 +7,10 @@ import styles from "./AllRecipes.module.css";
 import { selectCurrentUserId } from "../../auth/authSlice";
 import { useGetRecipesQuery } from "../recipesApiSlice";
 import RecipeCard from "../../../components/RecipeCard";
-import { useGetCollectionRecipesQuery } from "../../collections/collectionsApiSlice";
+import {
+  useGetCollectionRecipesQuery,
+  useGetOneCollectionQuery,
+} from "../../collections/collectionsApiSlice";
 import Modal from "../../../components/Modal/Modal";
 import AddRecipeContent from "../addRecipe.jsx/AddRecipeContent";
 import EditRecipeModal from "../updateRecipe/EditRecipeContent";
@@ -40,6 +43,13 @@ const AllRecipes = () => {
     ? useGetCollectionRecipesQuery(collectionId)
     : useGetRecipesQuery(userId);
 
+  // Fetch recipes based on the collection ID or user ID
+  const {
+    data: collection = [],
+    error: collectionError,
+    isLoading: collectionIsLoading,
+  } = useGetOneCollectionQuery(collectionId);
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -66,6 +76,13 @@ const AllRecipes = () => {
           </Button>
         )}
       </div>
+      {collection ? (
+        <div>
+          <p>{collection.description}</p>
+        </div>
+      ) : (
+        none
+      )}
       {recipes.length ? (
         <div className={styles.gridContainer}>
           {recipes.map((recipe) => (

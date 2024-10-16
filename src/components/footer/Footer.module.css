@@ -1,15 +1,29 @@
+.logoContainer {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
 .footer {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   margin-top: 24px;
+  position: relative;
 }
 
 .linksList a {
-  color: var(--Primary-Color, #bf310c);
-  text-decoration: none;
-  font-family: "Inter", sans-serif;
+  color: var(--text-color, #333);
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 
 .footerContent {
@@ -17,14 +31,14 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 16px; /* Consistent spacing */
+  gap: 40px; /* Consistent spacing */
 }
 
 .divider {
   height: 1px;
   background: #dcdcdc;
   width: 100%;
-  margin-bottom: 16px; /* Add space below the divider */
+  margin-bottom: 40px; /* Add space below the divider */
 }
 
 .brandContainer {
@@ -34,23 +48,29 @@
 }
 
 .brandSymbol {
-  font-size: 16px; /* Slightly larger font size for emphasis */
-  color: var(--Primary-Color, #bf310c); /* Use primary color */
-  font-weight: bold; /* Make symbol bold */
+  color: var(--Primary-Color, #bf310c);
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
 }
 
 .brandName {
-  font-size: 16px; /* Match the symbol size */
-  font-weight: 400; /* Make brand name bold */
-  font-family: "Inter", sans-serif;
-  color: var(--Text-Color, #333); /* Use text color */
+  color: var(--text-color, #333);
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 
 .linksList {
   list-style-type: none; /* Remove default list styling */
   padding: 0; /* Remove padding */
   display: flex; /* Align links horizontally */
-  gap: 16px; /* Space between links */
+  gap: 80px; /* Space between links */
+  margin-top: 16px;
 }
 
 .linksList li {
@@ -58,12 +78,14 @@
 }
 
 .linksList a:hover {
-  text-decoration: underline; /* Underline on hover */
+  color: var(--text-color, #333);
+  text-decoration: underline;
 }
 
 .separator {
   margin: 16px 0; /* Spacing around separator */
   font-weight: bold; /* Bold separator text */
+  color: var(--Primary-Color, #bf310c);
 }
 
 .copyRight {

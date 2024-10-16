@@ -17,7 +17,6 @@ import { useGetCollectionsQuery } from "../../collections/collectionsApiSlice.js
 // Components and styles
 import styles from "./AddRecipeContent.module.css";
 import ImportImageIcon from "../../../../public/image.jsx";
-import CloseIcon from "/public/close.jsx";
 
 // Helper function to get initial state
 const getInitialFormData = (userId, collectionId) => ({
@@ -234,7 +233,10 @@ const AddRecipeContent = ({ isOpen, onClose, children }) => {
     <>
       {errMsg && <p style={{ color: "red" }}>{errMsg}</p>}
       <form onSubmit={handleSubmitUrl} className={styles.urlContainer}>
-        <label htmlFor="url">Add Recipe from url</label>
+        <label htmlFor="url" className={styles.urlTitle}>
+          Add Recipe from url
+          <img src="/info.svg" alt="info icon" />
+        </label>
         <div>
           <input
             type="text"

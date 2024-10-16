@@ -1,0 +1,126 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  width: 100vw;
+  height: 100vh;
+  margin-top: 24px;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.logoContainer {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.textContainer {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+}
+
+.textContainer h1 {
+  color: var(--text-color, #333);
+  font-family: Inter;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 100%; /* 32px */
+}
+
+.textContainer h2 {
+  color: var(--Secondary-color, #4156a1);
+  font-family: Inter;
+  font-size: 128px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 100%; /* 128px */
+}
+
+.textContainer p {
+  color: var(--text-color, #333);
+  text-align: center;
+  font-family: Inter;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 100%; /* 24px */
+  margin-bottom: 24px;
+}
+
+.imgContainer {
+  width: auto;
+  height: 50%;
+  transform: translateY(-15%);
+}
+
+.imgContainer img {
+  height: 100%;
+}
+
+@media only screen and (min-device-width: 480px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 1) {
+  .container {
+    gap: 8px;
+  }
+
+  .textContainer {
+    width: 80%;
+    gap: 16px;
+  }
+
+  .textContainer h1 {
+    font-size: 24px;
+  }
+
+  .textContainer h2 {
+    font-size: 48px;
+  }
+
+  .textContainer p {
+    font-size: 16px;
+  }
+  .imgContainer {
+    height: 40%;
+    transform: translateY(-15%);
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    flex-direction: column-reverse;
+    gap: 16px;
+  }
+
+  .textContainer {
+    width: 80%;
+    gap: 16px;
+  }
+
+  .textContainer h1 {
+    font-size: 24px;
+  }
+
+  .textContainer h2 {
+    font-size: 64px;
+  }
+
+  .textContainer p {
+    font-size: 16px;
+  }
+  .imgContainer {
+    gap: 40px;
+    height: 20%;
+    transform: translateY(0%);
+  }
+}

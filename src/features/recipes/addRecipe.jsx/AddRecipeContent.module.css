@@ -108,6 +108,12 @@
 
 /* Css for the AddRecipe component */
 
+.urlTitle {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
 .urlContainer {
   display: flex;
   flex-direction: column;
