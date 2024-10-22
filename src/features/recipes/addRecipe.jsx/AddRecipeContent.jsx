@@ -1,22 +1,26 @@
 // External imports
 import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-import FocusTrap from "focus-trap-react";
+import heic2any from "heic2any";
+
 import { useNavigate, useParams } from "react-router-dom";
+import { Tooltip as ReactTooltip } from "react-tooltip";
+import PulseLoader from "react-spinners/PulseLoader";
 
 // Api and redux imports
 import { selectCurrentUserId } from "../../auth/authSlice.jsx";
 import {
   useAddNewRecipeMutation,
   useGetRecipeFromUrlQuery,
-} from "../recipesApiSlice.jsx";
+} from "../recipesApiSlice";
 import { useAddNewInstructionMutation } from "../../instructions/instructionsApiSlice.jsx";
 import { useAddNewIngredientMutation } from "../../ingredients/ingredientsApiSlice.jsx";
-import { useGetCollectionsQuery } from "../../collections/collectionsApiSlice.jsx"; // Import the collections query hook
+import { useGetCollectionsQuery } from "../../collections/collectionsApiSlice.jsx";
 
 // Components and styles
 import styles from "./AddRecipeContent.module.css";
 import ImportImageIcon from "../../../../public/image.jsx";
+import ErrorMsg from "../../../UI/errorMsg/ErrorMsg.jsx";
 
 // Helper function to get initial state
 const getInitialFormData = (userId, collectionId) => ({
@@ -29,8 +33,8 @@ const getInitialFormData = (userId, collectionId) => ({
   collection_id: collectionId ? Number(collectionId) : "",
 });
 
-const AddRecipeContent = ({ isOpen, onClose, children }) => {
-  const { collectionId } = useParams(); // Extract recipe ID from URL
+const AddRecipeContent = ({ isOpen, onClose }) => {
+  const { collectionId } = useParams();
   const userId = Number(useSelector(selectCurrentUserId));
 
   const [recipeUrl, setRecipeUrl] = useState("");
@@ -38,7 +42,6 @@ const AddRecipeContent = ({ isOpen, onClose, children }) => {
   const [formData, setFormData] = useState(
     getInitialFormData(userId, collectionId)
   );
-
   const [imageFile, setImageFile] = useState(null); // State for the image file
   const [errMsg, setErrMsg] = useState("");
 
@@ -46,7 +49,6 @@ const AddRecipeContent = ({ isOpen, onClose, children }) => {
   const { data: collections = [], isLoading: collectionsLoading } =
     useGetCollectionsQuery(userId);
 
-  //Api hooks
   const [addRecipe, { isLoading: isAdding }] = useAddNewRecipeMutation();
   const [addInstruction] = useAddNewInstructionMutation();
   const [addIngredient] = useAddNewIngredientMutation();
@@ -56,27 +58,27 @@ const AddRecipeContent = ({ isOpen, onClose, children }) => {
 
   const {
     data: recipe,
-    error,
+    error: urlError,
     isLoading: isUrlLoading,
-  } = useGetRecipeFromUrlQuery(urlToFetch, {
-    skip: !urlToFetch,
-  });
+  } = useGetRecipeFromUrlQuery(urlToFetch, { skip: !urlToFetch });
 
   useEffect(() => {
     if (recipe) {
-      console.log(recipe);
       setFormData((prevData) => ({
         ...prevData,
         title: recipe.name,
         description: recipe.description || "",
         ingredients: recipe.recipeIngredient || Array(5).fill({ text: "" }),
         instructions: Array.isArray(recipe.recipeInstructions)
-          ? recipe.recipeInstructions.map((instruction) => instruction.text) // Extracting text
-          : Array(4).fill(""), // Default to empty instructions
+          ? recipe.recipeInstructions.map((instruction) => instruction.text)
+          : Array(4).fill(""),
         image_url: recipe.image || "",
       }));
     }
-  }, [recipe]);
+    if (urlError) {
+      setErrMsg("Failed to fetch recipe from the provided URL.");
+    }
+  }, [recipe, urlError]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -85,21 +87,11 @@ const AddRecipeContent = ({ isOpen, onClose, children }) => {
     if (name === "instructions" || name === "ingredients") {
       const newList = [...formData[name]];
       newList[index] = value;
-      setFormData({
-        ...formData,
-        [name]: newList,
-      });
+      setFormData({ ...formData, [name]: newList });
     } else if (name === "collection_id") {
-      // Explicitly convert collection_id to a number
-      setFormData({
-        ...formData,
-        collection_id: Number(value), // Convert string to number
-      });
+      setFormData({ ...formData, collection_id: Number(value) });
     } else {
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
+      setFormData({ ...formData, [name]: value });
     }
   };
 
@@ -109,22 +101,58 @@ const AddRecipeContent = ({ isOpen, onClose, children }) => {
 
   const handleSubmitUrl = (e) => {
     e.preventDefault();
-    setUrlToFetch(recipeUrl);
+    setErrMsg(""); // Clear any previous errors
+
+    if (!recipeUrl) {
+      setErrMsg("Please enter a valid URL.");
+      return;
+    }
+
+    try {
+      setUrlToFetch(recipeUrl);
+    } catch (error) {
+      setErrMsg("Failed to extract recipe from the provided URL.");
+      console.error("Error fetching recipe from URL:", error);
+    }
   };
 
-  // Image Change
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImageFile(file); // Store the file in state for later upload
-      const reader = new FileReader();
-      reader.onloadend = () => {
+      // Check if the file is HEIC and convert it to JPG for preview
+      if (file.type === "image/heic" || file.type === "image/heif") {
+        try {
+          // Convert HEIC to JPEG using heic2any
+          const convertedBlob = await heic2any({
+            blob: file,
+            toType: "image/jpeg", // Convert to JPEG for preview
+          });
+
+          const convertedFile = new File(
+            [convertedBlob],
+            file.name.replace(/\.[^/.]+$/, ".jpg"),
+            {
+              type: "image/jpeg",
+            }
+          );
+
+          // Set the converted file for preview and upload
+          setImageFile(convertedFile);
+          setFormData((prevData) => ({
+            ...prevData,
+            image_url: URL.createObjectURL(convertedFile), // Set preview to the converted image
+          }));
+        } catch (error) {
+          console.error("Error converting HEIC to JPEG:", error);
+        }
+      } else {
+        // For non-HEIC images, just use the file directly
+        setImageFile(file);
         setFormData((prevData) => ({
           ...prevData,
-          image_url: reader.result, // For preview purposes only
+          image_url: URL.createObjectURL(file),
         }));
-      };
-      reader.readAsDataURL(file);
+      }
     }
   };
 
@@ -144,32 +172,26 @@ const AddRecipeContent = ({ isOpen, onClose, children }) => {
     recipeFormData.append("collection_id", formData.collection_id);
     recipeFormData.append("image_url", formData.image_url);
 
-    // Append the image if available
     if (imageFile) {
       recipeFormData.append("image", imageFile);
     }
 
     try {
-      const newRecipe = await addRecipe(recipeFormData).unwrap();
+      const newRecipe = await addRecipe({ recipeFormData }).unwrap();
 
-      // Instruction
-
-      // Check if all instructions are empty
       const areAllInstructionsEmpty = formData.instructions.every(
         (instruction) => instruction.trim() === ""
       );
 
-      // If all instructions are empty, add a default instruction else add instructions
       if (areAllInstructionsEmpty) {
-        // Initialize with a single default instruction
         addInstruction({
           recipe_id: newRecipe.recipe_id,
           instruction_text: "No instruction provided",
-          step_number: 0, // Initialize with the first step
+          step_number: 0,
         }).unwrap();
       } else {
         formData.instructions
-          .filter((instruction) => instruction.trim() !== "") // Filter out empty strings
+          .filter((instruction) => instruction.trim() !== "")
           .forEach((instruction, index) => {
             addInstruction({
               recipe_id: newRecipe.recipe_id,
@@ -184,14 +206,13 @@ const AddRecipeContent = ({ isOpen, onClose, children }) => {
       );
 
       if (areAllIngredientsEmpty) {
-        // Initialize with a single default ingredient
         addIngredient({
           recipe_id: newRecipe.recipe_id,
           name: "No ingredient provided",
         }).unwrap();
       } else {
         formData.ingredients
-          .filter((ingredient) => ingredient.trim() !== "") // Filter out empty strings
+          .filter((ingredient) => ingredient.trim() !== "")
           .forEach((ingredient, index) => {
             addIngredient({
               recipe_id: newRecipe.recipe_id,
@@ -200,9 +221,12 @@ const AddRecipeContent = ({ isOpen, onClose, children }) => {
           });
       }
 
+      navigate(
+        formData.collection_id
+          ? `/welcome/collections/${formData.collection_id}`
+          : `/welcome/${userId}`
+      );
       resetForm();
-
-      navigate(`/welcome/${userId}`);
       onClose();
     } catch (err) {
       setErrMsg("Failed to add recipe");
@@ -231,25 +255,47 @@ const AddRecipeContent = ({ isOpen, onClose, children }) => {
 
   return (
     <>
-      {errMsg && <p style={{ color: "red" }}>{errMsg}</p>}
       <form onSubmit={handleSubmitUrl} className={styles.urlContainer}>
         <label htmlFor="url" className={styles.urlTitle}>
-          Add Recipe from url
-          <img src="/info.svg" alt="info icon" />
+          Add Recipe from URL
+          <img
+            src="/info.svg"
+            alt="info icon"
+            data-tooltip-id="my-tooltip-1"
+            aria-describedby="my-tooltip-1"
+          />
         </label>
+        <ReactTooltip
+          id="my-tooltip-1"
+          place="right"
+          content={
+            <p>
+              Extracting recipes only works from some websites.
+              <br />
+              If it doesn't, you can manually add the recipe.
+            </p>
+          }
+        />
         <div>
           <input
-            type="text"
+            type="url"
             name="url"
             id="url"
             value={recipeUrl}
             onChange={handleUrlChange}
             required
+            aria-required="true"
           />
           <button className={styles.urlButton} type="submit">
             Extract Recipe
           </button>
         </div>
+        {isUrlLoading && isAdding && (
+          <div className={styles.loader}>
+            <PulseLoader color="#4156a1" />
+          </div>
+        )}
+        {errMsg && <ErrorMsg role="alert" errMsg={errMsg} />}
       </form>
 
       <form onSubmit={handleSubmit} className={styles.form}>
@@ -259,11 +305,13 @@ const AddRecipeContent = ({ isOpen, onClose, children }) => {
               <label htmlFor="collection_id">Select Collection</label>
               <select
                 name="collection_id"
+                id="collection_id"
                 value={formData.collection_id}
                 className={styles.collectionId}
                 onChange={handleInputChange}
+                aria-label="Select Collection"
               >
-                <option value=""></option>
+                <option value="">None</option>
                 {collections.map((collection) => (
                   <option
                     key={collection.collection_id}
@@ -274,6 +322,7 @@ const AddRecipeContent = ({ isOpen, onClose, children }) => {
                 ))}
               </select>
             </div>
+
             <div className={styles.inputTitle}>
               <label htmlFor="title">Title</label>
               <input
@@ -283,8 +332,10 @@ const AddRecipeContent = ({ isOpen, onClose, children }) => {
                 value={formData.title}
                 onChange={handleInputChange}
                 required
+                aria-required="true"
               />
             </div>
+
             <div className={styles.inputDescription}>
               <label htmlFor="description">Description</label>
               <textarea
@@ -295,16 +346,17 @@ const AddRecipeContent = ({ isOpen, onClose, children }) => {
               ></textarea>
             </div>
           </div>
-          <div
+
+          <button
+            type="button"
             className={styles.imgContainer}
             onClick={() => fileInputRef.current.click()}
+            aria-label="Upload Image"
           >
             {formData.image_url ? (
               <img
-                className={styles.img}
                 src={formData.image_url}
-                alt={formData.title}
-                style={{ cursor: "pointer" }}
+                alt={formData.title || "Recipe Image"}
               />
             ) : (
               <div className={styles.placeholder}>
@@ -314,29 +366,30 @@ const AddRecipeContent = ({ isOpen, onClose, children }) => {
             <input
               type="file"
               ref={fileInputRef}
-              accept="image/*"
+              accept="image/*,image/heic,image/heif"
               onChange={handleImageChange}
-              style={{ display: "none" }} // Hide the file input
+              style={{ display: "none" }}
             />
-          </div>
+          </button>
         </div>
 
         <div className={styles.lowerContainerIngredients}>
-          <label>Ingredient and amount</label>
+          <label htmlFor="ingredients">Ingredients and Amount</label>
           <div className={styles.ingredientsContainer}>
-            {formData.ingredients &&
-              formData.ingredients.map((ingredient, index) => (
-                <div key={index} className={styles.ingredientContainer}>
-                  <label>{index + 1}</label>
-                  <input
-                    type="text"
-                    name="ingredients"
-                    data-index={index}
-                    value={ingredient}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              ))}
+            {formData.ingredients.map((ingredient, index) => (
+              <div key={index} className={styles.ingredientContainer}>
+                <label htmlFor={`ingredient-${index}`}>{index + 1}</label>
+                <input
+                  type="text"
+                  name="ingredients"
+                  id={`ingredient-${index}`}
+                  data-index={index}
+                  value={ingredient}
+                  onChange={handleInputChange}
+                  aria-label={`Ingredient ${index + 1}`}
+                />
+              </div>
+            ))}
           </div>
           <button type="button" onClick={addIngredientField}>
             <p>Add Ingredient</p>
@@ -344,17 +397,18 @@ const AddRecipeContent = ({ isOpen, onClose, children }) => {
         </div>
 
         <div className={styles.lowerContainerInstructions}>
-          <label>Instructions</label>
+          <label htmlFor="instructions">Instructions</label>
           <div className={styles.instructionContainer}>
             {formData.instructions.map((instruction, index) => (
               <div key={index}>
-                <label>{index + 1}</label>
+                <label htmlFor={`instruction-${index}`}>{index + 1}</label>
                 <textarea
-                  type="text"
+                  id={`instruction-${index}`}
                   name="instructions"
                   data-index={index}
                   value={instruction}
                   onChange={handleInputChange}
+                  aria-label={`Instruction ${index + 1}`}
                 />
               </div>
             ))}
@@ -364,8 +418,12 @@ const AddRecipeContent = ({ isOpen, onClose, children }) => {
           </button>
         </div>
 
-        <button type="submit" className={styles.submitButton}>
-          <p>Add Recipe</p>
+        <button
+          type="submit"
+          className={styles.submitButton}
+          disabled={isAdding}
+        >
+          {isAdding ? <p>Adding...</p> : <p>Add Recipe</p>}
         </button>
       </form>
     </>

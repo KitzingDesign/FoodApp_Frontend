@@ -7,6 +7,28 @@
   width: 100%;
   box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.16);
   overflow: hidden;
+  position: relative;
+}
+
+.collectionTab {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: var(--Secondary-Color);
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0px 0px 0px 10px;
+}
+
+.collectionTab p {
+  color: #fff;
+  font-size: 16px;
+  padding: 0px 24px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-align: center;
 }
 
 .imgContainer {
@@ -42,7 +64,6 @@
   margin: 16px 16px 0px 16px;
   color: var(--Primary-Color, #bf310c);
   /* Body text thick */
-  font-family: Inter;
   font-size: 16px;
   font-style: normal;
   font-weight: 600;
@@ -52,15 +73,13 @@
 /* for mobile phones */
 @media (max-width: 480px) {
   .imgContainer {
-    height: 150px;
-    overflow: hidden;
+    height: 148px;
   }
   .textContainer {
-    height: 48px;
+    height: 56px;
   }
   .textContainer h3 {
     margin: 8px 8px 0px 8px;
-    font-size: 12px;
-    font-weight: 500;
+    font-size: 16px;
   }
 }

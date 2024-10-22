@@ -1,0 +1,38 @@
+.outerContainer {
+  width: 100vw;
+  height: 100vh;
+  background: var(--OffWhite, #fafafa);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  border-radius: 20px;
+  background: var(--background-mode, #fff);
+  box-shadow: 40px 40px 60px 0px rgba(228, 230, 234, 0.74);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  padding: 40px;
+}
+
+.container p {
+  font-family: "Inter", Helvetica, sans-serif;
+  color: var(--Text-Color, #333333);
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.logo {
+  position: fixed;
+  left: 40px;
+  top: 40px;
+  /* transform: rotate(-90deg); */
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 16px;
+}

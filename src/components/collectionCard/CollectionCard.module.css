@@ -14,15 +14,14 @@
 }
 
 .content {
-  display: flex; /* Flexbox for internal content */
-  flex-direction: row; /* Align items vertically */
-  gap: 8px; /* Space between title, divider, and recipe count */
-  height: 100%; /* Ensure content takes full height */
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  height: 100%;
 }
 
 .container h3 {
   color: var(--Primary-Color, #bf310c);
-  font-family: Inter, sans-serif; /* Added a fallback */
   font-size: 16px;
   font-weight: 600;
   margin: 0; /* Remove default margin */
@@ -30,7 +29,6 @@
 
 .container p {
   color: var(--text-color, #333);
-  font-family: Inter, sans-serif; /* Added a fallback */
   font-size: 16px;
   font-weight: 400;
   margin: 0; /* Remove default margin */
@@ -40,4 +38,10 @@
   width: 2px;
   height: 16px;
   background-color: #bf310c;
+}
+
+@media (max-width: 480px) {
+  .container {
+    width: 95%;
+  }
 }

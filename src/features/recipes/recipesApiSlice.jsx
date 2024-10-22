@@ -31,11 +31,10 @@ export const recipesApiSlice = apiSlice.injectEndpoints({
       providesTags: (result, error, arg) => [{ type: "Recipe", id: arg.id }],
     }),
     addNewRecipe: builder.mutation({
-      query: (addRecipe) => ({
+      query: ({ recipeFormData }) => ({
         url: "/recipe/create",
         method: "POST",
-        formData: true, // Directly use the FormData
-        body: addRecipe,
+        body: recipeFormData,
       }),
       // Invalidate the recipe list so it refetches after adding a new recipe
       invalidatesTags: (result, error, { collection_id }) => [
@@ -45,12 +44,10 @@ export const recipesApiSlice = apiSlice.injectEndpoints({
       ],
     }),
     updateRecipe: builder.mutation({
-      query: (initialRecipe) => ({
+      query: ({ recipeFormData }) => ({
         url: "/recipe",
         method: "PATCH",
-        body: {
-          ...initialRecipe,
-        },
+        body: recipeFormData,
       }),
       // Invalidate the specific recipe that was updated
       invalidatesTags: (result, error, arg) => [{ type: "Recipe", id: arg.id }],

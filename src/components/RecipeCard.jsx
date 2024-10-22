@@ -1,9 +1,21 @@
 import styles from "./RecipeCard.module.css";
 import { Link } from "react-router-dom";
 import { setActiveTitle } from "./dashboard/dashboardSlice";
-import { useSelector, useDispatch } from "react-redux";
+import { useGetOneCollectionQuery } from "../features/collections/collectionsApiSlice";
+import { useDispatch } from "react-redux";
 
 const RecipeCard = ({ recipe }) => {
+  const {
+    data: collection,
+    error,
+    isLoading,
+  } = useGetOneCollectionQuery(
+    { id: recipe.collection_id },
+    { skip: !recipe.collection_id }
+  );
+
+  console.log(collection);
+
   const dispatch = useDispatch();
   return (
     <Link
@@ -14,6 +26,11 @@ const RecipeCard = ({ recipe }) => {
       }}
     >
       <div className={styles.imgContainer}>
+        {collection ? (
+          <div className={styles.collectionTab}>
+            <p>{collection.name}</p>
+          </div>
+        ) : null}
         {recipe.image_url ? (
           <img className={styles.foodImg} src={recipe.image_url} />
         ) : (

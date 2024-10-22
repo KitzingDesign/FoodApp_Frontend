@@ -123,7 +123,7 @@ const CurrentRecipe = () => {
 
                 <ul>
                   {ingredients.map((item) => (
-                    <li key={item.id}>
+                    <li key={item.ingredient_id}>
                       <label>{item.name}</label>
                     </li>
                   ))}
@@ -136,7 +136,7 @@ const CurrentRecipe = () => {
 
               <ul>
                 {instructions.map((item) => (
-                  <li key={item.id}>
+                  <li key={item.instruction_id}>
                     <label>Step {item.step_number + 1}</label>
                     <p>{item.instruction_text}</p>
                   </li>

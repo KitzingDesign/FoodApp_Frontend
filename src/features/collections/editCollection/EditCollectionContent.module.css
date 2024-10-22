@@ -28,11 +28,10 @@
 
 .inputTitle label,
 .inputDescription label {
-  color: var(--Primary-Color, #bf310c);
-  font-family: Inter;
+  color: var(--Text-Color);
   font-size: 16px;
   font-style: normal;
-  font-weight: 600;
+  font-weight: 500;
   line-height: normal;
 }
 
@@ -71,11 +70,9 @@
 
 .submitButton p {
   color: var(--foreground-onColor, #fcfcfd);
-  /* body/large/semibold */
-  font-family: Inter;
   font-size: 16px;
   font-style: normal;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 100%; /* 16px */
 }
 

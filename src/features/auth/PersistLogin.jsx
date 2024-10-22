@@ -7,6 +7,9 @@ import usePersist from "../../hooks/usePersist";
 import { useSelector } from "react-redux";
 import { selectCurrentToken } from "./authSlice";
 import PulseLoader from "react-spinners/PulseLoader";
+import styles from "./PersistLogin.module.css";
+import Button from "../../UI/Button";
+import LogoIcon from "../../../public/logo";
 
 const PersistLogin = () => {
   const dispatch = useDispatch();
@@ -57,10 +60,21 @@ const PersistLogin = () => {
     //persist: yes, token: no
     console.log("error");
     content = (
-      <p className="errmsg">
-        {`${error?.data?.message} - `}
-        <Link to="/login">Please login again</Link>.
-      </p>
+      <div className={styles.outerContainer}>
+        <Link to="/" className={styles.logo}>
+          <LogoIcon />
+        </Link>
+        <div className={styles.container}>
+          <p className={styles.error}>
+            You have to Login again. Your session has expired.
+          </p>
+          <div className={styles.buttonContainer}>
+            <Button variant="outline" size="medium" to="/login">
+              Go to login
+            </Button>
+          </div>
+        </div>
+      </div>
     );
   } else if (isSuccess && trueSuccess) {
     //persist: yes, token: yes

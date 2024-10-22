@@ -17,6 +17,12 @@ import {
 } from "firebase/auth";
 import { auth } from "../../../config/firebase";
 
+const preloadImage = (src, callback) => {
+  const img = new Image();
+  img.src = src;
+  img.onload = () => callback(src); // Set src after the image loads
+};
+
 const Register = () => {
   const firstNameRef = useRef();
   const errRef = useRef();
@@ -25,6 +31,7 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
+  const [preloadedImage, setPreloadedImage] = useState(""); // Store the preloaded image src
 
   const navigate = useNavigate();
 
@@ -32,6 +39,11 @@ const Register = () => {
   const [loginWithGoogle, { isLoading: googleIsLoading }] =
     useLoginWithGoogleMutation();
   const dispatch = useDispatch();
+
+  // Preload images for faster loading
+  useEffect(() => {
+    preloadImage("/loginImg.png", setPreloadedImage); // Preload the image and store src in state
+  }, []);
 
   useEffect(() => {
     firstNameRef.current.focus();
@@ -55,14 +67,7 @@ const Register = () => {
     }
 
     try {
-      // const userData = await register({
-      //   first_name: firstName,
-      //   last_name: lastName,
-      //   email,
-      //   password,
-      // }).unwrap();
-      // console.log("User data received:", userData); // Debugging log
-
+      // Firebase signup (create user in Firebase)
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
@@ -70,14 +75,14 @@ const Register = () => {
       );
       const firebaseToken = await userCredential.user.getIdToken();
 
-      // Send firebaseToken and other user details (name, etc.) to your Node backend
+      // Send the firebaseToken and user details to your backend
       const userData = await register({
         firebaseToken,
         first_name: firstName,
         last_name: lastName,
       }).unwrap();
 
-      // const { accessToken } = userData;
+      // Handle successful signup and set user credentials in Redux
       dispatch(
         setCredentials({
           ...userData,
@@ -87,27 +92,45 @@ const Register = () => {
         })
       );
 
-      console.log("Credentials set in Redux:", { ...userData, email }); // Debugging log
       setFirstName("");
       setLastName("");
       setEmail("");
       setPassword("");
-      navigate(`/welcome/${userData.user.user_id}`); // in tutorial /welcome (change name to dashboard later)
-      // Assume signup API call is successful
-      console.log("User signed up:", { firstName, lastName, email, password });
+      navigate(`/welcome/${userData.user.user_id}`); // Navigate to the welcome page
     } catch (e) {
-      console.log("Error object:", e); // Log the error object for debugging
-      if (!e?.status) {
-        setErrMsg("No Server Response");
-      } else if (e.status === 400) {
-        setErrMsg("Missing email or password");
-      } else if (e.status === 409) {
-        setErrMsg("Duplicate email");
-      } else if (e.status === 401) {
-        setErrMsg("Unauthorized");
-      } else {
-        setErrMsg("Something went wrong");
+      console.log("Error object:", e); // Debugging log for the error object
+
+      // Check if it's a Firebase error
+      if (e.code) {
+        switch (e.code) {
+          case "auth/email-already-in-use":
+            setErrMsg("Email is already in use");
+            break;
+          case "auth/invalid-email":
+            setErrMsg("Invalid email");
+            break;
+          case "auth/weak-password":
+            setErrMsg("Password is too weak");
+            break;
+          default:
+            setErrMsg("Firebase authentication error: " + e.message);
+            break;
+        }
       }
+
+      // Check if it's a backend error (likely from the 'register' call)
+      else if (e.status) {
+        if (e.status === 400) {
+          setErrMsg("Missing email or password");
+        } else if (e.status === 409) {
+          setErrMsg("Duplicate email");
+        } else if (e.status === 401) {
+          setErrMsg("Unauthorized");
+        } else {
+          setErrMsg("Something went wrong with backend");
+        }
+      }
+
       if (errRef.current) {
         errRef.current.focus();
       }
@@ -163,10 +186,17 @@ const Register = () => {
       <main className={styles.container}>
         <div className={styles.innerContainer}>
           <div className={styles.imgContainer}>
-            <img src="/loginImg.png" alt="Login" className={styles.image} />
+            <img
+              src={preloadedImage || "/loginImg.png"}
+              alt="Login"
+              className={styles.image}
+            />
           </div>
           <div className={styles.containerLogin}>
             <h1>Register</h1>
+            <div className={errMsg ? styles.errMsg : styles.noErrMsg}>
+              <p ref={errRef}>{errMsg}</p>
+            </div>
             <form className={styles.form} onSubmit={handleSubmit}>
               <div className={styles.namesContainer}>
                 <div className={styles.formDiv}>
@@ -236,11 +266,6 @@ const Register = () => {
                 Already have an account? <Link to={"/login"}>Login!</Link>
               </p>
             </div>
-            {errMsg && (
-              <p ref={errRef} className="errmsg">
-                {errMsg}
-              </p>
-            )}
           </div>
         </div>
       </main>

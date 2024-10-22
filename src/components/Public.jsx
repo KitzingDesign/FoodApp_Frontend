@@ -5,9 +5,23 @@ import LogoIcon from "../../public/logo";
 import { motion } from "framer-motion";
 
 import { Link, Navigate } from "react-router-dom";
+import FAQ from "./FaQ/FaQ";
+import Footer from "./footer/Footer";
+
+const preloadImage = (src) => {
+  const img = new Image();
+  img.src = src;
+};
 
 export const Public = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 480);
+  const [preloadedImages, setPreloadedImages] = useState({
+    heroImg: "",
+    recipeImg: "",
+    createImg: "",
+    editImg: "",
+  });
+
   useEffect(() => {
     const handleResize = () => {
       const isNowMobile = window.innerWidth <= 480;
@@ -19,6 +33,28 @@ export const Public = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
   const windowWidth = window.innerWidth;
+
+  // Preload images for faster loading
+  useEffect(() => {
+    const images = [
+      "/heroImg.png",
+      "/recipeImg.png",
+      "/addRecipeImg.png",
+      "/editImg.png",
+    ];
+
+    const loadedImages = {};
+
+    images.forEach((src, index) => {
+      preloadImage(src); // Preload the image
+      if (index === 0) loadedImages.heroImg = src; // Store hero image path
+      if (index === 1) loadedImages.recipeImg = src; // Store recipe image path
+      if (index === 2) loadedImages.createImg = src;
+      if (index === 3) loadedImages.editImg = src;
+    });
+
+    setPreloadedImages(loadedImages); // Set preloaded images to state
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -49,30 +85,17 @@ export const Public = () => {
             </div>
           </div>
           <div className={styles.heroImgContainer}>
-            <img src="/heroImg.png" />
-            <motion.div
-              className={styles.bubble}
-              initial={{
-                translateX: !isMobile ? "-70%" : "-50%", // Starting point on X axis
-                translateY: !isMobile ? "-35%" : "-40%", // Starting point on Y axis
-              }}
-              animate={{
-                scale: [1, 1.05, 1], // Scaling effect
-              }}
-              transition={{
-                duration: 3, // 5 seconds duration
-                repeat: Infinity,
-                ease: "easeInOut",
-                repeatType: "loop", // Specifies that it should loop
-                repeatDelay: 0, // 2 seconds delay between each loop
-              }}
-            />
+            <img src={preloadedImages.heroImg} />
+            <div className={styles.bubble} />
           </div>
         </div>
       </section>
       <section className={styles.recipeSection}>
         <div>
-          <img src="/recipeImg.png" />
+          <img
+            src={preloadedImages.recipeImg}
+            alt="Image of recipe displayed in matmatmats dashboard"
+          />
         </div>
       </section>
       <section className={styles.stepsContainer}>
@@ -109,6 +132,72 @@ export const Public = () => {
           </div>
         </div>
       </section>
+      <div className={styles.instructionSections}>
+        <section className={styles.leftSection}>
+          <img
+            src={preloadedImages.createImg}
+            alt="Create Recipe"
+            className={styles.sectionImg}
+          />
+          <div className={styles.sectionTextContainer}>
+            <h2>Create</h2>
+            <p>
+              Welcome to your personal online cookbook! Here, you have the
+              flexibility to build your recipe collection exactly the way you
+              want. Whether you’ve found a great recipe online or have a family
+              favorite that’s been passed down for generations, we make it easy
+              for you to store, organize, and customize it. You can quickly
+              import a recipe by simply pasting a URL or add it manually.
+            </p>
+          </div>
+        </section>
+        <section className={styles.rightSection}>
+          <div className={styles.balls}>
+            <img src="/redBall.svg" />
+            <img src="/blueBall.svg" />
+          </div>
+          <img
+            src={preloadedImages.recipeImg}
+            alt="Edit Recipe Dashboard"
+            className={styles.sectionImg}
+          />
+          <div className={styles.sectionTextContainer}>
+            <h2>Organize</h2>
+            <p>
+              Here, you have the power to organize your recipe collection in a
+              way that suits your culinary style. Whether you want to categorize
+              your dishes by cuisine, meal type, or special occasions, our
+              intuitive system makes it simple. Create custom collections to
+              keep your favorite recipes together, making it easy to find what
+              you need when you need it.
+            </p>
+          </div>
+        </section>
+        <section className={styles.leftSection}>
+          <img
+            src={preloadedImages.editImg}
+            alt="Create Recipe"
+            className={styles.sectionImg}
+          />
+          <div className={styles.sectionTextContainer}>
+            <h2>Customize</h2>
+            <p>
+              Customize your recipes! In matmatmaten. you have the power to
+              tailor your recipes to suit your unique tastes and preferences.
+              Whether you’ve tried a recipe and realized it could use a little
+              extra garlic or discovered that a pinch of spice elevates your
+              dish, we encourage you to make it your own. Easily edit
+              ingredients, adjust measurements, or modify instructions to
+              reflect your culinary discoveries.
+            </p>
+          </div>
+        </section>
+      </div>
+      <section className={styles.faq}>
+        <h2>Frequently Asked Questions</h2>
+        <FAQ />
+      </section>
+      <Footer />
     </div>
   );
 };

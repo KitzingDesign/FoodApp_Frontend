@@ -33,7 +33,6 @@
 
 .titleContainer h2 {
   color: var(--Primary-Color, #bf310c);
-  font-family: Inter;
   font-size: 24px;
   font-style: normal;
   font-weight: 500;
@@ -95,7 +94,6 @@
 .inputTitle label,
 .inputDescription label {
   color: var(--Text-Color, #333);
-  font-family: Inter;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -137,8 +135,6 @@
 
 .submitButton p {
   color: var(--foreground-onColor, #fcfcfd);
-  /* body/large/semibold */
-  font-family: Inter;
   font-size: 16px;
   font-style: normal;
   font-weight: 600;

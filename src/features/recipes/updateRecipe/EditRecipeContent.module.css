@@ -6,7 +6,6 @@
 
 .form textarea {
   color: var(--text-color, #333);
-  font-family: Inter;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -14,7 +13,6 @@
 }
 .form input {
   color: var(--text-color, #333);
-  font-family: Inter;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -24,7 +22,6 @@
 }
 .form select {
   color: var(--text-color, #333);
-  font-family: Inter;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -33,7 +30,6 @@
 
 .form label {
   color: var(--Text-Color, #333);
-  font-family: Inter;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -51,7 +47,6 @@
 }
 .urlContainer label {
   color: var(--Primary-Color, #333);
-  font-family: Inter;
   font-size: 16px;
   font-style: normal;
   font-weight: 500;
@@ -79,7 +74,6 @@
   padding: 4px 14px;
   font-size: 14px;
   display: inline-flex;
-  font-family: "Inter", Helvetica;
   line-height: 100%;
   font-style: normal;
   font-weight: 500;
@@ -209,8 +203,6 @@
 }
 .lowerContainerIngredients p {
   color: var(--text-color, #333);
-  /* body/large/semibold */
-  font-family: Inter;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -265,8 +257,6 @@
 }
 .lowerContainerInstructions p {
   color: var(--text-color, #333);
-  /* body/large/semibold */
-  font-family: Inter;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -324,8 +314,6 @@
 
 .submitButton p {
   color: var(--foreground-onColor, #fcfcfd);
-  /* body/large/semibold */
-  font-family: Inter;
   font-size: 16px;
   font-style: normal;
   font-weight: 600;

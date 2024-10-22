@@ -77,6 +77,7 @@ const EditCollectionContent = ({ isOpen, onClose, children }) => {
       // Optionally refetch to ensure latest data is in the cache
       await refetchCollection();
 
+      onClose();
       navigate(`/welcome/collections/${collectionId}`);
     } catch (err) {
       setErrMsg("Failed to update collection");
@@ -101,7 +102,7 @@ const EditCollectionContent = ({ isOpen, onClose, children }) => {
       {errMsg && <p style={{ color: "red" }}>{errMsg}</p>}
       <div className={styles.deleteButtonContainer}>
         <Button size="medium" variant="fillRed" onClick={handleDelete}>
-          Delete Container
+          Delete
         </Button>
       </div>
       <form onSubmit={handleSubmit} className={styles.form}>

@@ -31,11 +31,11 @@ function SideBar({ userId, toggleSidebar }) {
   const closeModal = () => setIsModalOpen(false);
 
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 480);
+
   useEffect(() => {
     const handleResize = () => {
       const isNowMobile = window.innerWidth <= 480;
       setIsMobile(isNowMobile);
-      setShowSidebar(!isNowMobile); // Show sidebar if desktop, hide if mobile
     };
 
     window.addEventListener("resize", handleResize);
@@ -61,7 +61,7 @@ function SideBar({ userId, toggleSidebar }) {
     <Link
       to={"profile"}
       className={styles.titleContainer}
-      onClick={isMobile && toggleSidebar}
+      onClick={() => handleActiveLink({ activeTitle: "Profile" })}
     >
       <div className={styles.profileContainer}>
         {user.profile_picture ? (

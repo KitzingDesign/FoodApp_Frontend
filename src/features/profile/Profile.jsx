@@ -3,12 +3,13 @@ import { selectCurrentUserId, logOut } from "../../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect, useRef } from "react";
+
 import styles from "./profile.module.css";
 import Button from "../../UI/Button";
 import ProfileIcon from "/public/profile"; // Ensure this is the correct path for your ProfileIcon
-import { Link } from "react-router-dom";
 import { useUpdateUserMutation } from "../users/usersApiSlice";
 import { useLogoutMutation, useDeleteMutation } from "../auth/authApiSlice";
+import ConfirmDeleteModal from "./ConfirmDeleteModal";
 
 // Function to calculate the number of days since the account was created
 const calculateDaysSince = (dateString) => {
@@ -30,6 +31,7 @@ const Profile = () => {
   const [deleteAccount, { isLoading: isDeleting }] = useDeleteMutation();
 
   // State for form inputs
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [imgFile, setImgFile] = useState(null);
@@ -84,7 +86,7 @@ const Profile = () => {
     }
 
     try {
-      const newUser = await updateUser({ userId, userFormData }).unwrap();
+      const newUser = await updateUser({ userFormData }).unwrap();
     } catch (err) {
       setErrMsg("Failed to update User");
       console.error(err);
@@ -110,6 +112,22 @@ const Profile = () => {
     }
   };
 
+  // Show the delete confirmation modal
+  const showDeleteConfirmation = () => {
+    setShowDeleteModal(true);
+  };
+
+  // Handle modal confirmation
+  const confirmDelete = () => {
+    setShowDeleteModal(false);
+    handleDeleteAccount(); // Proceed with deletion
+  };
+
+  // Handle modal cancellation
+  const cancelDelete = () => {
+    setShowDeleteModal(false); // Simply close the modal
+  };
+
   // Loading state
   if (isLoading) return <p>Loading...</p>;
 
@@ -125,13 +143,20 @@ const Profile = () => {
   return (
     <div className={styles.upperContainer}>
       <Button
-        size="small"
+        size="medium"
         variant="outlineRed"
         className={styles.deleteButton}
-        onClick={handleDeleteAccount}
+        onClick={showDeleteConfirmation} // Show confirmation modal
       >
-        Delete Account{" "}
+        Delete Account
       </Button>
+      {showDeleteModal && (
+        <ConfirmDeleteModal
+          isOpen={showDeleteModal}
+          onClose={cancelDelete}
+          onConfirm={confirmDelete}
+        />
+      )}
       <form className={styles.container} onSubmit={handleSubmit}>
         <div className={styles.headerContainer}>
           <div className={styles.titleContainer}>
@@ -154,6 +179,7 @@ const Profile = () => {
                 type="file"
                 ref={fileInputRef}
                 name="image"
+                accept="image/*,image/heic,image/heif"
                 onChange={handleImageUpload}
                 style={{ display: "none" }} // Hide the file input
                 id="imageUpload" // Optional ID for accessibility
@@ -179,7 +205,6 @@ const Profile = () => {
         </div>
         <div className={styles.accountContainer}>
           <div>
-            <h3>Edit Account</h3>
             <p>🌮 You've been a MMMer for {daysSinceCreated} days 🌮</p>
           </div>
           <div className={styles.divider} />
@@ -208,12 +233,19 @@ const Profile = () => {
           </div>
           <div className={styles.buttonContainer}>
             <button type="submit" className={styles.button}>
-              {" "}
-              Update Profile{" "}
-            </button>
-            {/* <Button type="submit" variant="fill" size="medium">
               Update Profile
-            </Button> */}
+            </button>
+            <div className={styles.logoutPhone}>
+              <Button
+                size="medium"
+                destination="/"
+                variant="outlineRed"
+                onClick={handleLogout}
+                className={styles.logoutPhone}
+              >
+                Logout
+              </Button>
+            </div>
           </div>
         </div>
       </form>

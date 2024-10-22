@@ -15,12 +15,16 @@ body {
 h1,
 h2,
 h3,
-p {
+p,
+label,
+span {
   margin: 0;
+  font-family: "Inter", Helvetica;
 }
 a {
   text-decoration: none;
   color: var(--Primary-Color, #bf310c);
+  font-family: "Inter", Helvetica;
 }
 
 ul {
@@ -39,4 +43,10 @@ span {
 
 input {
   padding: 0px 8px;
+  font-family: "Inter", Helvetica;
+}
+
+textarea {
+  padding: 8px 8px;
+  font-family: "Inter", Helvetica;
 }

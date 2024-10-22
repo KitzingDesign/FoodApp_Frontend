@@ -8,7 +8,6 @@ import { useLoginMutation, useLoginWithGoogleMutation } from "../authApiSlice";
 import styles from "./Login.module.css";
 import LogoIcon from "../../../../public/logo";
 
-// Firebase login
 import {
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -16,13 +15,20 @@ import {
 } from "firebase/auth";
 import { auth } from "../../../config/firebase";
 
+const preloadImage = (src, callback) => {
+  const img = new Image();
+  img.src = src;
+  img.onload = () => callback(src); // Set src after the image loads
+};
+
 const Login = () => {
   const emailRef = useRef();
   const errRef = useRef();
-  const [email, setEmail] = useState(""); // in tutorial its [user, setUser]
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [persist, setPersist] = usePersist();
+  const [preloadedImage, setPreloadedImage] = useState(""); // Store the preloaded image src
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -30,6 +36,11 @@ const Login = () => {
   const [login, { isLoading }] = useLoginMutation();
   const [loginWithGoogle, { isLoading: googleIsLoading }] =
     useLoginWithGoogleMutation();
+
+  // Preload images for faster loading
+  useEffect(() => {
+    preloadImage("/loginImg.png", setPreloadedImage); // Preload the image and store src in state
+  }, []);
 
   useEffect(() => {
     emailRef.current.focus();
@@ -48,9 +59,7 @@ const Login = () => {
         email,
         password
       );
-      console.log("hej", userCredential); // Debugging log
       const firebaseToken = await userCredential.user.getIdToken();
-      console.log("Firebase token received:", firebaseToken); // Debugging log
       const userData = await login({ firebaseToken }).unwrap();
 
       dispatch(
@@ -61,34 +70,17 @@ const Login = () => {
           user_id: userData.user.user_id,
         })
       );
-      console.log(userData.accessToken);
-
-      console.log("Credentials set in Redux:", { ...userData, email }); // Debugging log
       setEmail("");
       setPassword("");
-      console.log("Navigating to /welcome", userData.user.user_id); // Debugging log
-      navigate(`/welcome/${Number(userData.user.user_id)}`); // Redirect to /welcome
-      console.log("Navigated to /welcome"); // Debugging log
+      navigate(`/welcome/${Number(userData.user.user_id)}`);
     } catch (e) {
-      if (!e?.originalStatus) {
-        setErrMsg("Wrong email or password");
-      } else if (e.originalStatus === 400) {
-        setErrMsg("Missing email or password");
-      } else if (e.originalStatus === 401) {
-        setErrMsg("Unauthorized");
-      } else {
-        setErrMsg("Something went wrong");
-      }
-      if (errRef.current) {
-        errRef.current.focus();
-      }
+      setErrMsg("Login failed");
+      errRef.current?.focus();
     }
   };
 
-  // Handle Google Login
   const handleGoogleLogin = async () => {
     const provider = new GoogleAuthProvider();
-
     try {
       const result = await signInWithPopup(auth, provider);
       const firebaseToken = await result.user.getIdToken();
@@ -124,13 +116,17 @@ const Login = () => {
       <main className={styles.container}>
         <div className={styles.innerContainer}>
           <div className={styles.imgContainer}>
-            <img src="/loginImg.png" alt="Login" className={styles.image} />
+            <img
+              src={preloadedImage || "/fallbackImg.png"}
+              alt="Login"
+              className={styles.image}
+            />
           </div>
           <div className={styles.containerLogin}>
-            <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"}>
-              {errMsg}
-            </p>{" "}
             <h1>Login</h1>
+            <div className={errMsg ? styles.errMsg : styles.noErrMsg}>
+              <p ref={errRef}>{errMsg}</p>
+            </div>
             <form className={styles.form} onSubmit={handleSubmit}>
               <div className={styles.inputContainer}>
                 <input
@@ -192,7 +188,7 @@ const Login = () => {
             </button>
             <div className={styles.registerContainer}>
               <p>
-                Don´t you have an account? <Link to={"/register"}>Signup!</Link>
+                Don’t you have an account? <Link to={"/register"}>Signup!</Link>
               </p>
             </div>
           </div>

@@ -20,7 +20,7 @@ import {
 } from "../../components/Sidebar/sidebarSlice";
 import { setActiveTitle } from "../../components/dashboard/dashboardSlice";
 import Modal from "../../components/Modal/Modal";
-import AddCollectionContent from "../collections/addCollection/AddCollectionContent";
+import EditCollectionContent from "./editCollection/EditCollectionContent";
 
 const CollectionList = ({ isMobile, toggleSidebar }) => {
   const dispatch = useDispatch();
@@ -99,7 +99,7 @@ const CollectionList = ({ isMobile, toggleSidebar }) => {
         <li className={styles.noTab}>You have no Collections</li>
       )}
       <Modal isOpen={isModalOpen} title="Add Collection" onClose={closeModal}>
-        <AddCollectionContent onClose={closeModal} />
+        <EditCollectionContent onClose={closeModal} />
       </Modal>
     </ul>
   );

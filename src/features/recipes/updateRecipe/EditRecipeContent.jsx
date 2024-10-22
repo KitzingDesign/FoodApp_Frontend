@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import heic2any from "heic2any";
+
 import { selectCurrentUserId } from "../../auth/authSlice";
 import { setActiveTitle } from "../../../components/dashboard/dashboardSlice";
 import { useGetCollectionsQuery } from "../../collections/collectionsApiSlice";
@@ -43,6 +45,8 @@ const EditRecipeContent = ({ isOpen, onClose }) => {
   const { recipeId } = useParams(); // Extract recipe ID from URL
   const userId = Number(useSelector(selectCurrentUserId));
 
+  const [imageFile, setImageFile] = useState(null); // State for the image file
+
   // API Get data
   const {
     data: recipe,
@@ -75,7 +79,7 @@ const EditRecipeContent = ({ isOpen, onClose }) => {
   const [addNewIngredient, { isLoading: isAddingIngredient }] =
     useAddNewIngredientMutation();
 
-  const [formData, setFormData] = useState(getInitialFormData(userId, ""));
+  const [formData, setFormData] = useState(getInitialFormData(userId));
   const [errMsg, setErrMsg] = useState("");
 
   // Fetch collections
@@ -83,20 +87,6 @@ const EditRecipeContent = ({ isOpen, onClose }) => {
     useGetCollectionsQuery(userId);
 
   const fileInputRef = useRef(null); // Create a ref for the file input
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFormData((prevData) => ({
-          ...prevData,
-          image_url: reader.result,
-        }));
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   useEffect(() => {
     if (recipe) {
@@ -117,21 +107,15 @@ const EditRecipeContent = ({ isOpen, onClose }) => {
     const { name, value } = e.target;
     const index = e.target.dataset.index;
 
-    if (name === "instructions") {
-      const newInstructions = [...formData.instructions];
-      newInstructions[index] = value;
+    if (name === "instructions" || name === "ingredients") {
+      const newList = [...formData[name]];
+      newList[index] = value;
       setFormData({
         ...formData,
-        instructions: newInstructions,
-      });
-    } else if (name === "ingredients") {
-      const newIngredients = [...formData.ingredients];
-      newIngredients[index] = value;
-      setFormData({
-        ...formData,
-        ingredients: newIngredients,
+        [name]: newList,
       });
     } else if (name === "collection_id") {
+      // Explicitly convert collection_id to a number
       setFormData({
         ...formData,
         collection_id: Number(value), // Convert string to number
@@ -144,6 +128,46 @@ const EditRecipeContent = ({ isOpen, onClose }) => {
     }
   };
 
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Check if the file is HEIC and convert it to JPG for preview
+      if (file.type === "image/heic" || file.type === "image/heif") {
+        try {
+          // Convert HEIC to JPEG using heic2any
+          const convertedBlob = await heic2any({
+            blob: file,
+            toType: "image/jpeg", // Convert to JPEG for preview
+          });
+
+          const convertedFile = new File(
+            [convertedBlob],
+            file.name.replace(/\.[^/.]+$/, ".jpg"),
+            {
+              type: "image/jpeg",
+            }
+          );
+
+          // Set the converted file for preview and upload
+          setImageFile(convertedFile);
+          setFormData((prevData) => ({
+            ...prevData,
+            image_url: URL.createObjectURL(convertedFile), // Set preview to the converted image
+          }));
+        } catch (error) {
+          console.error("Error converting HEIC to JPEG:", error);
+        }
+      } else {
+        // For non-HEIC images, just use the file directly
+        setImageFile(file);
+        setFormData((prevData) => ({
+          ...prevData,
+          image_url: URL.createObjectURL(file),
+        }));
+      }
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrMsg("");
@@ -152,13 +176,31 @@ const EditRecipeContent = ({ isOpen, onClose }) => {
       setErrMsg("Title is required");
       return;
     }
+    console.log("Form data", formData);
+    console.log("recipeID", recipeId);
+
+    const recipeFormData = new FormData();
+    recipeFormData.append("title", formData.title);
+    recipeFormData.append("description", formData.description || "");
+    recipeFormData.append("user_id", userId);
+    recipeFormData.append("collection_id", formData.collection_id || "");
+    recipeFormData.append("recipe_id", recipeId);
+    recipeFormData.append("image_url", formData.image_url);
+
+    for (const [key, value] of recipeFormData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+
+    console.log("Image file", imageFile);
+
+    // Append the image if available
+    if (imageFile) {
+      recipeFormData.append("image", imageFile);
+    }
 
     try {
       // Update recipe
-      const updatedRecipe = await updateRecipe({
-        id: recipeId,
-        ...formData,
-      }).unwrap();
+      const updatedRecipe = await updateRecipe({ recipeFormData }).unwrap();
 
       // Update instructions
       for (let i = 0; i < formData.instructions.length; i++) {
@@ -305,7 +347,7 @@ const EditRecipeContent = ({ isOpen, onClose }) => {
             <input
               type="file"
               ref={fileInputRef}
-              accept="image/*"
+              accept="image/*,image/heic,image/heif"
               onChange={handleImageChange}
               style={{ display: "none" }} // Hide the file input
             />

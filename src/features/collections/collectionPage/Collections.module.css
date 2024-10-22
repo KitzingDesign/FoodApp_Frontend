@@ -36,7 +36,6 @@
 
 .placeholderContainer h3 {
   color: var(--Secondary-color, #4156a1);
-  font-family: Inter;
   font-size: 24px;
   font-style: normal;
   font-weight: 600;
@@ -45,7 +44,6 @@
 
 .placeholderContainer p {
   color: var(--text-color, #333);
-  font-family: Inter;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;

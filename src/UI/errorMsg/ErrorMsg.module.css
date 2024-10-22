@@ -1,0 +1,17 @@
+.errMsg {
+  color: #8c211a;
+  width: 100%;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  background-color: #ffdce0;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.errMsg p {
+  margin-left: 16px;
+}

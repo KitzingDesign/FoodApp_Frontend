@@ -43,12 +43,17 @@ const AllRecipes = () => {
     ? useGetCollectionRecipesQuery(collectionId)
     : useGetRecipesQuery(userId);
 
-  // Fetch recipes based on the collection ID or user ID
+  // Only fetch the collection if collectionId exists
   const {
     data: collection = [],
     error: collectionError,
     isLoading: collectionIsLoading,
-  } = useGetOneCollectionQuery(collectionId);
+  } = useGetOneCollectionQuery(
+    { id: collectionId }, // Pass the collectionId when it exists
+    {
+      skip: !collectionId, // Skip the query if collectionId is undefined or null
+    }
+  );
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -76,13 +81,14 @@ const AllRecipes = () => {
           </Button>
         )}
       </div>
-      {collection ? (
-        <div>
+      {collection.description ? (
+        <div className={styles.collectionDescription}>
+          <h2>Description</h2>
           <p>{collection.description}</p>
+          <div className={styles.divider} />
         </div>
-      ) : (
-        none
-      )}
+      ) : null}
+
       {recipes.length ? (
         <div className={styles.gridContainer}>
           {recipes.map((recipe) => (

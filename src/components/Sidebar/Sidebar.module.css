@@ -26,7 +26,6 @@
 .titleContainer h2 {
   /* text styles */
   gap: 16px;
-  font-family: Inter;
   font-size: 16px;
   font-style: normal;
   font-weight: 600;
@@ -87,7 +86,6 @@
   align-self: stretch;
   height: 48px;
 
-  font-family: Inter;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -107,7 +105,6 @@
 
   align-self: stretch;
 
-  font-family: Inter;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;

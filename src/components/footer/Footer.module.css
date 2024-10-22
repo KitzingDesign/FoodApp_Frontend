@@ -19,7 +19,6 @@
 
 .linksList a {
   color: var(--text-color, #333);
-  font-family: Inter;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -49,7 +48,6 @@
 
 .brandSymbol {
   color: var(--Primary-Color, #bf310c);
-  font-family: Inter;
   font-size: 16px;
   font-style: normal;
   font-weight: 700;
@@ -58,7 +56,6 @@
 
 .brandName {
   color: var(--text-color, #333);
-  font-family: Inter;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -91,4 +88,14 @@
 .copyRight {
   font-size: 14px; /* Smaller font size for copyright notice */
   color: #ccc; /* Grey color for copyright text */
+  margin-bottom: 8px;
+}
+
+/* for mobile phones */
+@media (max-width: 480px) {
+  .linksList {
+    flex-direction: column; /* Align links vertically */
+    align-items: center;
+    gap: 40px; /* Space between links */
+  }
 }

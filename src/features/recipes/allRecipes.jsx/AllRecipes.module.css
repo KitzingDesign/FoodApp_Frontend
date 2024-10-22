@@ -6,6 +6,43 @@
   min-height: 100vh;
 }
 
+.collectionDescription {
+  margin-top: 16px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.collectionDescription h2 {
+  color: var(--Text-Color, #333);
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-align: center;
+}
+
+.collectionDescription p {
+  width: 50%;
+  color: var(--text-color, #333);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-align: center;
+  text-wrap: pretty;
+  margin-bottom: 16px;
+}
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: #ccc;
+  margin-bottom: 24px;
+}
+
 .gridContainer {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -34,7 +71,6 @@
 
 .placeholderContainer h3 {
   color: var(--Secondary-color, #4156a1);
-  font-family: Inter;
   font-size: 24px;
   font-style: normal;
   font-weight: 600;
@@ -43,7 +79,6 @@
 
 .placeholderContainer p {
   color: var(--text-color, #333);
-  font-family: Inter;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -68,7 +103,7 @@
     margin-bottom: 8px;
   }
   .gridContainer {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 16px;
     width: 100%;
   }

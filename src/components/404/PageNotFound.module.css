@@ -32,7 +32,6 @@
 
 .textContainer h1 {
   color: var(--text-color, #333);
-  font-family: Inter;
   font-size: 32px;
   font-style: normal;
   font-weight: 600;
@@ -41,7 +40,6 @@
 
 .textContainer h2 {
   color: var(--Secondary-color, #4156a1);
-  font-family: Inter;
   font-size: 128px;
   font-style: normal;
   font-weight: 600;
@@ -51,7 +49,6 @@
 .textContainer p {
   color: var(--text-color, #333);
   text-align: center;
-  font-family: Inter;
   font-size: 24px;
   font-style: normal;
   font-weight: 500;
@@ -69,34 +66,7 @@
   height: 100%;
 }
 
-@media only screen and (min-device-width: 480px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 1) {
-  .container {
-    gap: 8px;
-  }
-
-  .textContainer {
-    width: 80%;
-    gap: 16px;
-  }
-
-  .textContainer h1 {
-    font-size: 24px;
-  }
-
-  .textContainer h2 {
-    font-size: 48px;
-  }
-
-  .textContainer p {
-    font-size: 16px;
-  }
-  .imgContainer {
-    height: 40%;
-    transform: translateY(-15%);
-  }
-}
-
-@media (max-width: 480px) {
+@media (max-width: 1024px) {
   .container {
     flex-direction: column-reverse;
     gap: 16px;

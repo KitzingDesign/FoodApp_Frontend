@@ -19,7 +19,6 @@
 
 .title {
   color: var(--Primary-Color, #bf310c);
-  font-family: Inter;
   font-size: 24px;
   font-style: normal;
   font-weight: 600;
@@ -35,7 +34,6 @@
 
   color: var(--Primary-Color, #bf310c);
   /* Body text thick */
-  font-family: Inter;
   font-size: 16px;
   font-style: normal;
   font-weight: 600;
@@ -80,7 +78,5 @@
   .visibleIcon {
     left: 260px;
     top: 38px;
-  }
-  .main {
   }
 }
