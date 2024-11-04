@@ -16,6 +16,10 @@ import {
 import { useAddNewInstructionMutation } from "../../instructions/instructionsApiSlice.jsx";
 import { useAddNewIngredientMutation } from "../../ingredients/ingredientsApiSlice.jsx";
 import { useGetCollectionsQuery } from "../../collections/collectionsApiSlice.jsx";
+import { useGetOneCollectionQuery } from "../../collections/collectionsApiSlice.jsx";
+import { setActiveTab } from "../../../components/Sidebar/sidebarSlice";
+import { setActiveTitle } from "../../../components/dashboard/dashboardSlice";
+import { useDispatch } from "react-redux";
 
 // Components and styles
 import styles from "./AddRecipeContent.module.css";
@@ -34,6 +38,7 @@ const getInitialFormData = (userId, collectionId) => ({
 });
 
 const AddRecipeContent = ({ isOpen, onClose }) => {
+  const dispatch = useDispatch();
   const { collectionId } = useParams();
   const userId = Number(useSelector(selectCurrentUserId));
 
@@ -62,6 +67,7 @@ const AddRecipeContent = ({ isOpen, onClose }) => {
     isLoading: isUrlLoading,
   } = useGetRecipeFromUrlQuery(urlToFetch, { skip: !urlToFetch });
 
+  //Logic to set formdata after fetching recipe from URL
   useEffect(() => {
     if (recipe) {
       setFormData((prevData) => ({
@@ -221,6 +227,16 @@ const AddRecipeContent = ({ isOpen, onClose }) => {
           });
       }
 
+      // Set the active tab and title after adding the recipe if a collection is selected
+      if (formData.collection_id) {
+        const collection = collections.find(
+          (item) => item.collection_id === formData.collection_id
+        );
+        dispatch(setActiveTab({ activeTab: formData.collection_id }));
+        dispatch(setActiveTitle({ activeTitle: collection.name }));
+      }
+
+      //navigate to the collection or user page after adding the recipe
       navigate(
         formData.collection_id
           ? `/welcome/collections/${formData.collection_id}`
