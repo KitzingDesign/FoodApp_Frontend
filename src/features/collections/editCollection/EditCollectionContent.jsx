@@ -33,8 +33,6 @@ const EditCollectionContent = ({ isOpen, onClose, children }) => {
   const [deleteCollection, { isLoading: isDeleting }] =
     useDeleteCollectionMutation();
 
-  console.log("refetching collections!!!", collection);
-
   const [formData, setFormData] = useState({
     name: "",
     description: "",

@@ -14,8 +14,6 @@ const RecipeCard = ({ recipe }) => {
     { skip: !recipe.collection_id }
   );
 
-  console.log(collection);
-
   const dispatch = useDispatch();
   return (
     <Link

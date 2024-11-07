@@ -84,10 +84,10 @@ const TermsAndConditions = () => {
         </p>
         <h2>7. Limitation of Liability</h2>
         <p>
-          <strong>No Guarantees:</strong> MatMatMaten is provided on an "as is"
-          and "as available" basis. We do not guarantee the accuracy or
-          reliability of recipe data (whether scraped from other websites or
-          entered manually).
+          <strong>No Guarantees:</strong> MatMatMaten is provided on an &quot;as
+          is&quot; and &quot;as available&quot; basis. We do not guarantee the
+          accuracy or reliability of recipe data (whether scraped from other
+          websites or entered manually).
           <br />
           <strong>Use at Your Own Risk:</strong> You use MatMatMaten at your own
           risk. We are not liable for damages related to your use of our site,

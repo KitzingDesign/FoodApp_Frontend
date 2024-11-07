@@ -40,7 +40,6 @@ const AddCollectionContent = ({ isOpen, onClose }) => {
     // Api connection
     try {
       const newCollection = await addNewCollection(formData).unwrap(); // Call the mutation function
-      console.log(newCollection.collection);
       console.log("New collection created: ", newCollection);
 
       // Reset form after submission

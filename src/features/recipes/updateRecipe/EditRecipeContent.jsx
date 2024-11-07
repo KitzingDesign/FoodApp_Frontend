@@ -176,8 +176,6 @@ const EditRecipeContent = ({ isOpen, onClose }) => {
       setErrMsg("Title is required");
       return;
     }
-    console.log("Form data", formData);
-    console.log("recipeID", recipeId);
 
     const recipeFormData = new FormData();
     recipeFormData.append("title", formData.title);
@@ -187,11 +185,8 @@ const EditRecipeContent = ({ isOpen, onClose }) => {
     recipeFormData.append("recipe_id", recipeId);
     recipeFormData.append("image_url", formData.image_url);
 
-    for (const [key, value] of recipeFormData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
+    
 
-    console.log("Image file", imageFile);
 
     // Append the image if available
     if (imageFile) {
