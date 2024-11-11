@@ -1,4 +1,4 @@
-import AllRecipes from "../recipes/allRecipes.jsx/allRecipes";
+import AllRecipes from "../recipes/allRecipes/AllRecipesPage";
 
 const Welcome = () => {
   const content = <AllRecipes />;

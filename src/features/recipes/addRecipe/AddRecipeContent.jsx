@@ -12,13 +12,13 @@ import { selectCurrentUserId } from "../../auth/authSlice.jsx";
 import {
   useAddNewRecipeMutation,
   useGetRecipeFromUrlQuery,
-} from "../recipesApiSlice";
+} from "../recipesApiSlice.jsx";
 import { useAddNewInstructionMutation } from "../../instructions/instructionsApiSlice.jsx";
 import { useAddNewIngredientMutation } from "../../ingredients/ingredientsApiSlice.jsx";
 import { useGetCollectionsQuery } from "../../collections/collectionsApiSlice.jsx";
 import { useGetOneCollectionQuery } from "../../collections/collectionsApiSlice.jsx";
-import { setActiveTab } from "../../../components/Sidebar/sidebarSlice";
-import { setActiveTitle } from "../../../components/dashboard/dashboardSlice";
+import { setActiveTab } from "../../../components/Sidebar/sidebarSlice.jsx";
+import { setActiveTitle } from "../../../components/dashboard/dashboardSlice.jsx";
 import { useDispatch } from "react-redux";
 
 // Components and styles
