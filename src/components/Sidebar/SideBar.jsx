@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 //Styles
-import styles from "./SideBar.module.css";
+import styles from "./sideBar.module.css";
 
 //Icons
 import ProfileIcon from "../../../public/profile";
