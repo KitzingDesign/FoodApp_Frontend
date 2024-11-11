@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import styles from "./DashboardLayout.module.css";
 
 // Components and Icons
-import SideBar from "../Sidebar/SideBar";
+import SideBar from "../Sidebar/Sidebar";
 import SidebarOpenCloseIcon from "../../../public/sidebarOpenClose";
 
 // Redux Selectors
