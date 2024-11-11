@@ -1,6 +1,6 @@
 import React from "react";
 import Question from "./Question";
-import styles from "./FAQunit.module.css";
+import styles from "./fAQunit.module.css";
 
 const FAQ = () => {
   return (

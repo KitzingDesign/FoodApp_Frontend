@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import styles from "./Question.module.css"; // Assuming you have a CSS module for styling
+import styles from "./question.module.css"; // Assuming you have a CSS module for styling
 
 const Question = ({ title, answer }) => {
   const [isOpen, setIsOpen] = useState(false);
