@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 // Styles
-import styles from "./Dashboardlayout.module.css";
+import styles from "../dashboard/DashboardLayout.module.css";
 
 // Components and Icons
 import SideBar from "../Sidebar/Sidebar";
