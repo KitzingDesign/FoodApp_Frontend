@@ -5,7 +5,7 @@ import LogoIcon from "../../public/logo";
 import { motion } from "framer-motion";
 
 import { Link, Navigate } from "react-router-dom";
-import FAQ from "./FaQ/FaQ";
+import FAQ from "./FaQ/FAQunit";
 import Footer from "./footer/Footer";
 
 const preloadImage = (src) => {
