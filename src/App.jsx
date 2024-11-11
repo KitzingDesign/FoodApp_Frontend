@@ -22,7 +22,7 @@ import Collections from "./features/collections/collectionPage/Collections.jsx";
 
 // Importing recipe-related components
 import CurrentRecipe from "./features/recipes/currentRecipe/CurrentRecipe.jsx";
-import AllRecipes from "./features/recipes/allRecipes.jsx/allRecipes.jsx";
+import AllRecipes from "./features/recipes/allRecipes/AllRecipesPage.jsx";
 
 // Importing static and error components
 import TermsAndConditions from "./components/legal/TermsAndConditions.jsx";

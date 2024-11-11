@@ -12,7 +12,7 @@ import {
   useGetOneCollectionQuery,
 } from "../../collections/collectionsApiSlice";
 import Modal from "../../../components/Modal/Modal";
-import AddRecipeContent from "../addRecipe.jsx/AddRecipeContent";
+import AddRecipeContent from "../addRecipe/AddRecipeContent";
 import EditRecipeModal from "../updateRecipe/EditRecipeContent";
 
 import Button from "../../../UI/Button";
