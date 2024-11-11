@@ -8,7 +8,7 @@ const FAQ = () => {
       <Question
         title="Do I need to create an account to use the app?"
         answer="
-Yes, you need to create an account to use the app. It’s free to sign up, and having an account allows you to save your favorite recipes."
+Yes, you need to create an account to use the app. It&acute;s free to sign up, and having an account allows you to save your favorite recipes."
       />
       <Question
         title="Can I log in using my Google account?"
