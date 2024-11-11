@@ -7,13 +7,13 @@ import { useSelector } from "react-redux";
 import styles from "../dashboard/DashboardLayout.module.css";
 
 // Components and Icons
-import SideBar from "../Sidebar/Sidebar";
+import SideBar from "../Sidebar/Sidebar.jsx";
 import SidebarOpenCloseIcon from "../../../public/sidebarOpenClose";
 
 // Redux Selectors
-import { selectCurrentUserId } from "../../features/auth/authSlice";
-import { selectCurrentActiveTitle } from "./dashboardSlice";
-import Footer from "../footer/Footer";
+import { selectCurrentUserId } from "../../features/auth/authSlice.jsx";
+import { selectCurrentActiveTitle } from "./dashboardSlice.jsx";
+import Footer from "../footer/Footer.jsx";
 
 const DashboardLayout = () => {
   const userId = useSelector(selectCurrentUserId);
