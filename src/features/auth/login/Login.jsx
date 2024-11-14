@@ -61,6 +61,7 @@ const Login = () => {
       );
       const firebaseToken = await userCredential.user.getIdToken();
       const userData = await login({ firebaseToken }).unwrap();
+      console.log(userCredential);
 
       dispatch(
         setCredentials({
