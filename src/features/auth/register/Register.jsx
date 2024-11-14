@@ -128,7 +128,7 @@ const Register = () => {
         } else if (e.status === 401) {
           setErrMsg("Unauthorized");
         } else {
-          setErrMsg("Something went wrong with backend");
+          setErrMsg("Something went wrong with backend", e.message);
         }
       }
 
