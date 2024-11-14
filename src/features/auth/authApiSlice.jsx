@@ -22,6 +22,10 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: credentials,
       }),
+      // Handling the response (optional)
+      onError: (error) => {
+        console.error("Registration Error:", error);
+      },
     }),
     logout: builder.mutation({
       query: () => ({
