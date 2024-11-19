@@ -57,16 +57,6 @@
   height: 48px;
   width: 100%;
 }
-.listContainer li:hover {
-  background-color: #bf310c0d;
-  cursor: pointer;
-  color: var(--Primary-Color, #bf310c);
-}
-
-/* Menu tab hover state (applies only when the tab is not active) */
-.listContainer li:not(.active):hover {
-  background-color: #6969690d; /* Light gray background on hover */
-}
 
 .active {
   background-color: #bf310c0d;
@@ -126,20 +116,37 @@
   border-radius: 4px;
 }
 
-/* Apply background to .editLink when hovered or menuTab is active */
-.listContainer li.active .addCollection:hover {
-  background-color: #bf300c27; /* Light red background when menuTab is active or when .editLink is hovered */
-}
-
-/* Show the icon when the button is hovered */
-.listContainer li:hover .addCollection {
-  display: flex;
-}
-
 .flexIcons button {
   background: none;
   border: none;
   cursor: pointer;
+}
+
+/* Apply hover styles only for devices that support hovering */
+@media (hover: hover) {
+  /* Apply background to .editLink when hovered or menuTab is active */
+  .listContainer li.active .addCollection:hover {
+    background-color: #bf300c27; /* Light red background when menuTab is active or when .editLink is hovered */
+  }
+  /* Show the icon when the button is hovered */
+  .listContainer li:hover .addCollection {
+    display: flex;
+  }
+  .listContainer li:hover {
+    background-color: #bf310c0d;
+    cursor: pointer;
+    color: var(--Primary-Color, #bf310c);
+  }
+  .listContainer li:hover {
+    background-color: #bf310c0d;
+    cursor: pointer;
+    color: var(--Primary-Color, #bf310c);
+  }
+
+  /* Menu tab hover state (applies only when the tab is not active) */
+  .listContainer li:not(.active):hover {
+    background-color: #6969690d; /* Light gray background on hover */
+  }
 }
 
 @media (max-width: 480px) {
