@@ -1,6 +1,8 @@
 .outerContainer {
   width: 100vw;
   min-height: 100vh;
+  height: -webkit-fill-available;
+
   background: var(--OffWhite, #fafafa);
   display: flex;
   align-items: center;
