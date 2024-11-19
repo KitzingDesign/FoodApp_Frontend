@@ -74,8 +74,6 @@ const Register = () => {
         password
       );
       const firebaseToken = await userCredential.user.getIdToken();
-      console.log(userCredential);
-      console.log(firebaseToken);
 
       // Send the firebaseToken and user details to your backend
       const userData = await register({
