@@ -20,11 +20,6 @@
   transition: background-color 0.3s ease;
 }
 
-/* Menu tab hover state (applies only when the tab is not active) */
-.menuTab:not(.active):hover {
-  background-color: #6969690d; /* Light gray background on hover */
-}
-
 .menuTab p {
   color: var(--Text-Color, #333);
   margin: 0; /* Remove any default margin for consistency */
@@ -63,25 +58,6 @@
   border-radius: 4px;
 }
 
-/* Apply background to .editLink when hovered or menuTab is active */
-.menuTab.active .editLink:hover {
-  background-color: #bf300c27; /* Light red background when menuTab is active or when .editLink is hovered */
-}
-
-/* Edit link hover state when not in active tab */
-.menuTab:not(.active) .editLink:hover {
-  background-color: none; /* Light red background only on hover if not active */
-}
-
-/* Show edit link and hide recipeCount when hovering or active */
-.menuTab:hover .editLink {
-  display: flex;
-}
-
-.menuTab:hover .recipeCount {
-  opacity: 0; /* Hide recipe count */
-}
-
 /* Link styling to occupy full width */
 .Link {
   width: 100%;
@@ -104,4 +80,29 @@
   font-size: 16px;
   line-height: 1.5;
   transition: background-color 0.3s ease;
+}
+
+/* Apply hover styles only for devices that support hovering */
+@media (hover: hover) {
+  /* Menu tab hover state (applies only when the tab is not active) */
+  .menuTab:not(.active):hover {
+    background-color: #6969690d; /* Light gray background on hover */
+  }
+  /* Apply background to .editLink when hovered or menuTab is active */
+  .menuTab.active .editLink:hover {
+    background-color: #bf300c27; /* Light red background when menuTab is active or when .editLink is hovered */
+  }
+  /* Edit link hover state when not in active tab */
+  .menuTab:not(.active) .editLink:hover {
+    background-color: none; /* Light red background only on hover if not active */
+  }
+
+  /* Show edit link and hide recipeCount when hovering or active */
+  .menuTab:hover .editLink {
+    display: flex;
+  }
+
+  .menuTab:hover .recipeCount {
+    opacity: 0; /* Hide recipe count */
+  }
 }
