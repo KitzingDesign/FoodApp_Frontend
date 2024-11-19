@@ -94,43 +94,36 @@ const Register = () => {
         })
       );
 
+      // Reset Form fields after successful signup
       setFirstName("");
       setLastName("");
       setEmail("");
       setPassword("");
-      navigate(`/welcome/${userData.user.user_id}`); // Navigate to the welcome page
+
+      // Navigate to the welcome page
+      navigate(`/welcome/${userData.user.user_id}`);
     } catch (e) {
       console.log("Error object:", e); // Debugging log for the error object
 
-      // Check if it's a Firebase error
+      // Handle Firebase authentication errors
       if (e.code) {
         switch (e.code) {
           case "auth/email-already-in-use":
             setErrMsg("Email is already in use");
             break;
           case "auth/invalid-email":
-            setErrMsg("Invalid email");
+            setErrMsg("Invalid email format");
             break;
           case "auth/weak-password":
-            setErrMsg("Password is too weak");
+            setErrMsg("Password is too weak (at least 6 characters required)");
             break;
           default:
             setErrMsg("Firebase authentication error: " + e.message);
             break;
         }
-      }
-
-      // Check if it's a backend error (likely from the 'register' call)
-      else if (e.status) {
-        if (e.status === 400) {
-          setErrMsg("Missing email or password");
-        } else if (e.status === 409) {
-          setErrMsg("Duplicate email");
-        } else if (e.status === 401) {
-          setErrMsg("Unauthorized");
-        } else {
-          setErrMsg("Something went wrong with backend", e.message);
-        }
+      } else {
+        // Backend or other errors
+        setErrMsg("An error occurred while registering. Please try again.");
       }
 
       if (errRef.current) {

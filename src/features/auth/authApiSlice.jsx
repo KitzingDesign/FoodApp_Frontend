@@ -22,6 +22,17 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: credentials,
       }),
+      // Optional: Handle success or failure cases directly here
+      onQueryStarted: async (args, { dispatch, queryFulfilled }) => {
+        try {
+          // Handle the successful response from backend
+          const { data } = await queryFulfilled;
+          dispatch(setCredentials(data)); // Update Redux state with user data
+        } catch (error) {
+          console.error("Registration Error:", error);
+          // Optionally dispatch a failure action or set error state
+        }
+      },
       // Handling the response (optional)
       onError: (error) => {
         console.error("Registration Error:", error);
