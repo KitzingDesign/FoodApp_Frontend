@@ -34,7 +34,7 @@
 .heroContainer {
   background-color: #fafafa;
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   gap: 48px;
   display: flex;
   justify-content: center;
