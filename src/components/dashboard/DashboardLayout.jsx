@@ -38,7 +38,7 @@ const DashboardLayout = () => {
   const windowWidth = window.innerWidth;
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} full-height-element`}>
       <AnimatePresence mode="wait">
         {showSidebar && (
           <motion.aside
