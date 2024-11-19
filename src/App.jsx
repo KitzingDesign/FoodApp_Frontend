@@ -28,24 +28,8 @@ import AllRecipes from "./features/recipes/allRecipes/AllRecipesPage.jsx";
 import TermsAndConditions from "./components/legal/TermsAndConditions.jsx";
 import PageNotFound from "./components/404/PageNotFound.jsx";
 
-/**
- * App Component
- * The main component that sets up all the routes in the application.
- *
- * Routes are organized into public, protected, and nested routes inside the dashboard.
- */
-function setVhUnit() {
-  // Get the viewport height and multiply it by 1% to get a value for a vh unit
-  let vh = window.innerHeight * 0.01;
-  // Set the value in the --vh custom property to the root of the document
-  document.documentElement.style.setProperty("--vh", `${vh}px`);
-}
-
-// Execute the function initially
-setVhUnit();
-
-// Execute the function on resize
-window.addEventListener("resize", setVhUnit);
+// Import the viewport script
+import "./viewport.js";
 
 function App() {
   return (

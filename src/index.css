@@ -3,6 +3,7 @@
   --Secondary-Color: #4156a1;
   --OffWhite-Color: #fafafa;
   --Text-Color: #333333;
+  --vh: 1vh; /* Fallback for browsers that don't support custom properties */
 }
 
 html,
@@ -13,6 +14,10 @@ body {
   min-height: -webkit-fill-available;
   overflow-x: hidden;
   margin: 0;
+}
+
+.full-height-element {
+  height: calc(var(--vh, 1vh) * 100);
 }
 
 h1,
