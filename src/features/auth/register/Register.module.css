@@ -1,6 +1,6 @@
 .outerContainer {
   width: 100vw;
-  height: 100vh;
+  min-height: 100%;
   background: var(--OffWhite, #fafafa);
   display: flex;
   align-items: center;
@@ -82,6 +82,7 @@
   display: flex;
   flex-direction: row;
   gap: 8px;
+  box-sizing: border-box;
 }
 
 .form {
@@ -101,6 +102,7 @@
   height: 48px;
   padding: 0px 12px;
   margin: 8px 0;
+  font-size: 16px;
 
   border-radius: 8px;
   border: 1px solid var(--outline-default, #d0d5dd);
@@ -249,16 +251,21 @@
   }
   .outerContainer {
     background-color: #fff;
+    width: 100%; /* Use 100% instead of 100vw */
+  }
+  .namesContainer input {
+    box-sizing: border-box;
+    width: 100%;
   }
   .container {
     width: 100%;
-    margin: 16px 16px;
-    padding: 0px 0px;
-
+    margin: 0 auto; /* Center the container horizontally */
+    padding: 16px; /* Add some inner spacing */
     border-radius: 8px;
     background: var(--background-mode, #fff);
     box-shadow: none;
   }
+
   /* Style the checkbox itself */
   .persistInput {
     width: 20px; /* Width of the checkbox */

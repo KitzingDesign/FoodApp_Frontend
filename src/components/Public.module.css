@@ -107,6 +107,16 @@
   cursor: pointer;
 }
 
+/* Apply hover styles only for devices that support hovering */
+@media (hover: hover) {
+  .loginButton:hover {
+    background-color: #8da0e0;
+  }
+  .signupButton:hover {
+    background-color: hsl(235deg 85% 97%);
+  }
+}
+
 .heroImgContainer {
   position: relative;
   width: 50%;
@@ -121,12 +131,12 @@
 /* Base bubble styling */
 .bubble {
   position: absolute;
-  bottom: 30%; /* Position the circle at the bottom of the container */
-  left: -10%;
+  bottom: 40%; /* Position the circle at the bottom of the container */
+  left: -5%;
   /* Center the circle horizontally */
 
-  width: 348px;
-  height: 348px;
+  width: 480px;
+  height: 480px;
   border-radius: 50%;
   background: #8da0e0;
   z-index: 1; /* Ensure the circle is underneath the image */
@@ -153,8 +163,18 @@
   justify-content: center;
 }
 
+.backgroundUpper {
+  background-color: #f2d6ce;
+  width: 100vw;
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .recipeSection div {
-  transform: translateY(-10%);
+  transform: translateY(-8%);
   background-color: #ffff;
   width: 70vw;
   border-radius: 16px;
@@ -163,17 +183,18 @@
   align-items: center;
   justify-content: center;
   gap: 16px;
-  padding: 0 40px;
-  padding-top: 40px;
+  padding: 0 24px;
+  padding-top: 24px;
 }
 
 .recipeSection img {
   width: 100%;
-  border-radius: 16px;
+  border-radius: 8px;
   border: 1px solid var(--outline-default, #d0d5dd);
   /* box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.16); */
 }
 
+/* Steps section */
 .stepsContainer {
   width: 100%;
   height: 50vh;
@@ -182,7 +203,6 @@
   display: flex;
   flex-direction: column;
   gap: 56px;
-  margin-bottom: 48px;
 }
 
 .stepsContainer h2 {
@@ -334,6 +354,18 @@
   line-height: normal;
 }
 
+@media (max-width: 1536px) {
+  /* Base bubble styling */
+  .bubble {
+    bottom: 30%; /* Position the circle at the bottom of the container */
+    left: -10%;
+    /* Center the circle horizontally */
+
+    width: 348px;
+    height: 348px;
+  }
+}
+
 @media (max-width: 1024px) {
   .hero {
     display: flex;
@@ -448,6 +480,12 @@
 
   .sectionTextContainer {
     width: 100%;
+  }
+
+  .recipeSection div {
+    width: 80vw;
+    padding: 0 8px;
+    padding-top: 8px;
   }
 
   .stepsContainer {

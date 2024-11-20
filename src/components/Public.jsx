@@ -20,6 +20,7 @@ export const Public = () => {
     recipeImg: "",
     createImg: "",
     editImg: "",
+    organizeImg: "",
   });
 
   useEffect(() => {
@@ -37,10 +38,11 @@ export const Public = () => {
   // Preload images for faster loading
   useEffect(() => {
     const images = [
-      "/heroImg.png",
+      "/heroImg.webp",
       "/recipeImg.png",
       "/addRecipeImg.png",
       "/editImg.png",
+      "/organizeImg.png",
     ];
 
     const loadedImages = {};
@@ -51,6 +53,7 @@ export const Public = () => {
       if (index === 1) loadedImages.recipeImg = src; // Store recipe image path
       if (index === 2) loadedImages.createImg = src;
       if (index === 3) loadedImages.editImg = src;
+      if (index === 4) loadedImages.organizeImg = src;
     });
 
     setPreloadedImages(loadedImages); // Set preloaded images to state
@@ -62,9 +65,8 @@ export const Public = () => {
         <div>
           <LogoIcon />
         </div>
-        <p className={styles.logo}>MatMatMaten.</p>
       </div>
-      <section className={styles.heroContainer}>
+      <section className={`${styles.heroContainer} full-height-element`}>
         <div className={styles.hero}>
           <div className={styles.titleContainer}>
             <div className={styles.textContainer}>
@@ -157,8 +159,8 @@ export const Public = () => {
             <img src="/blueBall.svg" />
           </div>
           <img
-            src={preloadedImages.recipeImg}
-            alt="Edit Recipe Dashboard"
+            src={preloadedImages.organizeImg}
+            alt="Organize Recipes img"
             className={styles.sectionImg}
           />
           <div className={styles.sectionTextContainer}>
@@ -176,7 +178,7 @@ export const Public = () => {
         <section className={styles.leftSection}>
           <img
             src={preloadedImages.editImg}
-            alt="Create Recipe"
+            alt="Customize Recipe"
             className={styles.sectionImg}
           />
           <div className={styles.sectionTextContainer}>
