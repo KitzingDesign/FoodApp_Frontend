@@ -36,7 +36,7 @@ const Modal = ({ isOpen, onClose, title, children }) => {
   return (
     <FocusTrap>
       <div className={styles.overlay} onClick={handleOverlayClick}>
-        <div className={styles.modal}>
+        <div className={`${styles.modal} `}>
           <div>
             <div className={styles.titleContainer}>
               <h2>{title}</h2>

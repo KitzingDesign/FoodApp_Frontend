@@ -45,10 +45,8 @@ function App() {
 
         {/* Protected routes (only accessible when logged in) */}
         <Route element={<PersistLogin />}>
-          {" "}
           {/* Persist login across sessions */}
           <Route element={<RequireAuth />}>
-            {" "}
             {/* Guard routes that require authentication */}
             {/* Dashboard layout (parent route for authenticated user views) */}
             <Route path="/welcome" element={<DashboardLayout />}>

@@ -74,8 +74,30 @@ const Login = () => {
       setPassword("");
       navigate(`/welcome/${Number(userData.user.user_id)}`);
     } catch (e) {
-      setErrMsg("Login failed");
-      errRef.current?.focus();
+      if (e.code) {
+        switch (e.code) {
+          case "auth/invalid-credential":
+            setErrMsg("Wrong Email or Password");
+            break;
+          case "auth/wrong-password":
+            setErrMsg("Wrong Email or Password");
+            break;
+          case "auth/user-disabled":
+            setErrMsg(
+              "Your account has been disabled. Please contact support."
+            );
+            break;
+          case "auth/user-not-found":
+            setErrMsg("No account found with this email.");
+            break;
+          default:
+            setErrMsg("Firebase authentication error: " + e.message);
+            break;
+        }
+      } else {
+        // Backend or other errors
+        setErrMsg("An error occurred while logging in. Please try again.");
+      }
     }
   };
 

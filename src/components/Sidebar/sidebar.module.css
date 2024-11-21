@@ -4,12 +4,21 @@
   width: 300px; /* Set width of the sidebar */
   background: var(--Beige-color, #f2f0ea);
   background: #fafafa;
-  overflow: auto; /* Allow scrolling */
+  overflow-y: auto; /* Enables vertical scrolling only */
+
   padding: 8px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 0px;
+
+  /* Hide scrollbar */
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer and Edge */
+}
+
+.sidebar::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Opera */
 }
 
 .titleContainer {

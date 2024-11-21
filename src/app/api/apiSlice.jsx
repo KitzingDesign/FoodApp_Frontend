@@ -4,7 +4,7 @@ import { setCredentials, logOut } from "../../features/auth/authSlice";
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: baseUrl || "http://localhost:3500",
+  baseUrl: baseUrl || "http://192.168.0.185:3500",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.token;

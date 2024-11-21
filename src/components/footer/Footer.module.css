@@ -83,6 +83,7 @@
   margin: 16px 0; /* Spacing around separator */
   font-weight: bold; /* Bold separator text */
   color: var(--Primary-Color, #bf310c);
+  cursor: default;
 }
 
 .copyRight {

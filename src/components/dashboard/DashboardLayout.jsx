@@ -39,6 +39,28 @@ const DashboardLayout = () => {
 
   return (
     <div className={`${styles.container} full-height-element`}>
+      <motion.div
+        onClick={toggleSidebar}
+        initial={{ x: 8 }}
+        animate={{
+          x: showSidebar ? (isMobile ? windowWidth - 50 : 250) : 16,
+        }}
+        transition={{ type: "tween", ease: "easeInOut", duration: 0.2 }}
+        style={{
+          position: "absolute",
+
+          top: "16px",
+          zIndex: 1000,
+          cursor: "pointer",
+          willChange: "transform",
+        }}
+        onAnimationComplete={() => console.log("Animation complete")}
+        layout="position"
+      >
+        <div className={styles.toggleContainer}>
+          <SidebarOpenCloseIcon />
+        </div>
+      </motion.div>
       <AnimatePresence mode="wait">
         {showSidebar && (
           <motion.aside
@@ -53,22 +75,6 @@ const DashboardLayout = () => {
         )}
       </AnimatePresence>
       <main className={styles.containerMain}>
-        <motion.div
-          onClick={toggleSidebar}
-          initial={false}
-          animate={{ x: showSidebar ? -60 : 8 }}
-          transition={{ type: "tween", ease: "easeInOut", duration: 0.2 }}
-          style={{
-            position: showSidebar ? "fixed" : "absolute",
-            top: "16px",
-            zIndex: 1000,
-            cursor: "pointer",
-          }}
-          layout="position"
-        >
-          <SidebarOpenCloseIcon />
-        </motion.div>
-
         {title && (
           <div>
             <h2 className={styles.title}>{title}</h2>

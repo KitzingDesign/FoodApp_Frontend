@@ -13,7 +13,17 @@
   padding: 64px 24px 16px 24px; /* Standard padding */
   box-sizing: border-box;
   width: 100%;
-  height: 100vh;
+  height: 100%;
+}
+
+.toggleContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fafafa; /* Background color */
+  border-radius: 50%;
+  width: 40px; /* Slightly larger than your SVG */
+  height: 40px; /* Slightly larger than your SVG */
 }
 
 .title {
@@ -60,7 +70,7 @@
   }
 
   .containerMain {
-    padding: 64px 8px; /* Standard padding */
+    padding: 64px 12px; /* Standard padding */
     overflow-x: hidden; /* Hide horizontal scrollbar */
   }
 

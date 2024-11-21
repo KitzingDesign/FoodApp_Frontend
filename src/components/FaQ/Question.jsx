@@ -15,8 +15,8 @@ const Question = ({ title, answer }) => {
       <div className={styles.questionHeader} onClick={toggleAnswer}>
         <h3>{title}</h3>
         <motion.div
-          initial={{ rotate: 0 }}
-          animate={{ rotate: isOpen ? 180 : 0 }}
+          initial={{ rotate: 180 }}
+          animate={{ rotate: isOpen ? 0 : 180 }}
           transition={{ duration: 0.3 }}
         >
           <img src="./chevron.svg" />

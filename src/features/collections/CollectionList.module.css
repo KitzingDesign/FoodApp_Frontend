@@ -1,9 +1,7 @@
-/* Main container with overflow */
 .container {
-  overflow-y: auto; /* Enables vertical scrolling only */
-  overflow-x: hidden; /* Prevents horizontal scrolling */
   padding: 0; /* Ensures no padding affects scrolling */
   margin: 0; /* Remove default margins for consistency */
+  height: auto;
 }
 
 /* Collection Item container */
