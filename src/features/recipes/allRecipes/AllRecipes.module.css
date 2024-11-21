@@ -4,6 +4,23 @@
   flex-direction: column;
   align-items: center;
   min-height: 100%;
+  position: relative;
+}
+
+.addButton {
+  position: sticky;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 72px;
+  width: 72px;
+  top: 90%;
+  left: 95%;
+  z-index: 1000;
+  border-radius: 50%;
+  border: none;
+  background-color: #4156a1;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
 
 .collectionDescription {
@@ -96,8 +113,20 @@
   justify-content: right;
 }
 
+@media (hover: hover) {
+  .addButton:hover {
+    background-color: #8da0e0;
+    cursor: pointer;
+  }
+}
+
 /* for mobile phones */
 @media (max-width: 480px) {
+  .addButton {
+    top: 95%;
+    left: 95%;
+    z-index: 1000;
+  }
   .addRecipeLink {
     width: 100vw;
     margin-bottom: 8px;

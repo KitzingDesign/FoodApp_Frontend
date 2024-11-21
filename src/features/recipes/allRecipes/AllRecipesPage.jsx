@@ -61,6 +61,9 @@ const AllRecipes = () => {
 
   const content = (
     <div className={styles.container}>
+      <button onClick={openModal} className={styles.addButton}>
+        <img src="/addIcon.svg" alt="Add Recipe" />
+      </button>
       <div className={styles.addRecipeLink}>
         <Button
           variant="outline"
