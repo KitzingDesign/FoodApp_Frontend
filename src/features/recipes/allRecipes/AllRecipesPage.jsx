@@ -65,14 +65,6 @@ const AllRecipes = () => {
         <img src="/addIcon.svg" alt="Add Recipe" />
       </button>
       <div className={styles.addRecipeLink}>
-        <Button
-          variant="outline"
-          size="medium"
-          onClick={openModal}
-          aria-label="Add a new recipe"
-        >
-          Add Recipe
-        </Button>{" "}
         {collectionId && (
           <Button
             variant="outline"
