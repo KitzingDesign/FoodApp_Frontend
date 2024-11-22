@@ -1,0 +1,31 @@
+.menuButton {
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  display: flex;
+  color: #ccc;
+  justify-content: center;
+  gap: 8px;
+  text-transform: lowercase;
+  cursor: pointer;
+  border-radius: 4px;
+  transition-duration: 0.4s;
+}
+
+.menuButton p {
+  color: #333;
+  text-transform: none;
+  font-size: 16px;
+}
+
+.iconContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  border: solid 1px #ccc;
+  border-radius: 50%;
+}

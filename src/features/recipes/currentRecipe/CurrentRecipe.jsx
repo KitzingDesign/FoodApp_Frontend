@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 // Styles
@@ -9,11 +9,20 @@ import { useGetOneRecipeQuery } from "../recipesApiSlice";
 import { useGetIngredientsQuery } from "../../ingredients/ingredientsApiSlice";
 import { useGetInstructionsQuery } from "../../instructions/instructionsApiSlice";
 import { useGetOneCollectionQuery } from "../../collections/collectionsApiSlice";
+import { useDeleteRecipeMutation } from "../recipesApiSlice";
 import Modal from "../../../components/Modal/Modal";
 import EditRecipeContent from "../updateRecipe/EditRecipeContent";
 import Button from "../../../UI/Button";
+import RecipeMenu from "../../../components/menu/recipeMenu";
+
+import { setActiveTitle } from "../../../components/dashboard/dashboardSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { selectCurrentUserId } from "../../auth/authSlice";
 
 const CurrentRecipe = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const userId = Number(useSelector(selectCurrentUserId));
   const { recipeId } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false); // State for modal
 
@@ -47,9 +56,12 @@ const CurrentRecipe = () => {
     refetch: refetchInstructions,
   } = useGetInstructionsQuery({ id: recipeId });
 
+  const [deleteRecipe, { isLoading: isDeleting }] = useDeleteRecipeMutation();
+
   // Loading and error handling
   const isLoading =
     isLoadingRecipe || isLoadingIngredients || isLoadingInstructions;
+
   const hasError = recipeError;
 
   useEffect(() => {
@@ -62,6 +74,16 @@ const CurrentRecipe = () => {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
+  const handleDelete = async (e) => {
+    try {
+      await deleteRecipe({ id: recipeId });
+      dispatch(setActiveTitle({ activeTitle: "All Recipes" }));
+      navigate(`/welcome/${userId}`);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const renderContent = () => {
     if (isLoading) return <div>Loading...</div>;
     if (hasError) return <div>Error loading recipe. Please try again.</div>;
@@ -69,14 +91,15 @@ const CurrentRecipe = () => {
     return (
       <div>
         <div className={styles.editRecipeLink}>
-          <Button
+          {/* <Button
             variant="outlineRed"
             size="medium"
             onClick={openModal} // Open the modal on button click
             aria-label="Update current recipe"
           >
             Edit Recipe
-          </Button>
+          </Button> */}
+          <RecipeMenu editClick={openModal} deleteClick={handleDelete} />
         </div>
         <div className={styles.container}>
           <div className={styles.upperContainer}>
