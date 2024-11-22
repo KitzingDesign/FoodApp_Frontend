@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import styles from "./AllRecipes.module.css";
 
@@ -10,15 +11,20 @@ import RecipeCard from "../../../components/RecipeCard";
 import {
   useGetCollectionRecipesQuery,
   useGetOneCollectionQuery,
+  useDeleteCollectionMutation,
 } from "../../collections/collectionsApiSlice";
 import Modal from "../../../components/Modal/Modal";
 import AddRecipeContent from "../addRecipe/AddRecipeContent";
 import EditRecipeModal from "../updateRecipe/EditRecipeContent";
+import { setActiveTitle } from "../../../components/dashboard/dashboardSlice";
 
 import Button from "../../../UI/Button";
 import EditCollectionContent from "../../collections/editCollection/EditCollectionContent";
+import CollectionMenu from "../../../components/menu/collectionMenu";
 
 const AllRecipes = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { collectionId } = useParams(); // Extract collection ID from URL
   const userId = Number(useSelector(selectCurrentUserId));
 
@@ -55,6 +61,19 @@ const AllRecipes = () => {
     }
   );
 
+  const [deleteCollection, { isLoading: isDeleting }] =
+    useDeleteCollectionMutation();
+
+  const handleDeleteCollection = async (e) => {
+    try {
+      await deleteCollection({ id: Number(collectionId) });
+      dispatch(setActiveTitle({ activeTitle: "Collections" }));
+      navigate(`/welcome/collections`);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -66,14 +85,10 @@ const AllRecipes = () => {
       </button>
       <div className={styles.addRecipeLink}>
         {collectionId && (
-          <Button
-            variant="outline"
-            size="medium"
-            onClick={openEditModal}
-            aria-label="Add a new recipe"
-          >
-            Edit Collection
-          </Button>
+          <CollectionMenu
+            editClick={openEditModal}
+            deleteClick={handleDeleteCollection}
+          />
         )}
       </div>
       {collection.description ? (

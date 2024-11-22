@@ -4,12 +4,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import heic2any from "heic2any";
 
 import { selectCurrentUserId } from "../../auth/authSlice";
-import { setActiveTitle } from "../../../components/dashboard/dashboardSlice";
 import { useGetCollectionsQuery } from "../../collections/collectionsApiSlice";
 import {
   useUpdateRecipeMutation,
   useGetOneRecipeQuery,
-  useDeleteRecipeMutation,
 } from "../recipesApiSlice";
 import {
   useGetInstructionsQuery,
@@ -69,7 +67,6 @@ const EditRecipeContent = ({ isOpen, onClose }) => {
 
   // API Hooks
   const [updateRecipe, { isLoading: isUpdating }] = useUpdateRecipeMutation();
-  const [deleteRecipe, { isLoading: isDeleting }] = useDeleteRecipeMutation();
   const [updateInstruction, { isLoading: isInstructionUpdating }] =
     useUpdateInstructionMutation();
   const [updateIngredient, { isLoading: isIngredientUpdating }] =
@@ -185,9 +182,6 @@ const EditRecipeContent = ({ isOpen, onClose }) => {
     recipeFormData.append("recipe_id", recipeId);
     recipeFormData.append("image_url", formData.image_url);
 
-    
-
-
     // Append the image if available
     if (imageFile) {
       recipeFormData.append("image", imageFile);
@@ -260,27 +254,10 @@ const EditRecipeContent = ({ isOpen, onClose }) => {
     }));
   };
 
-  const handleDelete = async (e) => {
-    e.preventDefault();
-    try {
-      await deleteRecipe({ id: recipeId });
-      refetchRecipes();
-      dispatch(setActiveTitle({ activeTitle: "All Recipes" }));
-      navigate(`/welcome/${userId}`);
-    } catch (err) {
-      setErrMsg("Failed to delete recipe");
-      console.error(err);
-    }
-  };
-
   return (
     <>
       {errMsg && <p style={{ color: "red" }}>{errMsg}</p>}
-      <div className={styles.deleteButtonContainer}>
-        <Button size="medium" variant="fillRed" onClick={handleDelete}>
-          Delete Recipe
-        </Button>
-      </div>
+
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.upperContainer}>
           <div className={styles.upperLeftContainer}>
