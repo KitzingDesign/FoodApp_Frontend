@@ -36,7 +36,11 @@ const RecipeCard = ({ recipe }) => {
         )}
       </div>
       <div className={styles.textContainer}>
-        <h3>{recipe.title}</h3>
+        <h3>
+          {recipe.title.length > 50
+            ? `${recipe.title.substring(0, 50)}...`
+            : recipe.title}
+        </h3>
       </div>
     </Link>
   );

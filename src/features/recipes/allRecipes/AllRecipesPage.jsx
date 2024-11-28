@@ -16,6 +16,7 @@ import {
 import Modal from "../../../components/Modal/Modal";
 import AddRecipeContent from "../addRecipe/AddRecipeContent";
 import EditRecipeModal from "../updateRecipe/EditRecipeContent";
+import AllRecipesMenu from "../../../components/menu/AllRecipesMenu";
 import { setActiveTitle } from "../../../components/dashboard/dashboardSlice";
 
 import Button from "../../../UI/Button";
@@ -84,11 +85,13 @@ const AllRecipes = () => {
         <img src="/addIcon.svg" alt="Add Recipe" />
       </button>
       <div className={styles.addRecipeLink}>
-        {collectionId && (
+        {collectionId ? (
           <CollectionMenu
             editClick={openEditModal}
             deleteClick={handleDeleteCollection}
           />
+        ) : (
+          <AllRecipesMenu openModal={openModal} />
         )}
       </div>
       {collection.description ? (
