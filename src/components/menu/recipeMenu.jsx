@@ -6,7 +6,7 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import { useState } from "react";
-import styles from "./RecipeMenu.module.css";
+import styles from "./recipeMenu.module.css";
 
 const RecipeMenu = ({ editClick, deleteClick }) => {
   const [anchorEl, setAnchorEl] = useState(null);
