@@ -27,7 +27,6 @@ export const Public = () => {
     const handleResize = () => {
       const isNowMobile = window.innerWidth <= 480;
       setIsMobile(isNowMobile);
-      setShowSidebar(!isNowMobile); // Show sidebar if desktop, hide if mobile
     };
 
     window.addEventListener("resize", handleResize);

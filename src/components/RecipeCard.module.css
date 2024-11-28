@@ -13,13 +13,13 @@
 .collectionTab {
   position: absolute;
   top: 0;
-  right: 0;
+  left: 0;
   background-color: var(--Secondary-Color);
   height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 0px 0px 0px 10px;
+  border-radius: 0px 0px 10px 0px;
 }
 
 .collectionTab p {
