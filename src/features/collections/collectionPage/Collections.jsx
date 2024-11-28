@@ -9,6 +9,7 @@ import Modal from "../../../components/Modal/Modal";
 import CollectionCard from "../../../components/collectionCard/CollectionCard";
 import Button from "../../../UI/Button";
 import styles from "./Collections.module.css";
+import AddCollectionMenu from "../../../components/menu/AddCollectionMenu";
 
 const Collections = () => {
   const userId = Number(useSelector(selectCurrentUserId));
@@ -25,14 +26,7 @@ const Collections = () => {
   return (
     <div className={styles.container}>
       <div className={styles.addCollectionLink}>
-        <Button
-          variant="outline"
-          size="medium"
-          onClick={openEditModal}
-          aria-label="Add a collection"
-        >
-          Add Collection
-        </Button>
+        <AddCollectionMenu openModal={openEditModal} />
       </div>
       {collections.length ? (
         <div className={styles.collectionContainer}>

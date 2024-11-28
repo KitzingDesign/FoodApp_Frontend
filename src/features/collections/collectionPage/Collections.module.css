@@ -56,8 +56,8 @@
   margin-bottom: 16px;
   width: 100%; /* Full width to fill the container */
   display: flex; /* Use flex to align items */
-  justify-content: flex-end; /* Changed from 'right' to 'flex-end' for clarity */
-  min-width: 50vw; /* Maintain some minimum width */
+  gap: 8px; /* Space between the icon and text */
+  justify-content: right;
 }
 
 .addCollectionLink a {
@@ -70,12 +70,10 @@
     justify-content: center;
   }
   .addCollectionLink {
-    width: 100vw; /* Full width on mobile */
+    width: 100%;
     margin-bottom: 8px;
   }
-  .addCollectionLink a {
-    margin-right: 16px; /* Adjust spacing on mobile */
-  }
+
   .placeholderContainer {
     width: 100%;
   }
