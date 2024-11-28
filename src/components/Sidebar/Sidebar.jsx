@@ -8,7 +8,6 @@ import styles from "./sidebar.module.css";
 
 //Icons
 import ProfileIcon from "../../../public/profile";
-import ChevronIcon from "../../../public/chevron";
 import PlusIcon from "../../../public/plus";
 import RecipeBookIcon from "../../../public/recipeBook";
 import RecipeBookIconOpen from "../../../public/recipeBookOpen";
@@ -123,7 +122,10 @@ function SideBar({ userId, toggleSidebar }) {
               onClick={() => setIsExpanded(() => !isExpanded)}
             >
               <button>
-                <ChevronIcon className={styles.chevron} />
+                <img
+                  src="/expandCollectionIcon.svg"
+                  alt="Expand collection list"
+                />
               </button>
             </motion.div>
           </div>
