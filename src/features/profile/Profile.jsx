@@ -10,6 +10,7 @@ import ProfileIcon from "/public/profile"; // Ensure this is the correct path fo
 import { useUpdateUserMutation } from "../users/usersApiSlice";
 import { useLogoutMutation, useDeleteMutation } from "../auth/authApiSlice";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
+import ProfileMenu from "../../components/menu/ProfileMenu";
 
 // Function to calculate the number of days since the account was created
 const calculateDaysSince = (dateString) => {
@@ -97,6 +98,7 @@ const Profile = () => {
     try {
       await logout().unwrap();
       dispatch(logOut());
+      navigate("/");
     } catch (err) {
       console.error(err);
     }
@@ -142,14 +144,6 @@ const Profile = () => {
 
   return (
     <div className={styles.upperContainer}>
-      <Button
-        size="medium"
-        variant="outlineRed"
-        className={styles.deleteButton}
-        onClick={showDeleteConfirmation} // Show confirmation modal
-      >
-        Delete Account
-      </Button>
       {showDeleteModal && (
         <ConfirmDeleteModal
           isOpen={showDeleteModal}
@@ -193,14 +187,10 @@ const Profile = () => {
             </div>
           </div>
           <div className={styles.logout}>
-            <Button
-              size="small"
-              destination="/"
-              variant="outlineRed"
-              onClick={handleLogout}
-            >
-              Logout
-            </Button>
+            <ProfileMenu
+              logoutClick={handleLogout}
+              deleteClick={showDeleteConfirmation}
+            />
           </div>
         </div>
         <div className={styles.accountContainer}>
@@ -235,17 +225,6 @@ const Profile = () => {
             <button type="submit" className={styles.button}>
               Update Profile
             </button>
-            <div className={styles.logoutPhone}>
-              <Button
-                size="medium"
-                destination="/"
-                variant="outlineRed"
-                onClick={handleLogout}
-                className={styles.logoutPhone}
-              >
-                Logout
-              </Button>
-            </div>
           </div>
         </div>
       </form>
