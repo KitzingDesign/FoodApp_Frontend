@@ -37,11 +37,13 @@ const getInitialFormData = (userId, collectionId) => ({
   collection_id: collectionId ? Number(collectionId) : "",
 });
 
-const EditRecipeContent = ({ isOpen, onClose }) => {
+const EditRecipeContent = ({ isOpen, onClose, recipe_id }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { recipeId } = useParams(); // Extract recipe ID from URL
+  const { recipeId } = useParams();
+
   const userId = Number(useSelector(selectCurrentUserId));
+  const recipeID = recipeId || recipe_id;
 
   const [imageFile, setImageFile] = useState(null); // State for the image file
 
@@ -51,19 +53,19 @@ const EditRecipeContent = ({ isOpen, onClose }) => {
     error,
     isLoading,
     refetch: refetchRecipes,
-  } = useGetOneRecipeQuery({ id: recipeId });
+  } = useGetOneRecipeQuery({ id: recipeID });
 
   const {
     data: instructions = [],
     isLoading: instructionLoading,
     refetch: refetchInstructions,
-  } = useGetInstructionsQuery({ id: recipeId });
+  } = useGetInstructionsQuery({ id: recipeID });
 
   const {
     data: ingredients = [],
     isLoading: ingredientLoading,
     refetch: refetchIngredients,
-  } = useGetIngredientsQuery({ id: recipeId });
+  } = useGetIngredientsQuery({ id: recipeID });
 
   // API Hooks
   const [updateRecipe, { isLoading: isUpdating }] = useUpdateRecipeMutation();
@@ -85,8 +87,10 @@ const EditRecipeContent = ({ isOpen, onClose }) => {
 
   const fileInputRef = useRef(null); // Create a ref for the file input
 
+  const allDataLoaded = recipe && ingredients.length && instructions.length;
+
   useEffect(() => {
-    if (recipe) {
+    if (allDataLoaded) {
       setFormData((prevData) => ({
         ...prevData,
         title: recipe.title,
@@ -98,7 +102,7 @@ const EditRecipeContent = ({ isOpen, onClose }) => {
         collection_id: recipe.collection_id || "",
       }));
     }
-  }, [recipe, ingredients, instructions]);
+  }, [allDataLoaded]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -179,7 +183,7 @@ const EditRecipeContent = ({ isOpen, onClose }) => {
     recipeFormData.append("description", formData.description || "");
     recipeFormData.append("user_id", userId);
     recipeFormData.append("collection_id", formData.collection_id || "");
-    recipeFormData.append("recipe_id", recipeId);
+    recipeFormData.append("recipe_id", recipeID);
     recipeFormData.append("image_url", formData.image_url);
 
     // Append the image if available
@@ -203,7 +207,7 @@ const EditRecipeContent = ({ isOpen, onClose }) => {
           }).unwrap();
         } else if (!instructionId) {
           await addNewInstruction({
-            recipe_id: Number(recipeId),
+            recipe_id: Number(recipeID),
             instruction_text: instruction,
             step_number: i,
           }).unwrap();
@@ -222,7 +226,7 @@ const EditRecipeContent = ({ isOpen, onClose }) => {
           }).unwrap();
         } else if (!ingredientId) {
           await addNewIngredient({
-            recipe_id: Number(recipeId),
+            recipe_id: Number(recipeID),
             name: ingredient,
           }).unwrap();
         }

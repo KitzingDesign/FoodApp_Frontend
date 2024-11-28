@@ -1,3 +1,8 @@
+.outerContainer {
+  width: 100%;
+  position: relative;
+}
+
 .cardContainer {
   display: flex;
   flex-direction: column;
@@ -20,6 +25,14 @@
   justify-content: center;
   align-items: center;
   border-radius: 0px 0px 10px 0px;
+}
+
+.menuButton {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  height: 40px;
+  z-index: 1000;
 }
 
 .collectionTab p {

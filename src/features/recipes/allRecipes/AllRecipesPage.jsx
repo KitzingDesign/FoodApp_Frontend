@@ -21,6 +21,7 @@ import { setActiveTitle } from "../../../components/dashboard/dashboardSlice";
 
 import Button from "../../../UI/Button";
 import EditCollectionContent from "../../collections/editCollection/EditCollectionContent";
+import EditRecipeContent from "../updateRecipe/EditRecipeContent";
 import CollectionMenu from "../../../components/menu/collectionMenu";
 
 const AllRecipes = () => {
@@ -32,6 +33,7 @@ const AllRecipes = () => {
   // Modal state to handle open/close
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isEditRecipeModalOpen, setIsEditRecipeModalOpen] = useState(false);
 
   // Function to handle modal open/close
   const openModal = () => setIsModalOpen(true);
