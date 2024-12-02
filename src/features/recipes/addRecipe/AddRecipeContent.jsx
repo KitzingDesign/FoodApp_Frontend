@@ -37,6 +37,8 @@ const getInitialFormData = (userId, collectionId) => ({
   collection_id: collectionId ? Number(collectionId) : "",
 });
 
+import PropagateLoader from "react-spinners/PropagateLoader";
+
 const AddRecipeContent = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
   const { collectionId } = useParams();
@@ -72,14 +74,21 @@ const AddRecipeContent = ({ isOpen, onClose }) => {
     if (recipe) {
       setFormData((prevData) => ({
         ...prevData,
-        title: recipe.name,
+        title: recipe.name || "",
         description: recipe.description || "",
-        ingredients: recipe.recipeIngredient || Array(5).fill({ text: "" }),
-        instructions: Array.isArray(recipe.recipeInstructions)
-          ? recipe.recipeInstructions.map((instruction) => instruction.text)
+        ingredients: Array.isArray(recipe.ingredients)
+          ? Object.values(recipe.ingredients)
+          : Array(5).fill(""),
+        instructions: Array.isArray(recipe.instructions)
+          ? Object.values(recipe.instructions)
           : Array(4).fill(""),
-        image_url: recipe.image || "",
+        image_url: Array.isArray(recipe.image)
+          ? recipe.image[0]?.url || "" // If it's an array, get the URL from the first element
+          : recipe.image && typeof recipe.image === "object" && recipe.image.url // If it's an object, check if it has a url property
+          ? recipe.image.url
+          : recipe.image || "", // If it's a string, use it as is
       }));
+      console.log("recipe", recipe);
     }
     if (urlError) {
       setErrMsg("Failed to fetch recipe from the provided URL.");
@@ -306,9 +315,9 @@ const AddRecipeContent = ({ isOpen, onClose }) => {
             Extract Recipe
           </button>
         </div>
-        {isUrlLoading && isAdding && (
+        {isUrlLoading && (
           <div className={styles.loader}>
-            <PulseLoader color="#4156a1" />
+            <PropagateLoader color="#4156a1" />
           </div>
         )}
         {errMsg && <ErrorMsg role="alert" errMsg={errMsg} />}
