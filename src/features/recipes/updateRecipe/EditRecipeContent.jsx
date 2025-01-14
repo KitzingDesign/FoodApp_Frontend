@@ -273,7 +273,7 @@ const EditRecipeContent = ({ isOpen, onClose, recipe_id }) => {
                 className={styles.collectionId}
                 onChange={handleInputChange}
               >
-                <option value=""></option>
+                <option value="">None</option>
                 {collections.map((collection) => (
                   <option
                     key={collection.collection_id}

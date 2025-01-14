@@ -41,10 +41,15 @@
   margin-top: 1rem;
 }
 
+.form input {
+  font-size: 16px;
+}
+
 .form textarea {
   color: var(--text-color, #333);
   font-style: normal;
   font-weight: 400;
+  font-size: 16px;
   line-height: normal;
   padding: 4px;
 }
@@ -107,6 +112,7 @@
 .urlContainer input {
   flex-grow: 1;
   padding: 8px;
+  font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
@@ -420,6 +426,14 @@
 
 /* for mobile phones */
 @media (max-width: 480px) {
+  select {
+    font-size: 16px;
+    padding: 8px 16px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color: #333;
+    border-radius: 4px;
+  }
   .titleContainer {
     padding-top: 24px;
   }
@@ -457,6 +471,10 @@
     height: 20vh;
     width: 100%;
     border: #ccc 1px solid;
+  }
+
+  .inputDescription {
+    height: 160px;
   }
   .submitButton {
     margin-top: 32px;
