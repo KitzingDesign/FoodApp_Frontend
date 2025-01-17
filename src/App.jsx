@@ -39,6 +39,7 @@ import "./viewport.js";
 function App() {
   // Get the current user ID from the Redux store
   const userId = useSelector(selectCurrentUserId);
+  console.log(userId);
 
   return (
     <Routes>
