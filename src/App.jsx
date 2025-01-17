@@ -1,7 +1,5 @@
 // Importing routing components from react-router-dom
 import { Route, Routes } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
 
 // Importing layout components
 import Layout from "./components/Layout";
@@ -30,33 +28,22 @@ import AllRecipes from "./features/recipes/allRecipes/AllRecipesPage.jsx";
 import TermsAndConditions from "./components/legal/TermsAndConditions.jsx";
 import PageNotFound from "./components/404/PageNotFound.jsx";
 
-// import aut state selector
-import { selectCurrentUserId } from "./features/auth/authSlice";
-
 // Import the viewport script
 import "./viewport.js";
 
 function App() {
-  // Get the current user ID from the Redux store
-  const userId = useSelector(selectCurrentUserId);
-  console.log(userId);
-
   return (
     <Routes>
       {/* Main layout for public routes */}
 
       <Route path="/" element={<Layout />}>
         {/* Public routes */}
-        <Route
-          index
-          element={
-            userId ? <Navigate to={`/welcome/${userId}`} replace /> : <Public />
-          }
-        />{" "}
+        <Route index element={<Public />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route path="terms" element={<TermsAndConditions />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
+
         {/* Protected routes (only accessible when logged in) */}
         <Route element={<PersistLogin />}>
           {/* Persist login across sessions */}
@@ -81,6 +68,7 @@ function App() {
             </Route>
           </Route>
         </Route>
+
         {/* Catch-all route for 404 Page */}
         <Route path="*" element={<PageNotFound />} />
       </Route>
