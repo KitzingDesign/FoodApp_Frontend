@@ -98,6 +98,7 @@ const Profile = () => {
     try {
       await logout().unwrap();
       dispatch(logOut());
+
       navigate("/");
     } catch (err) {
       console.error(err);
