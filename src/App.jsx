@@ -1,5 +1,7 @@
 // Importing routing components from react-router-dom
 import { Route, Routes } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 
 // Importing layout components
 import Layout from "./components/Layout";
@@ -31,20 +33,36 @@ import PageNotFound from "./components/404/PageNotFound.jsx";
 // Import the viewport script
 import "./viewport.js";
 
+// import state
+import { selectCurrentUserId } from "./features/auth/authSlice";
+
 function App() {
+  // Get the current user ID
+  const userId = useSelector(selectCurrentUserId);
+
   return (
     <Routes>
       {/* Main layout for public routes */}
-      <Route path="/" element={<Layout />}>
-        {/* Public routes */}
-        <Route index element={<Public />} />
-        <Route path="login" element={<Login />} />
-        <Route path="register" element={<Register />} />
-        <Route path="terms" element={<TermsAndConditions />} />
-        <Route path="forgot-password" element={<ForgotPassword />} />
+      <Route element={<PersistLogin />}>
+        <Route path="/" element={<Layout />}>
+          {/* Public routes */}
+          <Route
+            index
+            element={
+              userId ? (
+                <Navigate to={`/welcome/${userId}`} replace />
+              ) : (
+                <Public />
+              )
+            }
+          />
 
-        {/* Protected routes (only accessible when logged in) */}
-        <Route element={<PersistLogin />}>
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+          <Route path="terms" element={<TermsAndConditions />} />
+          <Route path="forgot-password" element={<ForgotPassword />} />
+
+          {/* Protected routes (only accessible when logged in) */}
           {/* Persist login across sessions */}
           <Route element={<RequireAuth />}>
             {/* Guard routes that require authentication */}
@@ -66,10 +84,10 @@ function App() {
               <Route path="profile" element={<Profile />} />
             </Route>
           </Route>
-        </Route>
 
-        {/* Catch-all route for 404 Page */}
-        <Route path="*" element={<PageNotFound />} />
+          {/* Catch-all route for 404 Page */}
+          <Route path="*" element={<PageNotFound />} />
+        </Route>
       </Route>
     </Routes>
   );
