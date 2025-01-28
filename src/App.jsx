@@ -1,7 +1,5 @@
 // Importing routing components from react-router-dom
 import { Route, Routes } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
 
 // Importing layout components
 import Layout from "./components/Layout";
@@ -33,37 +31,21 @@ import PageNotFound from "./components/404/PageNotFound.jsx";
 // Import the viewport script
 import "./viewport.js";
 
-// import state
-import { selectCurrentUserId } from "./features/auth/authSlice";
-
 function App() {
-  // Get the current user ID
-  const userId = useSelector(selectCurrentUserId);
-
   return (
     <Routes>
       {/* Main layout for public routes */}
-      <Route element={<PersistLogin />}>
-        <Route path="/" element={<Layout />}>
-          {/* Public routes */}
-          <Route
-            index
-            element={
-              userId ? (
-                <Navigate to={`/welcome/${userId}`} replace />
-              ) : (
-                <Public />
-              )
-            }
-          />
+      <Route path="/" element={<Layout />}>
+        {/* Public routes (accessible without authentication) */}
+        <Route index element={<Public />} />
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
+        <Route path="terms" element={<TermsAndConditions />} />
+        <Route path="forgot-password" element={<ForgotPassword />} />
 
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
-          <Route path="terms" element={<TermsAndConditions />} />
-          <Route path="forgot-password" element={<ForgotPassword />} />
-
-          {/* Protected routes (only accessible when logged in) */}
-          {/* Persist login across sessions */}
+        {/* Protected routes (only accessible when logged in) */}
+        {/* Persist login across sessions */}
+        <Route element={<PersistLogin />}>
           <Route element={<RequireAuth />}>
             {/* Guard routes that require authentication */}
             {/* Dashboard layout (parent route for authenticated user views) */}
@@ -76,7 +58,7 @@ function App() {
                 path="collections/:collectionId"
                 element={<AllRecipes />}
               />
-              <Route path="recipes" element={<div>Recipes</div>} />{" "}
+              <Route path="recipes" element={<div>Recipes</div>} />
               {/* Placeholder for recipes listing */}
               {/* Collection routes */}
               <Route path="collections" element={<Collections />} />
